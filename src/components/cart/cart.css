@@ -1,0 +1,47 @@
+.cart-table{
+    margin-top: 50px;
+}
+.cart-table-tr > td{
+    border-top: none !important;
+    border-bottom: 1px solid #ddd !important;
+}
+.cart-table-img{
+    width: 20%;
+}
+.cart-table-item{
+    width: 40%;
+}
+.cart-table-qty{
+    width: 20%;
+    padding-top: 44px !important;
+}
+.cart-table-total{
+    width: 10%;
+    padding-top: 40px !important;
+}
+.cart-table-action{
+    width: 10%;
+    padding-top: 54px !important;
+}
+.cart-table-remove{
+    background-image: url("../../images/remove_icon.png");
+    float: right;
+    margin-right: 10px;
+    background-repeat: no-repeat;
+    width: 16px;
+    cursor: pointer;
+}
+.cart-table-price{
+    font-size: 24px;
+    font-weight: 600;
+    margin-left: 7px;
+}
+.cart-table-mrp{
+    font-size: 16px;
+    font-weight: 600;
+    color: #525252;
+}
+.cart-table-prod_id{
+    color: #ccc;
+    margin: 4px 0px 0px !important;
+}

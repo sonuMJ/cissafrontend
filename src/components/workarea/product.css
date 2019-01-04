@@ -1,0 +1,73 @@
+.c_product{
+    border: 1px solid #d6d6d6;
+    padding: 5px 10px 36px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    min-height: 374px;
+}
+.c_cart_btn{
+    margin-top: 20px;
+}
+.c_round_btn{
+    border-radius: 50%;
+    height: 25px;
+    width: 25px;
+    border: none;
+    font-weight: bold;
+}
+.c_cart_items{
+    max-height: 500px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding-bottom: 26px;
+}
+.c_bill_text{
+    margin: 0px !important; 
+}
+.c_bill_itemimage{
+    padding-right: 0px !important;
+    padding-left: 20px;
+    padding-top: 22px;
+}
+.c_bill_itemdetails{
+    padding-left: 10px !important;
+    padding-top: 10px;
+}
+.c_bill_linebreak{
+    margin-bottom: 0px !important;
+    margin-top: 0px !important;
+}
+.c_bill_btn{
+    width: 50%;
+    height: 50px;
+    font-size: 18px;
+}
+.c_item_remove_btn{
+    float: right;
+    background-image: url('../../images/remove_icon.png');
+    margin-right: 10px;
+    background-repeat: no-repeat;
+    width: 16px;
+    cursor: pointer;
+}
+.c_cart_purchase_ic{
+    background-image: url('../../images/package.png');
+}
+.c_cart_remove{
+    padding: 6px 12px;
+    margin-top: 22px;
+}
+.c_cart_remove > a{
+    cursor: pointer;
+    text-decoration: none;
+}
+.c_cart_remove > a:hover{
+    cursor: pointer;
+    text-decoration: none;
+}
+.c_cart_removeicon{
+    background-image: url("../../images/remove_icon2.png");
+    width: 16px;
+    height: 16px;
+    background-repeat: no-repeat;
+}
