@@ -6,7 +6,7 @@
     border-bottom: 1px solid #ddd !important;
 }
 .cart-table-img{
-    width: 20%;
+    width: 14%;
 }
 .cart-table-item{
     width: 40%;
@@ -44,4 +44,17 @@
 .cart-table-prod_id{
     color: #ccc;
     margin: 4px 0px 0px !important;
+}
+.cart-table-totalrow{
+    position: sticky !important;
+    background-color: green !important;
+    padding: 12px 10px;
+    bottom: 0;
+    color: #fff;
+    height: 80px;
+    font-size: 20px;
+}
+.cart-table-totalprice{
+    font-size: 40px;
+    font-weight: 500;
 }

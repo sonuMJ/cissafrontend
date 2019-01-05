@@ -2,13 +2,19 @@ import React from 'react';
 
 class Cartitem extends React.Component{
     state = {
-        data:[]
+        data:[],
+        total:'100'
     }
     componentDidMount(){
-        console.log(this.props.cartdata);
-        this.setState({
-            data:this.props.cartdata
-        })
+    }
+    removeItem(product_id){
+        this.props.remove(this,product_id);
+    }
+    increment(product_id){
+        this.props.inc(this,product_id);
+    }
+    decrement(product_id){
+        this.props.dec(this,product_id);
     }
     render(){
         var item = this.props.cartdata
@@ -26,14 +32,14 @@ class Cartitem extends React.Component{
                 </td>
                 <td className="cart-table-qty">
                     <span className="text-center">
-                        <button className="c_round_btn" >-</button>
-                        <input type="number" value={item.quantitiy} readOnly style={{width:"40px",textAlign: "right"}} name="qty"/>
-                        <button className="c_round_btn" >+</button>
+                        <button className="c_round_btn" onClick={this.decrement.bind(this,item.productId)}>-</button>
+                        <input type="number" value={item.quantity} readOnly style={{width:"40px",textAlign: "right"}} name="qty"/>
+                        <button className="c_round_btn" onClick={this.increment.bind(this,item.productId)}>+</button>
                     </span>
                 </td>
-                <td className="cart-table-total"><p><span style={{fontSize:'16px',fontWeight:'500'}}>&#8377;</span><span style={{fontSize:'26px',fontWeight:'500'}}>100</span></p></td>
+                <td className="cart-table-total"><p><span style={{fontSize:'16px',fontWeight:'500'}}>&#8377;</span><span style={{fontSize:'26px',fontWeight:'500'}}>{item.total}</span></p></td>
                 <td className="cart-table-action">
-                    <span className="cart-table-remove">&nbsp;&nbsp;&nbsp;</span>
+                    <span className="cart-table-remove" onClick={this.removeItem.bind(this,item.productId)}>&nbsp;&nbsp;&nbsp;</span>
                 </td>
             </tr>
         )

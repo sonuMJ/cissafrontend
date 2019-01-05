@@ -3,6 +3,8 @@ import Categorylist from './Categorylist';
 import Mybill from './Mybill';
 import Listitems from './Listitems';
 import './product.css';
+import Cookies from 'js-cookie';
+
 class Mainframe extends React.Component{
     state = {
         products:[],
@@ -11,6 +13,7 @@ class Mainframe extends React.Component{
     }
     componentDidMount(){
         this.fetchData();
+        
     }
 
     fetchData(){
@@ -72,15 +75,15 @@ class Mainframe extends React.Component{
         
         return(
             <div className="container-fluid">
-                <div className="col-lg-2">
+                <div className="col-lg-2 col-md-2">
                     <Categorylist />
                 </div>
-                <div className="col-lg-8">
+                <div className="col-lg-8 col-md-8">
                 {
                     this.state.isFetching ? <Listitems productlist={this.state.products} addtocart={this.addToCart.bind(this)}/> : "Loading...."
                 }
                 </div>
-                <div className="col-lg-2">
+                <div className="col-lg-2 col-md-2">
                     <Mybill cartitems={this.state.cart} removeCartItem={this.removeCartItem.bind(this)}/>
                 </div>
             </div>
