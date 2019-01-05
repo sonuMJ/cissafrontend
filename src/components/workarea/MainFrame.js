@@ -13,7 +13,6 @@ class Mainframe extends React.Component{
     }
     componentDidMount(){
         this.fetchData();
-        
     }
 
     fetchData(){
@@ -28,20 +27,21 @@ class Mainframe extends React.Component{
     }
 
     addToCart(product_ID, product_item, qty){
-        var key = 5 ;
+        var Key = Cookies.get("_cid");
         fetch('http://localhost:5000/api/cart/addCart',{
             method:'POST',
-            body : JSON.stringify({key: key, product_id:product_ID}),
+            body : JSON.stringify({product_id:product_ID}),
             headers: {
                 "Content-Type": "application/json",
                 // "Content-Type": "application/x-www-form-urlencoded",
+                "_cid":Key
             }
         })
         .then(res => res.json())
         .then(result => {
             alert(result.message);
             setTimeout(() => {
-                this.fetchCartItems(key)
+                this.fetchCartItems(Key)
             }, 100);
         })
         .catch(e => {
@@ -55,10 +55,10 @@ class Mainframe extends React.Component{
     fetchCartItems(key){
         fetch('http://localhost:5000/api/cart/showCart',{
             method : 'POST',
-            body : JSON.stringify({key : key}),
                 headers: {
                     "Content-Type": "application/json",
                     // "Content-Type": "application/x-www-form-urlencoded",
+                    "_cid":key
                 }
             })
             .then(res => res.json())

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import './cart.css';
 import Cartitem from './Cartitem';
+import Cookies from 'js-cookie';
 
 class Cartpage extends React.Component{
     state = {
@@ -11,10 +12,10 @@ class Cartpage extends React.Component{
     fetchCartItems(key){
         fetch('http://localhost:5000/api/cart/showCart',{
             method : 'POST',
-            body : JSON.stringify({key : key}),
                 headers: {
                     "Content-Type": "application/json",
                     // "Content-Type": "application/x-www-form-urlencoded",
+                    "_cid": key
                 }
             })
             .then(res => res.json())
@@ -33,16 +34,17 @@ class Cartpage extends React.Component{
     deleteCartItems(key,productId){
         fetch('http://localhost:5000/api/cart/cartItemRemove',{
             method : 'DELETE',
-            body : JSON.stringify({key : key,product_id:productId}),
+            body : JSON.stringify({product_id:productId}),
                 headers: {
                     "Content-Type": "application/json",
                     // "Content-Type": "application/x-www-form-urlencoded",
+                    "_cid": key
                 }
             })
             .then(res => res.json())
             .then(result => {
                 alert(result.message);
-                this.fetchCartItems(5)
+                this.fetchCartItems(key)
             })
             .catch(e => {
                 console.log(e);
@@ -51,23 +53,25 @@ class Cartpage extends React.Component{
     changeQuantity(key,productId,operation){
         fetch('http://localhost:5000/api/cart/cartQty',{
             method : 'PUT',
-            body : JSON.stringify({key : key,product_id:productId,operation:operation}),
+            body : JSON.stringify({product_id:productId,operation:operation}),
                 headers: {
                     "Content-Type": "application/json",
                     // "Content-Type": "application/x-www-form-urlencoded",
+                    "_cid": key
                 }
             })
             .then(res => res.json())
             .then(result => {
                 alert(result.message);
-                this.fetchCartItems(5);
+                this.fetchCartItems(key);
             })
             .catch(e => {
                 console.log(e);
             })
     }
     componentDidMount(){
-        this.fetchCartItems(5);
+        var Key = Cookies.get("_cid");
+        this.fetchCartItems(Key);
         setTimeout(() => {
             console.log(this.state.cart);
             
@@ -87,13 +91,16 @@ class Cartpage extends React.Component{
         
     }
     removeCartItem(id, product_id){
-        this.deleteCartItems(5,product_id)
+        var Key = Cookies.get("_cid");
+        this.deleteCartItems(Key,product_id)
     }
     INC_QTY(context,product_id){
-        this.changeQuantity(5,product_id,"INC");
+        var Key = Cookies.get("_cid");
+        this.changeQuantity(Key,product_id,"INC");
     }
     DEC_QTY(context, product_id){
-        this.changeQuantity(5,product_id,"DEC");
+        var Key = Cookies.get("_cid");
+        this.changeQuantity(Key,product_id,"DEC");
     }
     render(){
         var C = this.state.cart;

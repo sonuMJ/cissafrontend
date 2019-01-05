@@ -2,6 +2,7 @@ import React from 'react';
 import Billitems from './Billitems';
 import { Link } from 'react-router-dom';
 import './bill.css';
+import Cookies from 'js-cookie';
 
 class Mybill extends React.Component{
 
@@ -11,19 +12,22 @@ class Mybill extends React.Component{
     }
 
     componentDidMount(){
-        this.fetchCartItems(5);
+        setTimeout(() => {
+            var KEY = Cookies.get("_cid");
+            this.fetchCartItems(KEY);
+        }, 100);
         setTimeout(() => {
             console.log(this.state.cartItem);
-        }, 100);
+        }, 200);
     }
 
     fetchCartItems(key){
         fetch('http://localhost:5000/api/cart/showCart',{
             method : 'POST',
-            body : JSON.stringify({key : key}),
                 headers: {
                     "Content-Type": "application/json",
                     // "Content-Type": "application/x-www-form-urlencoded",
+                    "_cid":key
                 }
             })
             .then(res => res.json())
@@ -42,16 +46,17 @@ class Mybill extends React.Component{
     deleteCartItems(key,productId){
         fetch('http://localhost:5000/api/cart/cartItemRemove',{
             method : 'DELETE',
-            body : JSON.stringify({key : key,product_id:productId}),
+            body : JSON.stringify({product_id:productId}),
                 headers: {
                     "Content-Type": "application/json",
                     // "Content-Type": "application/x-www-form-urlencoded",
+                    "_cid":key
                 }
             })
             .then(res => res.json())
             .then(result => {
                 alert(result.message);
-                this.fetchCartItems(5)
+                this.fetchCartItems(key)
             })
             .catch(e => {
                 console.log(e);
@@ -60,16 +65,17 @@ class Mybill extends React.Component{
     changeQuantity(key,productId,operation){
         fetch('http://localhost:5000/api/cart/cartQty',{
             method : 'PUT',
-            body : JSON.stringify({key : key,product_id:productId,operation:operation}),
+            body : JSON.stringify({product_id:productId,operation:operation}),
                 headers: {
                     "Content-Type": "application/json",
                     // "Content-Type": "application/x-www-form-urlencoded",
+                    "_cid":key
                 }
             })
             .then(res => res.json())
             .then(result => {
                 alert(result.message);
-                this.fetchCartItems(5);
+                this.fetchCartItems(key);
             })
             .catch(e => {
                 console.log(e);
@@ -93,7 +99,8 @@ class Mybill extends React.Component{
     componentWillReceiveProps(){
         
         if(this.props.cartItem == undefined){
-            this.fetchCartItems(5);
+            var KEY = Cookies.get("_cid");
+            this.fetchCartItems(KEY);
         }else{
             setTimeout(() => {
                 this.setState({
@@ -108,14 +115,17 @@ class Mybill extends React.Component{
     }
 
     INC_qty(context,product_id){
-        this.changeQuantity(5,product_id,"INC");
+        var KEY = Cookies.get("_cid");
+        this.changeQuantity(KEY,product_id,"INC");
     }
     DEC_qty(context,product_id){
-        this.changeQuantity(5,product_id,"DEC");
+        var KEY = Cookies.get("_cid");
+        this.changeQuantity(KEY,product_id,"DEC");
     }
     REMOVE_item(context,product_id){
+        var KEY = Cookies.get("_cid");
         console.log(product_id);
-        this.deleteCartItems(5,product_id);
+        this.deleteCartItems(KEY,product_id);
     }
     
     render(){
