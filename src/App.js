@@ -7,6 +7,7 @@ import Mainframe from './components/workarea/MainFrame';
 import Cartpage from './components/cart/Cartpage';
 import Cookies from 'js-cookie';
 import Confirmorder from './components/cart/Confirmorder';
+import Yourorders from './components/workarea/Yourorders';
 
 
 class App extends Component {
@@ -31,13 +32,14 @@ class App extends Component {
           <Route path="/cart" exact component={Cartpage}/>
           <Route path="/" exact component={Mainframe}/>
           <PrivateRoute path='/confirmorder' component={Confirmorder} />
+          <PrivateRoute path='/yourorders' component={Yourorders} />
         </Switch>
       </div>
     );
   }
 }
 const fakeAuth = {
-  isAuthenticated: false
+  isAuthenticated: true
 }
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route {...rest} render={(props) => (

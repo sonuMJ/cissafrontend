@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import './cart.css';
 import Cartitem from './Cartitem';
 import Cookies from 'js-cookie';
@@ -74,7 +73,6 @@ class Cartpage extends React.Component{
         this.fetchCartItems(Key);
         setTimeout(() => {
             console.log(this.state.cart);
-            
         }, 100);
     }
     Total(){
@@ -83,7 +81,6 @@ class Cartpage extends React.Component{
             this.state.cart.map(i => {
                 product_total += parseInt(i.total)
             })
-            console.log(product_total);
             this.setState({
                 total:product_total
             })
@@ -102,23 +99,31 @@ class Cartpage extends React.Component{
         var Key = Cookies.get("_cid");
         this.changeQuantity(Key,product_id,"DEC");
     }
+    orderItem(){
+        //if AUTH is empty => login else => confirmorder
+        var loggedin = true;
+        if(loggedin) {
+            this.props.history.push('/confirmOrder');
+        }else{
+            this.props.history.push('/login');
+        }
+        
+        
+    }
     render(){
         var C = this.state.cart;
+        
         return(
             <div className="container">
                 <div className="col-lg-1">
 
                 </div>
                 <div className="col-lg-10">
-                    <h2 style={{fontSize:'34px'}}>Your Shopping Cart <Link to={'/confirmorder'} style={{float:'right'}} className="cart-confirm-btn">Confirm Order</Link></h2>
+                    <h2 style={{fontSize:'34px'}}>Your Shopping Cart <button style={{float:'right'}} className="cart-confirm-btn" onClick={this.orderItem.bind(this)}>Confirm Order</button></h2>
                     <table className="table table-responsive table-hover cart-table">
                         <tbody>
                             {
-                                Object.keys(C).map((item,k) =>{
-                                    return(
-                                        <Cartitem cartdata={C[item]} inc={this.INC_QTY.bind(this)} dec={this.DEC_QTY.bind(this)} remove={this.removeCartItem.bind(this)} key={k}/>
-                                    )
-                                })
+                                C == null ? <CartEmpty /> : <ShowCart cart={C} inc={this.INC_QTY.bind(this)} dec={this.DEC_QTY.bind(this)} remove={this.removeCartItem.bind(this)}/>
                             }
                         </tbody>
                     </table>
@@ -138,4 +143,27 @@ class Cartpage extends React.Component{
     }
 }
 
+const ShowCart = (cart) =>{
+    var C = cart.cart; 
+    return(
+        <React.Fragment>
+            {
+                Object.keys(C).map((item,k) =>{
+                    return(
+                    <Cartitem cartdata={C[item]} inc={cart.inc.bind(this)} dec={cart.dec.bind(this)} remove={cart.remove.bind(this)} key={k}/>
+                    )
+                })
+            }
+             
+        </React.Fragment>
+    )
+}
+
+const CartEmpty = () =>{
+    return(
+        <tr className="cart-table-tr">
+            <td colSpan='5' style={{fontSize: '18px',textAlign: 'cente'}}>Your cart is empty</td>
+        </tr>
+    )
+}
 export default Cartpage;
