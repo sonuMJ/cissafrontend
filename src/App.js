@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import './App.css';
 import { Switch , Route, Redirect } from 'react-router-dom';
-import Searchbar from './components/headers/Searchbar';
-import Topnav from './components/headers/Topnav';
 import Mainframe from './components/workarea/MainFrame';
 import Cartpage from './components/cart/Cartpage';
 import Cookies from 'js-cookie';
 import Confirmorder from './components/cart/Confirmorder';
 import Yourorders from './components/workarea/Yourorders';
 import Login from './components/user/Login';
+import Registration from './components/user/Registration';
+
 
 
 class App extends Component {
@@ -25,14 +25,14 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Searchbar />
-        <Topnav />
+        
         <Switch>
           {/* <Route path="/cart" exact  component={Cartpage}/> */}
           {/* <Route path="/" exact addtocart component={Mainframe} /> */}
           <Route path="/cart" exact component={Cartpage}/>
           <Route path="/" exact component={Mainframe}/>
           <Route path="/login" exact component={Login}/>
+          <Route path="/register" exact component={Registration}/>
           <PrivateRoute path='/confirmorder' component={Confirmorder} />
           <PrivateRoute path='/yourorders' component={Yourorders} />
         </Switch>
@@ -41,7 +41,7 @@ class App extends Component {
   }
 }
 const fakeAuth = {
-  isAuthenticated: false
+  isAuthenticated: true
 }
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route {...rest} render={(props) => (

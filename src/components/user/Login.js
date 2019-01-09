@@ -4,6 +4,9 @@ import './Login.css';
 import Cookies from 'js-cookie';
 
 class Login extends React.Component{
+
+    
+
     state = {
         email:'',
         password:'',
@@ -82,10 +85,10 @@ class Login extends React.Component{
                 <div className="c_login">
                     <h1 className="text-center">Welcome back!</h1>
                     <h3 className="text-center">Log in to access your profile, orders and Purchase</h3>
-                    <label htmlFor="email">Email/Phone</label><span className="c_error_msg">{this.state.emailError}</span>
-                    <input type="text" name="email" placeholder="Email or Phone" className="form-control" value={this.state.email} onChange={this.handleChange.bind(this)}/>
-                    <label htmlFor="password">Password</label><span className="c_error_msg">{this.state.pwdError}</span>
-                    <input type="password" name="password" placeholder="Password" className="form-control" value={this.state.password} onChange={this.handleChange.bind(this)}/>
+                    <label htmlFor="email" className="c_label">Email/Phone</label><span className="c_error_msg">{this.state.emailError}</span>
+                    <input type="text" name="email" placeholder="Email or Phone" className="form-control c_input" value={this.state.email} onChange={this.handleChange.bind(this)}/>
+                    <label htmlFor="password" className="c_label">Password</label><span className="c_error_msg">{this.state.pwdError}</span>
+                    <input type="password" name="password" placeholder="Password" className="form-control c_input" value={this.state.password} onChange={this.handleChange.bind(this)}/>
                     <input type="button" value="Log in to your account" className="btn btn-lg c_login_btn" onClick={this.handleSubmit.bind(this)}/>
                     <p className="text-center">Need an account? <Link to={'/register'}>Create your account</Link></p>
                 </div>

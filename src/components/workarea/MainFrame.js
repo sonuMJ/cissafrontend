@@ -4,6 +4,10 @@ import Mybill from './Mybill';
 import Listitems from './Listitems';
 import './product.css';
 import Cookies from 'js-cookie';
+import Contactinfo from '../headers/Contactinfo';
+import Carosel from '../headers/Carosel';
+import Searchbar from '../headers/Searchbar';
+import Topnav from '../headers/Topnav';
 
 class Mainframe extends React.Component{
     state = {
@@ -74,19 +78,26 @@ class Mainframe extends React.Component{
     render(){
         
         return(
-            <div className="container-fluid">
-                <div className="col-lg-2 col-md-2">
-                    <Categorylist />
+            <React.Fragment>
+                <Contactinfo />
+                <Searchbar />
+                <Topnav />
+                <Carosel />
+                <div className="container-fluid show-products">
+                    <div className="col-lg-2 col-md-2">
+                        <Categorylist />
+                    </div>
+                    <div className="col-lg-8 col-md-8">
+                    {
+                        this.state.isFetching ? <Listitems productlist={this.state.products} addtocart={this.addToCart.bind(this)}/> : "Loading...."
+                    }
+                    </div>
+                    <div className="col-lg-2 col-md-2">
+                        <Mybill cartitems={this.state.cart} removeCartItem={this.removeCartItem.bind(this)}/>
+                    </div>
                 </div>
-                <div className="col-lg-8 col-md-8">
-                {
-                    this.state.isFetching ? <Listitems productlist={this.state.products} addtocart={this.addToCart.bind(this)}/> : "Loading...."
-                }
-                </div>
-                <div className="col-lg-2 col-md-2">
-                    <Mybill cartitems={this.state.cart} removeCartItem={this.removeCartItem.bind(this)}/>
-                </div>
-            </div>
+            </React.Fragment>
+            
         )
     }
 }

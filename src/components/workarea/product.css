@@ -14,6 +14,7 @@
 }
 .c_product_name{
     font-size: 22px;
+    text-transform: capitalize;
 }
 .c_product_col{
     padding-left: 4px !important;
@@ -21,6 +22,7 @@
 }
 .c_cart_btn{
     margin-top: 10px;
+    background-color: #46b300;
 }
 .c_round_btn{
     border-radius: 50%;
@@ -98,4 +100,7 @@
 .cart-confirm-btn:hover{
     text-decoration: none;
     color: white;
+}
+.show-products{
+    padding-top: 30px;
 }

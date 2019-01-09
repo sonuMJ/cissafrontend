@@ -8,6 +8,8 @@ class Confirmorder extends React.Component{
         emptyData:true
     }
     componentDidMount(){
+        console.log(this.props.location.state);
+        
         //cart id
         //user id 
         //

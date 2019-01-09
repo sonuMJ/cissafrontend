@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import './cart.css';
 import Cartitem from './Cartitem';
 import Cookies from 'js-cookie';
+import Contactinfo from '../headers/Contactinfo';
+import Searchbar from '../headers/Searchbar';
+import Topnav from '../headers/Topnav';
 
 class Cartpage extends React.Component{
     state = {
@@ -107,38 +110,41 @@ class Cartpage extends React.Component{
         }else{
             this.props.history.push('/login');
         }
-        
-        
     }
     render(){
         var C = this.state.cart;
         
         return(
-            <div className="container">
-                <div className="col-lg-1">
+            <React.Fragment>
+                <Contactinfo />
+                <Searchbar />
+                <Topnav />
+                <div className="container">
+                    <div className="col-lg-1">
 
-                </div>
-                <div className="col-lg-10">
-                    <h2 style={{fontSize:'34px'}}>Your Shopping Cart <button style={{float:'right'}} className="cart-confirm-btn" onClick={this.orderItem.bind(this)}>Confirm Order</button></h2>
-                    <table className="table table-responsive table-hover cart-table">
-                        <tbody>
-                            {
-                                C == null ? <CartEmpty /> : <ShowCart cart={C} inc={this.INC_QTY.bind(this)} dec={this.DEC_QTY.bind(this)} remove={this.removeCartItem.bind(this)}/>
-                            }
-                        </tbody>
-                    </table>
-                    <div className="cart-table-totalrow">
-                        <div className="col-lg-8 text-right" style={{marginTop:'16px'}}>Total Price</div>
-                        <div className="col-lg-4 text-center">&#8377;<span className="cart-table-totalprice">{this.state.total}</span></div>
                     </div>
-                    {/* <div style={{marginTop:'50px',float:'right'}}>
-                        <Link to={'/confirmorder'} className="cart-confirm-btn">Confirm Order</Link>
-                    </div> */}
-                </div>
-                <div className="col-lg-1">
+                    <div className="col-lg-10">
+                        <h2 style={{fontSize:'34px'}}>Your Shopping Cart <button style={{float:'right'}} className="cart-confirm-btn" onClick={this.orderItem.bind(this)}>Confirm Order</button></h2>
+                        <table className="table table-responsive table-hover cart-table">
+                            <tbody>
+                                {
+                                    C == null ? <CartEmpty /> : <ShowCart cart={C} inc={this.INC_QTY.bind(this)} dec={this.DEC_QTY.bind(this)} remove={this.removeCartItem.bind(this)}/>
+                                }
+                            </tbody>
+                        </table>
+                        <div className="cart-table-totalrow">
+                            <div className="col-lg-8 text-right" style={{marginTop:'16px'}}>Total Price</div>
+                            <div className="col-lg-4 text-center">&#8377;<span className="cart-table-totalprice">{this.state.total}</span></div>
+                        </div>
+                        {/* <div style={{marginTop:'50px',float:'right'}}>
+                            <Link to={'/confirmorder'} className="cart-confirm-btn">Confirm Order</Link>
+                        </div> */}
+                    </div>
+                    <div className="col-lg-1">
 
+                    </div>
                 </div>
-            </div>
+            </React.Fragment>
         )
     }
 }
