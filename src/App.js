@@ -8,6 +8,7 @@ import Cartpage from './components/cart/Cartpage';
 import Cookies from 'js-cookie';
 import Confirmorder from './components/cart/Confirmorder';
 import Yourorders from './components/workarea/Yourorders';
+import Login from './components/user/Login';
 
 
 class App extends Component {
@@ -31,6 +32,7 @@ class App extends Component {
           {/* <Route path="/" exact addtocart component={Mainframe} /> */}
           <Route path="/cart" exact component={Cartpage}/>
           <Route path="/" exact component={Mainframe}/>
+          <Route path="/login" exact component={Login}/>
           <PrivateRoute path='/confirmorder' component={Confirmorder} />
           <PrivateRoute path='/yourorders' component={Yourorders} />
         </Switch>
@@ -39,7 +41,7 @@ class App extends Component {
   }
 }
 const fakeAuth = {
-  isAuthenticated: true
+  isAuthenticated: false
 }
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route {...rest} render={(props) => (
