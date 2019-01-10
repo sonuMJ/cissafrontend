@@ -8,18 +8,32 @@ class Confirmorder extends React.Component{
         emptyData:true
     }
     componentDidMount(){
-        console.log(this.props.location.state);
-        
+        var logged = this.CheckAuth();
+        if(!logged){
+            alert("You need to login to visit this page!!");
+            this.props.history.push('/login/co');
+        }else{
+            this.getAllProductByCartId();
+            setTimeout(() => {
+                if(!this.state.emptyData){
+                    this.submitOrders();
+                }
+            }, 200);
+        }
         //cart id
         //user id 
         //
         //this.submitOrders();
-        this.getAllProductByCartId();
-        setTimeout(() => {
-            if(!this.state.emptyData){
-                this.submitOrders();
-            }
-        }, 200);
+        
+    }
+    CheckAuth(){
+        var token = Cookies.get("_token");
+        var session = Cookies.get("sessionID");
+        if(token !== undefined&&session !== undefined){
+            return true;
+        }else{
+            return false;
+        }
     }
     getAllProductByCartId(){
         var key = Cookies.get('_cid');

@@ -1,11 +1,32 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import './Login.css';
 import Cookies from 'js-cookie';
 
 class Login extends React.Component{
+    state ={
+        prePath:''
+    }
+    componentDidMount(){
+        //console.log(this.props.match);
+        var prePath = this.props.match.params.path;
+        this.setState({prePath:prePath})
+        
+        var logged = this.CheckAuth();
+        if(logged){
+            this.props.history.push('/');
+        }
+    }
+    CheckAuth(){
+        var token = Cookies.get("_token");
+        var session = Cookies.get("sessionID");
+        if(token !== undefined&&session !== undefined){
+            return true;
+        }else{
+            return false;
+        }
+    }
 
-    
 
     state = {
         email:'',
@@ -55,6 +76,7 @@ class Login extends React.Component{
     }
 
     handleLogin(email,password){
+        var status;
         fetch('http://localhost:5000/user/login',{
             method:'POST',
             body : JSON.stringify({email:email,password:password}),
@@ -63,19 +85,31 @@ class Login extends React.Component{
                 // "Content-Type": "application/x-www-form-urlencoded",
             }
         })
-        .then(res => res.json())
+        .then(res => {
+            if(res.status === 200){
+                return res.json()
+            }else{
+                throw "User does not exists!!"
+            }
+        })
         .then(result => {
+            console.log(result);
+            
             if(result.message !== undefined){
                 alert(result.message);
             }else{
                 Cookies.set("_token", result.token, {expires:1});
                 Cookies.set("sessionID", result.csrf_token, {expires:1});
+                if(this.state.prePath === "co"){
+                    this.props.history.push('/confirmOrder');
+                }else{
+                    this.props.history.push('/');
+                }
+                
             }
-            
-            
         })
         .catch(e => {
-            console.log(e);
+            alert(e);
         })
     }
     

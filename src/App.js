@@ -31,6 +31,7 @@ class App extends Component {
           {/* <Route path="/" exact addtocart component={Mainframe} /> */}
           <Route path="/cart" exact component={Cartpage}/>
           <Route path="/" exact component={Mainframe}/>
+          <Route path="/login/:path" exact component={Login}/>
           <Route path="/login" exact component={Login}/>
           <Route path="/register" exact component={Registration}/>
           <PrivateRoute path='/confirmorder' component={Confirmorder} />

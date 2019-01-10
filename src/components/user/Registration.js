@@ -2,6 +2,38 @@ import React from 'react';
 import './Register.css';
 
 class Registration extends React.Component{
+    state = {
+        errmsg:''
+    }
+    handleSubmit(e){
+        e.preventDefault();
+        var data = e.target;
+        if(data.pwd.value === data.repeatpwd.value){
+            fetch('http://localhost:5000/user/register',{
+                method:'POST',
+                body : JSON.stringify({username:data.username.value, email:data.email.value,password:data.pwd.value}),
+                headers: {
+                    "Content-Type": "application/json",
+                    // "Content-Type": "application/x-www-form-urlencoded",
+                }
+            })
+            .then(res =>{
+                if(res.status === 200){
+                    return res.json();
+                }else{
+                    throw "User already exists!!"
+                }
+            })
+            .then(result => {
+                alert(result.message);
+                this.props.history.push('/login');
+            })
+            .catch(e => {alert(e);})
+        }else{
+            this.setState({errmsg:"Password Mismatch!!!"})
+        }
+    }
+
     render(){
         return(
             <React.Fragment>
@@ -12,19 +44,20 @@ class Registration extends React.Component{
                         
                             </div>
                         <div class="col-lg-3 reg-form">
-                            <form>
+                            <form onSubmit={this.handleSubmit.bind(this)}>
                                 <h1 class="text-center">Register</h1>
                                 <label for="email"><b>Username</b></label>
-                                <input type="text" className="c_reg_input" placeholder="Enter Username" name="email" required/>
+                                <input type="text" className="c_reg_input" placeholder="Enter Username" minLength="3" maxLength="20" name="username" required/>
 
                                 <label for="email"><b>Email or Phone</b></label>
-                                <input type="text" className="c_reg_input" placeholder="Enter Email or phone" name="email" required/>
+                                <input type="text" className="c_reg_input" placeholder="Enter Email or phone" maxLength="25" name="email" required/>
 
                                 <label for="psw"><b>Password</b></label>
-                                <input type="password" className="c_reg_input" placeholder="Enter Password" name="psw" required/>
+                                <input type="password" className="c_reg_input"  placeholder="Enter Password" name="pwd" required/>
 
                                 <label for="psw-repeat"><b>Repeat Password</b></label>
-                                <input type="password" className="c_reg_input" placeholder="Repeat Password" name="psw-repeat" required/>
+                                <input type="password" className="c_reg_input" placeholder="Repeat Password" name="repeatpwd" required/>
+                                <p>{this.state.errmsg}</p>
                                 <hr className="c_hr"/>
                                 <p class="text-center">By creating an account you agree to our <a href="#">Terms & Privacy</a>.</p>
 

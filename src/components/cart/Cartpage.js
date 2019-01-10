@@ -104,11 +104,20 @@ class Cartpage extends React.Component{
     }
     orderItem(){
         //if AUTH is empty => login else => confirmorder
-        var loggedin = true;
+        var loggedin = this.CheckAuth();
         if(loggedin) {
             this.props.history.push('/confirmOrder');
         }else{
-            this.props.history.push('/login');
+            this.props.history.push('/login/co');
+        }
+    }
+    CheckAuth(){
+        var token = Cookies.get("_token");
+        var session = Cookies.get("sessionID");
+        if(token !== undefined&&session !== undefined){
+            return true;
+        }else{
+            return false;
         }
     }
     render(){
