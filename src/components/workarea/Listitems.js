@@ -15,6 +15,12 @@ class Listitems extends React.Component{
     }
     componentWillReceiveProps(){
         console.log("changed");
+        setTimeout(() => {
+            this.setState({
+                products:this.props.productlist
+            })
+        }, 100);
+        
     }
 
 

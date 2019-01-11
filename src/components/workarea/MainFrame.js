@@ -13,14 +13,19 @@ class Mainframe extends React.Component{
     state = {
         products:[],
         cart:[],
-        isFetching : false
+        isFetching : false,
+        category: 'all'
     }
     componentDidMount(){
-        this.fetchData();
+        this.fetchData(this.state.category);
     }
 
-    fetchData(){
-        fetch('http://localhost:5000/product/getall')
+    componentWillReceiveProps(){
+        
+    }
+
+    fetchData(cate){
+        fetch('http://localhost:5000/product/getall/'+ cate)
         .then(res => res.json())
         .then(result => {
             this.setState({
@@ -75,6 +80,11 @@ class Mainframe extends React.Component{
                 console.log(e);
             })
     }
+
+    Choosecategory(cate){
+        this.fetchData(cate);
+    }
+
     render(){
         
         return(
@@ -85,7 +95,7 @@ class Mainframe extends React.Component{
                 <Carosel />
                 <div className="container-fluid show-products">
                     <div className="col-lg-2 col-md-2">
-                        <Categorylist />
+                        <Categorylist selectcat={this.Choosecategory.bind(this)}/>
                     </div>
                     <div className="col-lg-8 col-md-8">
                     {

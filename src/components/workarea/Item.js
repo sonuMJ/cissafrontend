@@ -13,7 +13,9 @@ class Item extends React.Component{
     }
 
     componentWillReceiveProps(){
-        
+        this.setState({
+            item : this.props.item
+        })
     }
 
     cart(product_ID, product){

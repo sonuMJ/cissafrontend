@@ -74,10 +74,20 @@ class Confirmorder extends React.Component{
                 "Content-Type": "application/json",
                 // "Content-Type": "application/x-www-form-urlencoded",
                 "_cid": cartId,
-                "token": token
+                "token": token,
+                "sessionid":session
             }
             })
-            .then(res => res.json())
+            .then(res => {
+                if(res.status === 200){
+                    return res.json();
+                }else{
+                    alert("You are not authorised to confirm orders. Please login again!!!");
+                    Cookies.remove('_token', { path: '' });
+                    Cookies.remove('sessionID', { path: '' });
+                    this.props.history.push('/login');
+                }
+            })
             .then(result => {
                 alert(result.message);
                 this.setState({
