@@ -10,11 +10,11 @@ class Cartitem extends React.Component{
     removeItem(product_id){
         this.props.remove(this,product_id);
     }
-    increment(product_id){
-        this.props.inc(this,product_id);
+    increment(product_id,qty){
+        this.props.inc(this,product_id,qty);
     }
-    decrement(product_id){
-        this.props.dec(this,product_id);
+    decrement(product_id,qty){
+        this.props.dec(this,product_id,qty);
     }
     render(){
         var item = this.props.cartdata
@@ -32,9 +32,9 @@ class Cartitem extends React.Component{
                 </td>
                 <td className="cart-table-qty">
                     <span className="text-center">
-                        <button className="c_round_btn" onClick={this.decrement.bind(this,item.productId)}>-</button>
+                        <button className="c_round_btn" onClick={this.decrement.bind(this,item.productId, item.quantity)}>-</button>
                         <input type="number" value={item.quantity} readOnly style={{width:"40px",textAlign: "right"}} name="qty"/>
-                        <button className="c_round_btn" onClick={this.increment.bind(this,item.productId)}>+</button>
+                        <button className="c_round_btn" onClick={this.increment.bind(this,item.productId, item.quantity)}>+</button>
                     </span>
                 </td>
                 <td className="cart-table-total"><p><span style={{fontSize:'16px',fontWeight:'500'}}>&#8377;</span><span style={{fontSize:'26px',fontWeight:'500'}}>{item.total}</span></p></td>

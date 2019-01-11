@@ -65,23 +65,29 @@ class Confirmorder extends React.Component{
     }
     submitOrders(){
         var cartId = Cookies.get('_cid');
-        fetch('http://localhost:5000/product/orderproducts',{
+        var token = Cookies.get('_token');
+        var session = Cookies.get('sessionID');
+        if(cartId != undefined && token != undefined && session != undefined){
+            fetch('http://localhost:5000/product/orderproducts',{
             method:'POST',
             headers: {
                 "Content-Type": "application/json",
                 // "Content-Type": "application/x-www-form-urlencoded",
-                "_cid": cartId
+                "_cid": cartId,
+                "token": token
             }
-        })
-        .then(res => res.json())
-        .then(result => {
-            alert(result.message);
-            this.setState({
-                success:true
             })
-            Cookies.remove('_cid', { path: '' });
-        })
-        .catch(e => console.log(e));
+            .then(res => res.json())
+            .then(result => {
+                alert(result.message);
+                this.setState({
+                    success:true
+                })
+                Cookies.remove('_cid', { path: '' });
+            })
+            .catch(e => console.log(e));
+        }
+        
     }
     render(){
         return(

@@ -12,13 +12,21 @@ class Mybill extends React.Component{
     }
 
     componentDidMount(){
+        var cacheId = Cookies.get('_cid');
+        if(cacheId == null){
+            this.setCookie();
+        }
         setTimeout(() => {
             var KEY = Cookies.get("_cid");
             this.fetchCartItems(KEY);
-        }, 100);
+        }, 500);
         setTimeout(() => {
             console.log(this.state.cartItem);
         }, 200);
+    }
+    setCookie(){
+        var ran = (Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)+Math.random().toString(36).substring(2, 15)).toUpperCase();
+        Cookies.set('_cid', ran, { expires: 7 });
     }
 
     fetchCartItems(key){
@@ -32,6 +40,8 @@ class Mybill extends React.Component{
             })
             .then(res => res.json())
             .then(result => {
+                console.log(result);
+                
                 this.setState({
                     cartItem:result.result
                 })
@@ -55,7 +65,6 @@ class Mybill extends React.Component{
             })
             .then(res => res.json())
             .then(result => {
-                alert(result.message);
                 this.fetchCartItems(key)
             })
             .catch(e => {
@@ -74,7 +83,6 @@ class Mybill extends React.Component{
             })
             .then(res => res.json())
             .then(result => {
-                alert(result.message);
                 this.fetchCartItems(key);
             })
             .catch(e => {
@@ -114,18 +122,45 @@ class Mybill extends React.Component{
         
     }
 
-    INC_qty(context,product_id){
-        var KEY = Cookies.get("_cid");
-        this.changeQuantity(KEY,product_id,"INC");
+    INC_qty(context,product_id,qty){
+        if(qty <= 9){
+            var KEY = Cookies.get("_cid");
+            this.changeQuantity(KEY,product_id,"INC");
+        }
+        
     }
-    DEC_qty(context,product_id){
-        var KEY = Cookies.get("_cid");
-        this.changeQuantity(KEY,product_id,"DEC");
+    DEC_qty(context,product_id,qty){
+        if(qty > 1){
+            var KEY = Cookies.get("_cid");
+            this.changeQuantity(KEY,product_id,"DEC");
+        }
     }
     REMOVE_item(context,product_id){
         var KEY = Cookies.get("_cid");
         console.log(product_id);
         this.deleteCartItems(KEY,product_id);
+    }
+    clearCart(){
+        var key = Cookies.get("_cid");
+        fetch('http://localhost:5000/api/cart/_cdel',{
+            method : 'DELETE',
+                headers: {
+                    "Content-Type": "application/json",
+                    // "Content-Type": "application/x-www-form-urlencoded",
+                    "_cid":key
+                }
+            })
+            .then(res => {
+                if(res.status == 200){
+                    console.log("deleted");
+                    this.fetchCartItems();
+                }else{
+                    alert("Something went wrong!!")
+                }
+            })
+            .catch(e => {
+                console.log(e);
+            })
     }
     
     render(){
@@ -142,7 +177,7 @@ class Mybill extends React.Component{
                         this.state.cartItem != null ? <TotalTemp totalprice={this.state.total}/> : ''
                     }
                     <span style={{marginTop:"20px"}}>
-                        <button className="btn c_bill_btn">Clear Cart</button>
+                        <button className="btn c_bill_btn" onClick={this.clearCart.bind(this)}>Clear Cart</button>
                         <button className="btn c_bill_btn" style={{backgroundColor:"#ffdd00"}}><Link to={"/cart"} style={{textDecoration:'none'}}>CHECK OUT</Link></button>
                     </span>
                 </div>

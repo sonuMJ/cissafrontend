@@ -45,7 +45,6 @@ class Cartpage extends React.Component{
             })
             .then(res => res.json())
             .then(result => {
-                alert(result.message);
                 this.fetchCartItems(key)
             })
             .catch(e => {
@@ -64,7 +63,6 @@ class Cartpage extends React.Component{
             })
             .then(res => res.json())
             .then(result => {
-                alert(result.message);
                 this.fetchCartItems(key);
             })
             .catch(e => {
@@ -94,13 +92,17 @@ class Cartpage extends React.Component{
         var Key = Cookies.get("_cid");
         this.deleteCartItems(Key,product_id)
     }
-    INC_QTY(context,product_id){
-        var Key = Cookies.get("_cid");
-        this.changeQuantity(Key,product_id,"INC");
+    INC_QTY(context,product_id, qty){
+        if(qty <= 9){
+            var Key = Cookies.get("_cid");
+            this.changeQuantity(Key,product_id,"INC");
+        }
     }
-    DEC_QTY(context, product_id){
-        var Key = Cookies.get("_cid");
-        this.changeQuantity(Key,product_id,"DEC");
+    DEC_QTY(context, product_id, qty){
+        if(qty > 1){
+            var Key = Cookies.get("_cid");
+            this.changeQuantity(Key,product_id,"DEC");
+        }
     }
     orderItem(){
         //if AUTH is empty => login else => confirmorder
