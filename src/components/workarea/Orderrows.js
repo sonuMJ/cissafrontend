@@ -16,6 +16,15 @@ class Orderrows extends React.Component{
         }, 100);
     }
 
+    componentWillReceiveProps(){
+        console.log(this.props.orderids);
+        this.fetchOrderDetails(this.props.orderids);
+        setTimeout(() => {
+            console.log(this.state.productdata);
+            
+        }, 100);
+    }
+
     fetchOrderDetails(order_id){
         fetch("http://localhost:5000/api/order/productsbyorderid",{
             method:"POST",

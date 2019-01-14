@@ -20,6 +20,15 @@ class Yourorders extends React.Component{
             this.ShowOrderDetails();
         }
     }
+    componentWillReceiveProps(){
+        var logged = this.CheckAuth();
+        if(logged){
+            this.setState({
+                loggedIn:true
+            })
+            this.ShowOrderDetails();
+        }
+    }
     ShowOrderDetails(){
         var token = Cookies.get("_token");
         var session = Cookies.get("sessionID");
@@ -55,6 +64,30 @@ class Yourorders extends React.Component{
             return false;
         }
     }
+    CancelOrder(order_id){
+        if(order_id != ""){
+            var token = Cookies.get("_token");
+            var session = Cookies.get("sessionID");
+            console.log(order_id);
+            
+            fetch("http://localhost:5000/api/order/cancelorder",{
+                method:"POST",
+                body:JSON.stringify({orderid:order_id}),
+                headers:{
+                    "Content-Type": "application/json",
+                    "token":token,
+                    "sessionid":session
+                }
+            })
+            .then(res => res.json())
+            .then(result => {
+                this.ShowOrderDetails();
+                alert(result.message);
+                
+            })
+        }
+        
+    }
 
     render(){
         return(
@@ -65,7 +98,7 @@ class Yourorders extends React.Component{
                 <div className="container">
                 <h1>My Orders</h1>
                     {
-                        this.state.loggedIn&&this.state.orderdata != "" ? <Order orderdata={this.state.orderdata}/> : <h3 className="text-center">No orders Found!!</h3>
+                        this.state.loggedIn&&this.state.orderdata != "" ? <Order orderdata={this.state.orderdata} cancelclick={this.CancelOrder.bind(this)}/> : <h3 className="text-center">No orders Found!!</h3>
                     }
                 </div>
             </React.Fragment>

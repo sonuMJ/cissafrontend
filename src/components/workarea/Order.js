@@ -18,18 +18,28 @@ class Order extends React.Component{
     }
 
     componentWillReceiveProps(){
-
+        
+        setTimeout(() => {
+            this.setState({
+                orderdetail:this.props.orderdata,
+                loaded:true
+            })
+        }, 100);
+    }
+    Cancel(a){
+        this.props.cancelclick(a);
     }
 
 
     render(){
+        console.log(this.state.orderdetail)
         return(
             <React.Fragment>
                 
                 {
                     this.state.loaded ?
                     this.state.orderdetail.map(i => {
-                        return(<OrderTemplate itemdetail={i} key={i}/>)
+                        return(<OrderTemplate itemdetail={i} key={i} click={this.Cancel.bind(this)}/>)
                     })
                     :
                     <p>invalid</p>
@@ -65,7 +75,23 @@ const OrderTemplate = (data) =>{
                         }
                     </tbody>
                     </table>
-                    <p>Status: {data.itemdetail.status}</p>
+                    {
+                        data.itemdetail.status == 'delivered' ? <img src="./img/de.png" style={{transform: 'rotate(-20deg)',height: '50px',opacity: '0.8'}}/> :''
+                    }
+                    {
+                        data.itemdetail.status == 'cancelled' ? <img src="./img/cancel.png" style={{transform: 'rotate(-20deg)',height: '38px',opacity: '0.8'}}/> :''
+                    }
+                    <p>Status: {data.itemdetail.status}{
+                        data.itemdetail.status == 'delivered' ? <span><button className="btn" style={{float:'right',backgroundColor: '#12cc1a',color: 'white',fontWeight: '600'}}>Re order</button></span>: ''
+                    }
+                    {
+                         data.itemdetail.status == 'cancelled' ? <span><button className="btn" style={{float:'right',backgroundColor: '#12cc1a',color: 'white',fontWeight: '600'}}>Re order</button></span> :''
+                    }
+                    {
+                        data.itemdetail.status == 'not delivered' ? <span><button className="btn" style={{float:'right',backgroundColor: '#ffc107',color: 'white',fontWeight: '600'}} onClick={data.click.bind(this,data.itemdetail.orderid)}>Cancel Order</button></span> :''
+                    }
+                    </p>
+                    
                 </div>
         </div>
     )
