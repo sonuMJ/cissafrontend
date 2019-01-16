@@ -8,19 +8,19 @@ class Orderrows extends React.Component{
     }
 
     componentDidMount(){
-        console.log(this.props.orderids);
+        //console.log(this.props.orderids);
         this.fetchOrderDetails(this.props.orderids);
         setTimeout(() => {
-            console.log(this.state.productdata);
+            //console.log(this.state.productdata);
             
         }, 100);
     }
 
     componentWillReceiveProps(){
-        console.log(this.props.orderids);
+        //console.log(this.props.orderids);
         this.fetchOrderDetails(this.props.orderids);
         setTimeout(() => {
-            console.log(this.state.productdata);
+            //console.log(this.state.productdata);
             
         }, 100);
     }
@@ -60,7 +60,7 @@ class Orderrows extends React.Component{
 }
 
 const LoadProduct = (data) =>{
-    console.log(data);
+    //console.log(data);
     
     return(
         

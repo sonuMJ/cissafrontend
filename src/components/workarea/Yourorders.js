@@ -5,6 +5,7 @@ import Topnav from '../headers/Topnav';
 import "./product.css";
 import Cookies from 'js-cookie';
 import Order from './Order';
+import Logo from '../headers/Logo';
 
 class Yourorders extends React.Component{
     state = {
@@ -54,6 +55,9 @@ class Yourorders extends React.Component{
             })
         })
     }
+    RefreshOrder(){
+        this.ShowOrderDetails();
+    }
 
     CheckAuth(){
         var token = Cookies.get("_token");
@@ -93,12 +97,12 @@ class Yourorders extends React.Component{
         return(
             <React.Fragment>
                 <Contactinfo />
-                <Searchbar />
+                <Logo />
                 <Topnav />
                 <div className="container">
                 <h1>My Orders</h1>
                     {
-                        this.state.loggedIn&&this.state.orderdata != "" ? <Order orderdata={this.state.orderdata} cancelclick={this.CancelOrder.bind(this)}/> : <h3 className="text-center">No orders Found!!</h3>
+                        this.state.loggedIn&&this.state.orderdata != "" ? <Order refresh={this.RefreshOrder.bind(this)} orderdata={this.state.orderdata} cancelclick={this.CancelOrder.bind(this)}/> : <h3 className="text-center">No orders Found!!</h3>
                     }
                 </div>
             </React.Fragment>

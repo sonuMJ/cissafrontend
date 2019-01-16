@@ -82,7 +82,7 @@ const Logged = (l) =>{
 const NotLogged = () =>{
     return (
         <React.Fragment>
-            <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+            <li><Link to={'/register'}><span class="glyphicon glyphicon-user"></span> Sign Up</Link></li>
             <li><Link to={'/login'}><span class="glyphicon glyphicon-log-in"></span> Login</Link></li>
         </React.Fragment>
         

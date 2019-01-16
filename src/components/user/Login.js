@@ -89,7 +89,7 @@ class Login extends React.Component{
             if(res.status === 200){
                 return res.json()
             }else{
-                throw "User does not exists!!"
+                throw "User does not exists! If you already have an account with us please check your mail !"
             }
         })
         .then(result => {

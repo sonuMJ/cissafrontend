@@ -26,7 +26,7 @@ class Registration extends React.Component{
             })
             .then(result => {
                 alert(result.message);
-                this.props.history.push('/login');
+                this.props.history.push('/');
             })
             .catch(e => {alert(e);})
         }else{

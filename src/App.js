@@ -8,6 +8,7 @@ import Confirmorder from './components/cart/Confirmorder';
 import Yourorders from './components/workarea/Yourorders';
 import Login from './components/user/Login';
 import Registration from './components/user/Registration';
+import Verifyaccount from './components/user/Verifyaccount';
 
 
 
@@ -34,6 +35,7 @@ class App extends Component {
           <Route path="/login/:path" exact component={Login}/>
           <Route path="/login" exact component={Login}/>
           <Route path="/register" exact component={Registration}/>
+          <Route path="/verifyaccount/:verif_code" exact component={Verifyaccount}/>
           <PrivateRoute path='/confirmorder' component={Confirmorder} />
           <PrivateRoute path='/yourorders' component={Yourorders} />
         </Switch>
