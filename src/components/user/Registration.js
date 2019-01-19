@@ -1,5 +1,6 @@
 import React from 'react';
 import './Register.css';
+import {Link} from 'react-router-dom';
 
 class Registration extends React.Component{
     state = {
@@ -49,8 +50,8 @@ class Registration extends React.Component{
                                 <label for="email"><b>Username</b></label>
                                 <input type="text" className="c_reg_input" placeholder="Enter Username" minLength="3" maxLength="20" name="username" required/>
 
-                                <label for="email"><b>Email or Phone</b></label>
-                                <input type="text" className="c_reg_input" placeholder="Enter Email or phone" maxLength="25" name="email" required/>
+                                <label for="email"><b>Email</b></label>
+                                <input type="email" className="c_reg_input" placeholder="Enter Email address" maxLength="25" name="email" required/>
 
                                 <label for="psw"><b>Password</b></label>
                                 <input type="password" className="c_reg_input"  placeholder="Enter Password" name="pwd" required/>
@@ -64,7 +65,7 @@ class Registration extends React.Component{
                                 <button type="submit" class="registerbtn">Register</button>
 
                                 <div class="signin">
-                                    <p>Already have an account? <a href="#">Sign in</a>.</p>
+                                    <p>Already have an account? <Link to={'/login'}>Sign in</Link>.</p>
                                 </div>
                             </form>
                         </div>

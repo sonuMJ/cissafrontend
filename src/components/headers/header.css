@@ -31,6 +31,9 @@
 .c_nav_items > li > a:hover{
     background-color: #60b51d !important;
 }
+.c_nav_items > li > a:focus{
+    background-color: #60b51d !important;
+}
 .home_slide{
     padding-left: 0px !important;
     padding-right: 0px !important;

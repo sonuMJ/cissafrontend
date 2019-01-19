@@ -9,7 +9,8 @@ import Topnav from '../headers/Topnav';
 class Cartpage extends React.Component{
     state = {
         cart:[],
-        total:0
+        total:0,
+        confirmplace:true
     }
     fetchCartItems(key){
         fetch('http://localhost:5000/api/cart/showCart',{
@@ -73,7 +74,9 @@ class Cartpage extends React.Component{
         var Key = Cookies.get("_cid");
         this.fetchCartItems(Key);
         setTimeout(() => {
-            console.log(this.state.cart);
+            this.setState({
+                confirmplace:true
+            })
         }, 100);
     }
     Total(){
@@ -122,11 +125,32 @@ class Cartpage extends React.Component{
             return false;
         }
     }
+
+    Agreement(e){
+        console.log(e.target.checked);
+    }
+
+    confirmlocaion(){
+        this.setState({
+            confirmplace: !this.state.confirmplace
+        })
+    }
+
+    cancelPurchase(){
+        this.props.history.push('/');
+    }
+
     render(){
         var C = this.state.cart;
         
         return(
             <React.Fragment>
+                {
+                    this.state.confirmplace ?
+                    <Confirmlocation confirm={this.confirmlocaion.bind(this)} cancel={this.cancelPurchase.bind(this)}/>
+                    :
+                    null
+                }
                 <Contactinfo />
                 <Searchbar />
                 <Topnav />
@@ -147,6 +171,12 @@ class Cartpage extends React.Component{
                             <div className="col-lg-8 text-right" style={{marginTop:'16px'}}>Total Price</div>
                             <div className="col-lg-4 text-center">&#8377;<span className="cart-table-totalprice">{this.state.total}</span></div>
                         </div>
+                        {/* <div class="alert alert-danger" style={{color:'#000',marginTop:'30px'}}>
+                            <strong>Warning!</strong> You should read this message
+                            <div class="checkbox">
+                                <label><input type="checkbox" name="agreement" onClick={this.Agreement.bind(this)}/>Option 1</label>
+                            </div>
+                        </div> */}
                         {/* <div style={{marginTop:'50px',float:'right'}}>
                             <Link to={'/confirmorder'} className="cart-confirm-btn">Confirm Order</Link>
                         </div> */}
@@ -173,6 +203,28 @@ const ShowCart = (cart) =>{
             }
              
         </React.Fragment>
+    )
+}
+
+const Confirmlocation = (p) => {
+    console.log(p);
+    
+    return(
+        <div className="popup">
+            <div className="popup-inner">
+                <div style={{padding: '4px 22px',borderBottom:' 5px solid #4e9cff',textAlign:'center'}}>
+                    <h2 style={{color:'#4e9cff'}}>Confirm Location</h2>
+                </div>
+                <div style={{padding:' 14px 22px',fontSize: '18px',textAlign:'center'}}>
+                    <p>Delivery only available in trivandrum</p>
+                </div>
+                
+                <div style={{textAlign:'center',paddingTop: '30px'}}>
+                    <button className="btn btn-popup" onClick={p.confirm.bind(this)}>Continue</button>
+                    <h4 className="text-center cart-popup-cancel" onClick={p.cancel.bind(this)}>Cancel</h4>
+                </div>
+            </div>
+        </div>
     )
 }
 

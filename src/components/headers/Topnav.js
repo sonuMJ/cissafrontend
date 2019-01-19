@@ -4,15 +4,41 @@ import { Link,Redirect } from 'react-router-dom';
 
 class Topnav extends React.Component{
     state = {
-        authenticated:false
+        authenticated:false,
+        username:'User'
     }
     
     componentDidMount(){
         console.log("did mount from topnav");
         this.CheckAuth();
+        setTimeout(() => {
+            this.getUsername();
+        }, 100);
     }
     componentWillReceiveProps(){
         this.CheckAuth();
+    }
+
+    getUsername(){
+        if(this.state.authenticated){
+            var token = Cookies.get('_token');
+            console.log("get user name");
+            fetch('http://localhost:5000/user/getusernamebytoken',{
+                headers:{
+                    "token" : token
+                }
+            })
+            .then(res => {
+                if(res.status == 200){
+                    return res.json();
+                }
+            })
+            .then(result => {
+               this.setState({
+                   username:result.name
+               })
+            })
+        }
     }
 
     CheckAuth(){
@@ -56,7 +82,7 @@ class Topnav extends React.Component{
                         </ul>
                         <ul class="nav navbar-nav navbar-right c_nav_items">
                             {
-                                this.state.authenticated ? <Logged cli={this.Logout.bind(this)}/> : <NotLogged />
+                                this.state.authenticated ? <Logged username={this.state.username} cli={this.Logout.bind(this)}/> : <NotLogged />
                             }
                         </ul>
                         </div>
@@ -70,9 +96,9 @@ class Topnav extends React.Component{
 const Logged = (l) =>{
     return (
         <li class="dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#"><img src={'./img/user_head.png'}/>Account <span class="caret"></span></a>
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#"><img src={'../img/user_head.png'}/><span>{l.username}</span> <span class="caret"></span></a>
             <ul class="dropdown-menu">
-                <li><a href="#">Settings</a></li>
+                <li><Link to={'/settings'}>Settings</Link></li>
                 <li><a href="#" onClick={l.cli.bind(this)}>Logout</a></li>
             </ul>
         </li>

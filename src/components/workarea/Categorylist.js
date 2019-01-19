@@ -36,7 +36,7 @@ class Categorylist extends React.Component{
 
             <React.Fragment>
                 {
-                    this.state.categorylist == "" ? <p>something went wrong</p> : <div className="list-group"><a href="#" className="list-group-item" onClick={this.ChooseCategory.bind(this,"all")} style={{textTransform:'capitalize'}}>all</a><Showcategory sel={this.ChooseCategory.bind(this)} cate={this.state.categorylist}/></div>
+                    this.state.categorylist == "" ? <p>something went wrong</p> : <div className="list-group"><a href="#" className="list-group-item" onClick={this.ChooseCategory.bind(this,1)} style={{textTransform:'capitalize'}}>all</a><Showcategory sel={this.ChooseCategory.bind(this)} cate={this.state.categorylist}/></div>
                 }
             </React.Fragment>
         )
@@ -44,9 +44,10 @@ class Categorylist extends React.Component{
 }
 
 const Showcategory = (list) => {
+    
     return(
         list.cate.map(l =>{
-            return(<a href="#" onClick={list.sel.bind(this,l.name)} className="list-group-item" style={{textTransform:'capitalize'}}>{l.name}</a>)
+            return(<a href="#" onClick={list.sel.bind(this,l.id)} className="list-group-item" style={{textTransform:'capitalize'}}>{l.name}</a>)
         })
     )
 }

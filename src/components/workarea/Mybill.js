@@ -165,8 +165,8 @@ class Mybill extends React.Component{
     
     render(){
         return(
-            <div className="panel panel-info">
-                <div className="panel-heading">MY BILL</div>
+            <div className="panel panel-info" style={{borderColor: '#ffdd00'}}>
+                <div className="panel-heading" style={{color: '#000',backgroundColor: '#ffdd00',borderColor: '#ffdd00'}}><span style={{fontSize: '22px',fontWeight: '700'}}>Shopping Bag</span></div>
                 <div className="">
                     <div className="c_cart_items">
                     {

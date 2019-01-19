@@ -9,6 +9,9 @@ import Carosel from '../headers/Carosel';
 import Searchbar from '../headers/Searchbar';
 import Topnav from '../headers/Topnav';
 import Pagination from '../headers/Pagination';
+import Footercontent from '../footers/Footercontent';
+import Footer from '../footers/Footer';
+import Popup from './Popup';
 
 class Mainframe extends React.Component{
     state = {
@@ -16,9 +19,10 @@ class Mainframe extends React.Component{
         cart:[],
         isFetching : false,
         searching:false,
-        category: 'all',
+        category: 0,
         currentPage: 1,
-        todosPerPage: 3
+        todosPerPage: 3,
+        popup:false
         
     }
     componentDidMount(){
@@ -155,6 +159,9 @@ class Mainframe extends React.Component{
         
         return(
             <React.Fragment>
+                {
+                    this.state.popup ? <Popup /> : ''
+                }
                 <Contactinfo />
                 <Searchbar search={this.handleSearchMain.bind(this)}/>
                 <Topnav />
@@ -178,6 +185,8 @@ class Mainframe extends React.Component{
                         {renderPageNumbers}
                     </ul>
                 </div>
+                <Footercontent />
+                <Footer />
             </React.Fragment>
             
         )

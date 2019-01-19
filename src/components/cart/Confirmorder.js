@@ -5,7 +5,8 @@ import { Link } from 'react-router-dom';
 class Confirmorder extends React.Component{
     state = {
         success:false,
-        emptyData:true
+        emptyData:true,
+        popup:false
     }
     componentDidMount(){
         var logged = this.CheckAuth();
@@ -89,19 +90,34 @@ class Confirmorder extends React.Component{
                 }
             })
             .then(result => {
-                alert(result.message);
-                this.setState({
-                    success:true
-                })
-                Cookies.remove('_cid', { path: '' });
+                if(result.statuscode == 200){
+                    this.setState({
+                        success:true
+                    })
+                    Cookies.remove('_cid', { path: '' });
+                }else{
+                    this.setState({
+                        popup:true
+                    })
+                }
             })
             .catch(e => console.log(e));
         }
         
     }
+
+    cancelFailedPurchase(){
+        this.setState({
+            popup: !this.state.popup
+        })
+        this.props.history.push('/');
+    }
     render(){
         return(
             <React.Fragment>
+                {
+                    this.state.popup ? <FailedPopup cancel={this.cancelFailedPurchase.bind(this)} /> : null
+                }
                 {
                     !this.state.success ? <Processing /> : <ProcessSuccess />
                 }
@@ -133,6 +149,25 @@ const ProcessSuccess = () => {
                 </div>
             </div>
         </div>
+    )
+}
+
+const FailedPopup = (p) => {
+    return(
+        <div className="popup">
+        <div className="popup-inner">
+            <div style={{padding: '4px 22px',borderBottom:' 5px solid #4e9cff',textAlign:'center'}}>
+                <h2 style={{color:'#4e9cff'}}>Something went wrong!!</h2>
+            </div>
+            <div style={{padding:' 14px 22px',fontSize: '18px',textAlign:'center'}}>
+                <p>Please try agin later</p>
+            </div>
+            
+            <div style={{textAlign:'center',paddingTop: '30px'}}>
+                <button className="btn btn-popup" onClick={p.cancel.bind(this)}>OK</button>
+            </div>
+        </div>
+    </div>
     )
 }
 export default Confirmorder;
