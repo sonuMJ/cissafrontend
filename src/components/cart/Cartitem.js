@@ -21,7 +21,7 @@ class Cartitem extends React.Component{
         return(
             <tr className="cart-table-tr">
                 <td className="cart-table-img">
-                    <img src={item.productData[0].img_url} className="img-responsive"/>
+                    <img src={item.productData[0].img_url} className="img-responsive" alt="cart_item_image"/>
                 </td>
                 <td className="cart-table-item">
                     <span style={{fontSize:'22px',fontWeight:'600'}}>{item.productData[0].name}</span>(<span style={{fontSize:'16px'}}>{item.productData[0].translated}</span>),<span>{item.productData[0].quantity}</span>

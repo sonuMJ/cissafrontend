@@ -10,7 +10,7 @@ class Registration extends React.Component{
         e.preventDefault();
         var data = e.target;
         if(data.pwd.value === data.repeatpwd.value){
-            fetch('http://localhost:5000/user/register',{
+            fetch('/api/user/register',{
                 method:'POST',
                 body : JSON.stringify({username:data.username.value, email:data.email.value,password:data.pwd.value}),
                 headers: {

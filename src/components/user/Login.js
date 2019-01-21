@@ -77,7 +77,7 @@ class Login extends React.Component{
 
     handleLogin(email,password){
         var status;
-        fetch('http://localhost:5000/user/login',{
+        fetch('/api/user/login',{
             method:'POST',
             body : JSON.stringify({email:email,password:password}),
             headers: {

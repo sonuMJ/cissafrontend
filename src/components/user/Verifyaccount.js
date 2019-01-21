@@ -19,7 +19,7 @@ class Verifyaccount extends React.Component{
     }
 
     EmailVerification(v_code){
-        fetch('http://localhost:5000/user/verifyaccount',{
+        fetch('/api/user/verifyaccount',{
             method:'POST',
             body : JSON.stringify({verify_code:v_code}),
             headers: {

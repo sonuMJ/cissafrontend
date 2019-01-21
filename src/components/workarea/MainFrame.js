@@ -8,7 +8,6 @@ import Contactinfo from '../headers/Contactinfo';
 import Carosel from '../headers/Carosel';
 import Searchbar from '../headers/Searchbar';
 import Topnav from '../headers/Topnav';
-import Pagination from '../headers/Pagination';
 import Footercontent from '../footers/Footercontent';
 import Footer from '../footers/Footer';
 import Popup from './Popup';
@@ -25,7 +24,12 @@ class Mainframe extends React.Component{
         popup:false
         
     }
+    componentWillUpdate(){
+        console.log("will mount calledd");
+    }
     componentDidMount(){
+        console.log("did mount calledd");
+        
         this.fetchData(this.state.category);
         this.handleClick = this.handleClick.bind(this);
     }
@@ -42,9 +46,10 @@ class Mainframe extends React.Component{
 
     fetchData(cate){
         this.setState({
-            isFetching: true
+            isFetching: true,
+            currentPage:1
         })
-        fetch('http://localhost:5000/product/getall/'+ cate)
+        fetch('/api/product/getall/'+ cate)
         .then(res => res.json())
         .then(result => {
             this.setState({
@@ -57,7 +62,7 @@ class Mainframe extends React.Component{
 
     addToCart(product_ID, product_item, qty){
         var Key = Cookies.get("_cid");
-        fetch('http://localhost:5000/api/cart/addCart',{
+        fetch('/api/cart/addCart',{
             method:'POST',
             body : JSON.stringify({product_id:product_ID}),
             headers: {
@@ -68,7 +73,7 @@ class Mainframe extends React.Component{
         })
         .then(res => res.json())
         .then(result => {
-            alert(result.message);
+            //alert(result.message);
             setTimeout(() => {
                 this.fetchCartItems(Key)
             }, 100);
@@ -82,7 +87,7 @@ class Mainframe extends React.Component{
 
     }   
     fetchCartItems(key){
-        fetch('http://localhost:5000/api/cart/showCart',{
+        fetch('/api/cart/showCart',{
             method : 'POST',
                 headers: {
                     "Content-Type": "application/json",
@@ -107,15 +112,15 @@ class Mainframe extends React.Component{
 
     handleSearchMain(txt){
         
-        if(txt != ""){
+        if(txt !== ""){
             this.setState({
                 isFetching :false,
                 searching:true
             })
             console.log(txt);
-            fetch('http://localhost:5000/product/search_p/'+txt)
+            fetch('/api/product/search_p/'+txt)
             .then(res => {
-                if(res.status == 200){
+                if(res.status === 200){
                     return res.json();
                 }else{
                     
@@ -152,7 +157,7 @@ class Mainframe extends React.Component{
 
         const renderPageNumbers = pageNumbers.map(number => {
             return (
-                <li className={(this.state.currentPage === number ? 'active ' : '') + 'controls'}><a key={number} id={number} onClick={this.handleClick}>{number}</a></li>
+                <li className={(this.state.currentPage === number ? 'active ' : '') + 'controls'} key={number}><span  key={number} id={number} onClick={this.handleClick}>{number}</span></li>
             );
         });
         
@@ -172,7 +177,7 @@ class Mainframe extends React.Component{
                     </div>
                     <div className="col-lg-8 col-md-8">
                     {
-                        this.state.isFetching ? <Listitems productlist={currentTodos} addtocart={this.addToCart.bind(this)}/> : <img src="../img/product_loader.gif"/>
+                        this.state.isFetching ? <Listitems productlist={currentTodos} addtocart={this.addToCart.bind(this)}/> : <div style={{textAlign:'center',marginTop:'200px'}}><img src="../img/product_loader.gif" alt="loading_icon"/></div>
                     }
                     
                     </div>
@@ -185,8 +190,10 @@ class Mainframe extends React.Component{
                         {renderPageNumbers}
                     </ul>
                 </div>
+                
                 <Footercontent />
                 <Footer />
+                
             </React.Fragment>
             
         )

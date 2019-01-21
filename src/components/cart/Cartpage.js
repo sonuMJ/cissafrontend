@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './cart.css';
 import Cartitem from './Cartitem';
 import Cookies from 'js-cookie';
@@ -13,7 +13,7 @@ class Cartpage extends React.Component{
         confirmplace:true
     }
     fetchCartItems(key){
-        fetch('http://localhost:5000/api/cart/showCart',{
+        fetch('/api/cart/showCart',{
             method : 'POST',
                 headers: {
                     "Content-Type": "application/json",
@@ -35,7 +35,7 @@ class Cartpage extends React.Component{
             })
     }
     deleteCartItems(key,productId){
-        fetch('http://localhost:5000/api/cart/cartItemRemove',{
+        fetch('/api/cart/cartItemRemove',{
             method : 'DELETE',
             body : JSON.stringify({product_id:productId}),
                 headers: {
@@ -53,7 +53,7 @@ class Cartpage extends React.Component{
             })
     }
     changeQuantity(key,productId,operation){
-        fetch('http://localhost:5000/api/cart/cartQty',{
+        fetch('/api/cart/cartQty',{
             method : 'PUT',
             body : JSON.stringify({product_id:productId,operation:operation}),
                 headers: {

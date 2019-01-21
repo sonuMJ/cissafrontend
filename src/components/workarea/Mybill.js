@@ -30,7 +30,7 @@ class Mybill extends React.Component{
     }
 
     fetchCartItems(key){
-        fetch('http://localhost:5000/api/cart/showCart',{
+        fetch('/api/cart/showCart',{
             method : 'POST',
                 headers: {
                     "Content-Type": "application/json",
@@ -54,7 +54,7 @@ class Mybill extends React.Component{
             })
     }
     deleteCartItems(key,productId){
-        fetch('http://localhost:5000/api/cart/cartItemRemove',{
+        fetch('/api/cart/cartItemRemove',{
             method : 'DELETE',
             body : JSON.stringify({product_id:productId}),
                 headers: {
@@ -72,7 +72,7 @@ class Mybill extends React.Component{
             })
     }
     changeQuantity(key,productId,operation){
-        fetch('http://localhost:5000/api/cart/cartQty',{
+        fetch('/api/cart/cartQty',{
             method : 'PUT',
             body : JSON.stringify({product_id:productId,operation:operation}),
                 headers: {
@@ -92,7 +92,7 @@ class Mybill extends React.Component{
 
     Total(){
         var product_total=0;
-        if(this.state.cartItem != null){
+        if(this.state.cartItem !== null){
             this.state.cartItem.map(i => {
                 product_total += parseInt(i.total)
             })
@@ -106,7 +106,7 @@ class Mybill extends React.Component{
 
     componentWillReceiveProps(){
         
-        if(this.props.cartItem == undefined){
+        if(this.props.cartItem === undefined){
             var KEY = Cookies.get("_cid");
             this.fetchCartItems(KEY);
         }else{
@@ -142,7 +142,7 @@ class Mybill extends React.Component{
     }
     clearCart(){
         var key = Cookies.get("_cid");
-        fetch('http://localhost:5000/api/cart/_cdel',{
+        fetch('/api/cart/_cdel',{
             method : 'DELETE',
                 headers: {
                     "Content-Type": "application/json",
@@ -151,7 +151,7 @@ class Mybill extends React.Component{
                 }
             })
             .then(res => {
-                if(res.status == 200){
+                if(res.status === 200){
                     console.log("deleted");
                     this.fetchCartItems();
                 }else{

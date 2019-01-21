@@ -14,7 +14,7 @@ class Categorylist extends React.Component{
     }
 
     fetchCategory(){
-        fetch("http://localhost:5000/api/category/getcategory")
+        fetch("/api/category/getcategory")
         .then(res => {
             if(res.status == 200){
                 return res.json();
@@ -28,6 +28,8 @@ class Categorylist extends React.Component{
     }
 
     ChooseCategory(item){
+        console.log(item);
+        
         this.props.selectcat(item);
     }
 
@@ -36,7 +38,7 @@ class Categorylist extends React.Component{
 
             <React.Fragment>
                 {
-                    this.state.categorylist == "" ? <p>something went wrong</p> : <div className="list-group"><a href="#" className="list-group-item" onClick={this.ChooseCategory.bind(this,1)} style={{textTransform:'capitalize'}}>all</a><Showcategory sel={this.ChooseCategory.bind(this)} cate={this.state.categorylist}/></div>
+                    this.state.categorylist == "" ? <p>something went wrong</p> : <div className="list-group"><p className="list-group-item category-list" onClick={this.ChooseCategory.bind(this,0)} style={{textTransform:'capitalize'}}>all</p><Showcategory sel={this.ChooseCategory.bind(this)} cate={this.state.categorylist}/></div>
                 }
             </React.Fragment>
         )
@@ -44,10 +46,11 @@ class Categorylist extends React.Component{
 }
 
 const Showcategory = (list) => {
+    console.log(list);
     
     return(
         list.cate.map(l =>{
-            return(<a href="#" onClick={list.sel.bind(this,l.id)} className="list-group-item" style={{textTransform:'capitalize'}}>{l.name}</a>)
+            return(<p  onClick={list.sel.bind(this,l.category_id)} className="list-group-item category-list" style={{textTransform:'capitalize'}} key={l.id}>{l.name}</p>)
         })
     )
 }

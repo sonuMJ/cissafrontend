@@ -38,7 +38,7 @@ class Confirmorder extends React.Component{
     }
     getAllProductByCartId(){
         var key = Cookies.get('_cid');
-        fetch('http://localhost:5000/api/cart/showCart',{
+        fetch('/api/cart/showCart',{
             method : 'POST',
                 headers: {
                     "Content-Type": "application/json",
@@ -68,8 +68,8 @@ class Confirmorder extends React.Component{
         var cartId = Cookies.get('_cid');
         var token = Cookies.get('_token');
         var session = Cookies.get('sessionID');
-        if(cartId != undefined && token != undefined && session != undefined){
-            fetch('http://localhost:5000/product/orderproducts',{
+        if(cartId !== undefined && token !== undefined && session !== undefined){
+            fetch('/api/product/orderproducts',{
             method:'POST',
             headers: {
                 "Content-Type": "application/json",
@@ -90,7 +90,7 @@ class Confirmorder extends React.Component{
                 }
             })
             .then(result => {
-                if(result.statuscode == 200){
+                if(result.statuscode === 200){
                     this.setState({
                         success:true
                     })
@@ -130,7 +130,7 @@ const Processing = () => {
         <div className="container cart-loading">
             <h1 className="text-center">Your order is Processing</h1>
             <h2 className="text-center">Please wait...</h2>
-            <h4 className="text-center" style={{marginLeft: '-18px',marginTop: '24px'}}><img src="./img/loader1.gif"/></h4>
+            <h4 className="text-center" style={{marginLeft: '-18px',marginTop: '24px'}}><img src="./img/loader1.gif" alt="loading_icon"/></h4>
         </div>
     )
 }

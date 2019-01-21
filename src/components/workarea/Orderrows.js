@@ -26,7 +26,7 @@ class Orderrows extends React.Component{
     }
 
     fetchOrderDetails(order_id){
-        fetch("http://localhost:5000/api/order/productsbyorderid",{
+        fetch("/api/order/productsbyorderid",{
             method:"POST",
             body:JSON.stringify({ orderid:order_id }),
             headers:{
