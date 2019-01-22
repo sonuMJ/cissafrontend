@@ -10,6 +10,8 @@ import Login from './components/user/Login';
 import Registration from './components/user/Registration';
 import Verifyaccount from './components/user/Verifyaccount';
 import Settings from './components/user/Settings';
+import Forgotpwd from './components/user/Forgotpwd';
+import Resetpassword from './components/user/Resetpassword';
 
 
 
@@ -35,6 +37,8 @@ class App extends Component {
           <Route path="/" exact component={Mainframe}/>
           <Route path="/login/:path" exact component={Login}/>
           <Route path="/login" exact component={Login}/>
+          <Route path="/forgotpassword" exact component={Forgotpwd}/>
+          <Route path="/resetpassword/:verif_code?/:email" exact component={Resetpassword}/>
           <Route path="/register" exact component={Registration}/>
           <Route path="/verifyaccount/:verif_code" exact component={Verifyaccount}/>
           <PrivateRoute path='/confirmorder' component={Confirmorder} />

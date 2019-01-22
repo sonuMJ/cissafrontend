@@ -4,7 +4,8 @@ import {Link} from 'react-router-dom';
 
 class Registration extends React.Component{
     state = {
-        errmsg:''
+        msg:'',
+        popupMessage:false
     }
     handleSubmit(e){
         e.preventDefault();
@@ -26,18 +27,35 @@ class Registration extends React.Component{
                 }
             })
             .then(result => {
-                alert(result.message);
-                this.props.history.push('/');
+                //alert(result.message);
+                this.setState({
+                    msg:result.message,
+                    popupMessage : true
+                })
+                setTimeout(() => {
+                    
+                }, 5000);
             })
             .catch(e => {alert(e);})
         }else{
-            this.setState({errmsg:"Password Mismatch!!!"})
+            this.setState({msg:"Password Mismatch!!!"})
         }
+    }
+
+    handleMessage(){
+        //console.log("clicked");
+        this.setState({
+            popupMessage:false
+        })
+        this.props.history.push('/');
     }
 
     render(){
         return(
             <React.Fragment>
+                {
+                    this.state.popupMessage ? <Message okbtn={this.handleMessage.bind(this)}/> : null
+                }
                 <div class="container-fluid" style={{paddingLeft: '0px',paddingRight: '0px'}}>
                     <div class="bg1">
                         <div class="container-fluid" style={{paddingRight: '180px'}}>
@@ -58,7 +76,7 @@ class Registration extends React.Component{
 
                                 <label for="psw-repeat"><b>Repeat Password</b></label>
                                 <input type="password" className="c_reg_input" placeholder="Repeat Password" name="repeatpwd" required/>
-                                <p>{this.state.errmsg}</p>
+                                <p>{this.state.msg}</p>
                                 <hr className="c_hr"/>
                                 <p class="text-center">By creating an account you agree to our <a href="#">Terms & Privacy</a>.</p>
 
@@ -75,6 +93,22 @@ class Registration extends React.Component{
             </React.Fragment>
         )
     }
+}
+
+const Message = (msg) => {
+    return(
+        <div className="popup">
+            <div className="popup-inner" style={{width:'725px',height:'240px'}}>
+                <div style={{padding:'20px',textAlign:'center'}}>
+                    <h2 className="text-center" style={{color:'#6495ed',borderBottom: '2px solid #6495ed',paddingBottom:' 12px',fontSize:'26px'}}>
+                        <img src={"./img/success_tick.png"}/>&nbsp;{"A verification link has been sent to your email account "}
+                    </h2>
+                    <h4 style={{textAlign: 'center',marginTop:'24px',color: '#6495ee'}}>Please click on the that has just been sent to your email account to verify your email and continue the registration process. Please allow 5-10 minutes for this message to arrive</h4>
+                    <button className="btn" style={{marginTop: '20px',width: '100px',backgroundColor: 'cornflowerblue',color: 'white'}} onClick={msg.okbtn.bind(this)}>OK</button>
+                </div>
+            </div>
+        </div>
+    )
 }
 
 export default Registration;

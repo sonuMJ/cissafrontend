@@ -28,6 +28,8 @@ class Verifyaccount extends React.Component{
             }
         })
         .then(res => {
+            console.log(res.status);
+            
             if(res.status == 200){
                 setTimeout(() => {
                     this.setState({
@@ -35,6 +37,9 @@ class Verifyaccount extends React.Component{
                     })
                 }, 2000);
                 
+            }else if(res.status == 409){
+                alert("Account already verified!!")
+                this.props.history.push('/login');
             }else{
                 alert("Something went wrong!!")
             }
