@@ -8,21 +8,11 @@ class Orderrows extends React.Component{
     }
 
     componentDidMount(){
-        //console.log(this.props.orderids);
         this.fetchOrderDetails(this.props.orderids);
-        setTimeout(() => {
-            //console.log(this.state.productdata);
-            
-        }, 100);
     }
 
     componentWillReceiveProps(){
-        //console.log(this.props.orderids);
         this.fetchOrderDetails(this.props.orderids);
-        setTimeout(() => {
-            //console.log(this.state.productdata);
-            
-        }, 100);
     }
 
     fetchOrderDetails(order_id){
@@ -52,7 +42,7 @@ class Orderrows extends React.Component{
                         
                     })
                     
-                     : <th>no data</th>
+                     : <td>no data</td>
                 }
             </React.Fragment>
         )
@@ -63,13 +53,12 @@ const LoadProduct = (data) =>{
     //console.log(data);
     
     return(
-        
             <tr>
-                <th>{data.product.product_id}</th>
-                <th>{data.product.name}</th>
-                <th>{data.order.quantity}</th>
-                <th>{data.product.price}</th>
-                <th>{parseInt(data.order.quantity)*parseInt(data.product.price)}</th>
+                <td>{data.product.product_id}</td>
+                <td>{data.product.name}</td>
+                <td>{data.order.quantity}</td>
+                <td>{data.product.price}</td>
+                <td>{parseInt(data.order.quantity)*parseInt(data.product.price)}</td>
             </tr>
     )
 }

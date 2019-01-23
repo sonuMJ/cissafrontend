@@ -76,7 +76,6 @@ class Yourorders extends React.Component{
         if(order_id !== ""){
             var token = Cookies.get("_token");
             var session = Cookies.get("sessionID");
-            console.log(order_id);
             
             fetch("/api/order/cancelorder",{
                 method:"POST",

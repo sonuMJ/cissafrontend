@@ -7,10 +7,7 @@ class Categorylist extends React.Component{
     }
     componentDidMount(){
         this.fetchCategory();
-        setTimeout(() => {
-            console.log(this.state.categorylist);
-            
-        }, 100);
+        
     }
 
     fetchCategory(){
@@ -28,7 +25,6 @@ class Categorylist extends React.Component{
     }
 
     ChooseCategory(item){
-        console.log(item);
         
         this.props.selectcat(item);
     }
@@ -46,7 +42,6 @@ class Categorylist extends React.Component{
 }
 
 const Showcategory = (list) => {
-    console.log(list);
     
     return(
         list.cate.map(l =>{

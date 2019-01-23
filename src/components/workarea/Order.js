@@ -32,7 +32,6 @@ class Order extends React.Component{
     }
 
     Reorder(order_id){
-        console.log(order_id);
         if(order_id !== ""){
             var token = Cookies.get("_token");
             var session = Cookies.get("sessionID");
@@ -63,7 +62,6 @@ class Order extends React.Component{
 
 
     render(){
-        console.log(this.state.orderdetail)
         return(
             <React.Fragment>
                 
@@ -98,7 +96,7 @@ const OrderTemplate = (data) =>{
                     <h4>OrderNo: {data.itemdetail.orderid} <span style={{float:'right'}}>{d.getDate()+" "+month+" "+d.getFullYear()}</span></h4>
                     <h5>Scheduled for: <span>{scheduledDate.getDate()+" "+sMonth+" "+scheduledDate.getFullYear()}</span></h5>
                     <table className="table table-hover  table-bordered table-responsive" style={{marginTop:'30px'}}>
-                    <tbody>
+                    <thead>
                         <tr className="active" style={{color:'#000'}}>
                             <th>Product Id</th>
                             <th>Product Name</th>
@@ -109,7 +107,7 @@ const OrderTemplate = (data) =>{
                         {
                              <Orderrows orderids={data.itemdetail.orderid}/>
                         }
-                    </tbody>
+                    </thead>
                     </table>
                     {
                         data.itemdetail.status === 'Delivered' ? <img src="./img/de.png" alt="delivered" style={{transform: 'rotate(-20deg)',height: '50px',opacity: '0.8'}}/> :''

@@ -207,7 +207,6 @@ const ShowCart = (cart) =>{
 }
 
 const Confirmlocation = (p) => {
-    console.log(p);
     
     return(
         <div className="popup">

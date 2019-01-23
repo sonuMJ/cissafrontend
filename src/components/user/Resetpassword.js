@@ -12,7 +12,6 @@ class Resetpassword extends React.Component{
     }
 
     componentDidMount(){
-        console.log(this.props.match.params.verif_code);
         this.setState({
             v_code:this.props.match.params.verif_code,
             email:this.props.match.params.email

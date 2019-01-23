@@ -9,7 +9,6 @@ class Verifyaccount extends React.Component{
     }
 
     componentDidMount(){
-        console.log(this.props.match.params.verif_code);
         this.setState({
             code : this.props.match.params.verif_code
         })
@@ -28,7 +27,6 @@ class Verifyaccount extends React.Component{
             }
         })
         .then(res => {
-            console.log(res.status);
             
             if(res.status == 200){
                 setTimeout(() => {

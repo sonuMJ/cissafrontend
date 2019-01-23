@@ -3,7 +3,6 @@ import React from 'react';
 class Popup extends React.Component{
     
     componentWillReceiveProps(){
-        console.log(this.props);
         
     }
 

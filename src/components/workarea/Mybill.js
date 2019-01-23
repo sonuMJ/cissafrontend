@@ -20,9 +20,6 @@ class Mybill extends React.Component{
             var KEY = Cookies.get("_cid");
             this.fetchCartItems(KEY);
         }, 500);
-        setTimeout(() => {
-            console.log(this.state.cartItem);
-        }, 200);
     }
     setCookie(){
         var ran = (Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)+Math.random().toString(36).substring(2, 15)).toUpperCase();
@@ -40,7 +37,6 @@ class Mybill extends React.Component{
             })
             .then(res => res.json())
             .then(result => {
-                console.log(result);
                 
                 this.setState({
                     cartItem:result.result
@@ -96,7 +92,6 @@ class Mybill extends React.Component{
             this.state.cartItem.map(i => {
                 product_total += parseInt(i.total)
             })
-            console.log(product_total);
             this.setState({
                 total:product_total
             })
@@ -137,7 +132,6 @@ class Mybill extends React.Component{
     }
     REMOVE_item(context,product_id){
         var KEY = Cookies.get("_cid");
-        console.log(product_id);
         this.deleteCartItems(KEY,product_id);
     }
     clearCart(){
@@ -152,7 +146,6 @@ class Mybill extends React.Component{
             })
             .then(res => {
                 if(res.status === 200){
-                    console.log("deleted");
                     this.fetchCartItems();
                 }else{
                     alert("Something went wrong!!")

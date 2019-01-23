@@ -16,10 +16,12 @@ class Confirmorder extends React.Component{
         }else{
             this.getAllProductByCartId();
             setTimeout(() => {
+                console.log(this.state.emptyData);
+                
                 if(!this.state.emptyData){
                     this.submitOrders();
                 }
-            }, 200);
+            }, 500);
         }
         //cart id
         //user id 
@@ -56,6 +58,8 @@ class Confirmorder extends React.Component{
                         this.setState({
                             emptyData:false
                         })
+                        console.log("show cart completed!!");
+                        
                     }  
                 }, 100);
                 
@@ -65,6 +69,9 @@ class Confirmorder extends React.Component{
             })
     }
     submitOrders(){
+        console.log('====================================');
+        console.log("order submitting");
+        console.log('====================================');
         var cartId = Cookies.get('_cid');
         var token = Cookies.get('_token');
         var session = Cookies.get('sessionID');
@@ -80,6 +87,9 @@ class Confirmorder extends React.Component{
             }
             })
             .then(res => {
+                console.log('====================================');
+                console.log(res.status);
+                console.log('====================================');
                 if(res.status === 200){
                     return res.json();
                 }else{

@@ -10,8 +10,6 @@ class Listitems extends React.Component{
     }
 
     componentDidMount(){
-        console.log(this.props);
-        console.log("items");
         this.setState({
             products:this.props.productlist,
             update:true
@@ -21,8 +19,6 @@ class Listitems extends React.Component{
         this.setState({
             update:false
         })
-        console.log(this.props);
-        console.log("changed");
         setTimeout(() => {
             this.setState({
                 products:this.props.productlist,

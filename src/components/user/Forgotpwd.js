@@ -12,17 +12,22 @@ class Forgotpwd extends React.Component{
         })
     }
     handleSubmit(){
-        fetch('/api/user/resetpasswordmail',{
-            method:'POST',
-            body : JSON.stringify({email:this.state.email}),
-            headers: {
-                "Content-Type": "application/json",
-                // "Content-Type": "application/x-www-form-urlencoded",
-            }
-        }).then(res => res.json())
-        .then(result => {
-            alert(result.message);
-        })
+        if(this.state.email !== ""){
+            fetch('/api/user/resetpasswordmail',{
+                method:'POST',
+                body : JSON.stringify({email:this.state.email}),
+                headers: {
+                    "Content-Type": "application/json",
+                    // "Content-Type": "application/x-www-form-urlencoded",
+                }
+            }).then(res => res.json())
+            .then(result => {
+                alert(result.message);
+            })
+        }else{
+            alert("Please enter email address associated with your Cissa account");
+        }
+        
     }
     
     render(){

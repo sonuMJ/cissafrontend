@@ -9,7 +9,6 @@ class Topnav extends React.Component{
     }
     
     componentDidMount(){
-        console.log("did mount from topnav");
         this.CheckAuth();
         setTimeout(() => {
             this.getUsername();
@@ -22,7 +21,6 @@ class Topnav extends React.Component{
     getUsername(){
         if(this.state.authenticated){
             var token = Cookies.get('_token');
-            console.log("get user name");
             fetch('/api/user/getusernamebytoken',{
                 headers:{
                     "token" : token

@@ -12,6 +12,7 @@ import Verifyaccount from './components/user/Verifyaccount';
 import Settings from './components/user/Settings';
 import Forgotpwd from './components/user/Forgotpwd';
 import Resetpassword from './components/user/Resetpassword';
+import Filenotfound from './components/workarea/Filenotfound';
 
 
 
@@ -44,6 +45,7 @@ class App extends Component {
           <PrivateRoute path='/confirmorder' component={Confirmorder} />
           <PrivateRoute path='/settings' component={Settings} />
           <PrivateRoute path='/yourorders' component={Yourorders} />
+          <Route component={Filenotfound}/>
         </Switch>
       </div>
     );

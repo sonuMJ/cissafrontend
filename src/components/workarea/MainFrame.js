@@ -24,11 +24,7 @@ class Mainframe extends React.Component{
         popup:false
         
     }
-    componentWillUpdate(){
-        console.log("will mount calledd");
-    }
     componentDidMount(){
-        console.log("did mount calledd");
         
         this.fetchData(this.state.category);
         this.handleClick = this.handleClick.bind(this);
@@ -40,7 +36,6 @@ class Mainframe extends React.Component{
       }
 
     componentWillReceiveProps(){
-        console.log("main frame reciving props");
         
     }
 
@@ -117,7 +112,6 @@ class Mainframe extends React.Component{
                 isFetching :false,
                 searching:true
             })
-            console.log(txt);
             fetch('/api/product/search_p/'+txt)
             .then(res => {
                 if(res.status === 200){
@@ -133,7 +127,6 @@ class Mainframe extends React.Component{
                 })
             })
         }else{
-            console.log("Text=" + txt);
             setTimeout(() => {
                 this.fetchData(this.state.category)
             }, 100);
