@@ -20,9 +20,10 @@ class Mainframe extends React.Component{
         searching:false,
         category: 0,
         currentPage: 1,
-        todosPerPage: 3,
-        popup:false
-        
+        todosPerPage: 30,
+        popup:false,
+        productnotfound : false,
+        storeLocator:''
     }
     componentDidMount(){
         
@@ -47,11 +48,21 @@ class Mainframe extends React.Component{
         fetch('/api/product/getall/'+ cate)
         .then(res => res.json())
         .then(result => {
-            this.setState({
-                products:result,
-                isFetching: true,
-                searching:false
-            })
+            if(result.length == 0){
+                this.setState({
+                    isFetching: false,
+                    productnotfound:true,
+                })
+            }else{
+                this.setState({
+                    products:result,
+                    isFetching: true,
+                    searching:false,
+                    productnotfound:false
+                })
+            }
+            
+            
         })
     }
 
@@ -117,20 +128,46 @@ class Mainframe extends React.Component{
                 if(res.status === 200){
                     return res.json();
                 }else{
-                    
+                    alert("no result found!!")
                 }
             })
             .then(result => {
-                this.setState({
-                    products:result,
-                    isFetching :true
-                })
+                if(result.length == 0){
+                    this.setState({
+                        productnotfound:true,
+                    })
+                }else{
+                   this.setState({
+                        productnotfound:false,
+                        products:result,
+                        isFetching :true
+                    }) 
+                }
+                
             })
         }else{
             setTimeout(() => {
                 this.fetchData(this.state.category)
             }, 100);
         }
+        
+    }
+    goCart(){
+        if(this.state.storeLocator !== ""){
+            this.props.history.push('/cart');
+        }else{
+            alert("You must choose store location to continue!!");
+        }
+        
+    }
+
+    setLocation(loc){
+        this.setState({
+            storeLocator:loc
+        })
+        setTimeout(() => {
+            Cookies.set("_loc", this.state.storeLocator, {expires:1});
+        }, 100);
         
     }
 
@@ -163,26 +200,34 @@ class Mainframe extends React.Component{
                 <Contactinfo />
                 <Searchbar search={this.handleSearchMain.bind(this)}/>
                 <Topnav />
-                <Carosel />
+                {
+                    this.state.searching ? null : <Carosel />
+                }
+                
                 <div className="container-fluid show-products">
                     <div className="col-lg-2 col-md-2">
                         <Categorylist selectcat={this.Choosecategory.bind(this)}/>
                     </div>
                     <div className="col-lg-8 col-md-8">
                     {
-                        this.state.isFetching ? <Listitems productlist={currentTodos} addtocart={this.addToCart.bind(this)}/> : <div style={{textAlign:'center',marginTop:'200px'}}><img src="../img/product_loader.gif" alt="loading_icon"/></div>
+                        this.state.productnotfound ? <h3 className="text-center">PRODUCT NOT FOUND</h3> : null
                     }
-                    
+                    {
+                        this.state.isFetching ? <Listitems productlist={currentTodos} addtocart={this.addToCart.bind(this)}/> : <div style={{textAlign:'center',marginTop:'200px'}}>{ this.state.productnotfound ? null : <img src="../img/product_loader.gif" alt="loading_icon"/>}</div>
+                    }
                     </div>
                     <div className="col-lg-2 col-md-2">
-                        <Mybill cartitems={this.state.cart} removeCartItem={this.removeCartItem.bind(this)}/>
+                        <Mybill selectLocation={this.setLocation.bind(this)} redirecttocart={this.goCart.bind(this)} cartitems={this.state.cart} removeCartItem={this.removeCartItem.bind(this)}/>
                     </div>
                 </div>
-                <div style={{textAlign:'center'}}>
-                    <ul id="page-numbers" className="pagination">
-                        {renderPageNumbers}
-                    </ul>
-                </div>
+                {
+                        this.state.productnotfound ? null : <div style={{textAlign:'center'}}>
+                        <ul id="page-numbers" className="pagination">
+                            {renderPageNumbers}
+                        </ul>
+                    </div>
+                }
+                
                 
                 <Footercontent />
                 <Footer />

@@ -111,7 +111,7 @@ class Yourorders extends React.Component{
                     {
                     this.state.loading ? <div>
                     {
-                        this.state.orderdata !== "" ? <Order refresh={this.RefreshOrder.bind(this)} orderdata={this.state.orderdata} cancelclick={this.CancelOrder.bind(this)}/> : null
+                        this.state.orderdata !== "" ? <Order  refresh={this.RefreshOrder.bind(this)} orderdata={this.state.orderdata} cancelclick={this.CancelOrder.bind(this)}/> : null
                     }
                     </div>
                     :

@@ -60,15 +60,57 @@ class Order extends React.Component{
         
     }
 
+    removeProduct(orderId, productId){
+        fetch('/api/order/removeOrderProduct',{
+            method:'POST',
+            headers:{
+                "Content-Type": "application/json",
+            },
+            body:JSON.stringify({orderid:orderId,productid:productId})
+        }).then(res => {
+            if(res.status === 200){
+                return res.json();
+            }else{
+
+            }
+        }).then(result => {
+            console.log(result);
+            setTimeout(() => {
+                this.props.refresh();
+            }, 200);
+            
+        })
+    }
+
+    rmvUnwantOrders(orderId){
+        fetch('/api/order/rmvunwantedorder',{
+            method:'POST',
+            headers:{
+                "Content-Type": "application/json",
+            },
+            body:JSON.stringify({orderid:orderId})
+        }).then(res => {
+            if(res.status == 200){
+                return res.json();
+            }else{
+
+            }
+        }).then(result => {
+            this.props.refresh();
+        })
+    }
+
 
     render(){
+        var key =0;
         return(
             <React.Fragment>
                 
                 {
                     this.state.loaded ?
                     this.state.orderdetail.map(i => {
-                        return(<OrderTemplate reorder={this.Reorder.bind(this)} itemdetail={i} key={i} click={this.Cancel.bind(this)}/>)
+                        return(<OrderTemplate rmvorder={this.rmvUnwantOrders.bind(this)} cancelProduct={this.removeProduct.bind(this)} reorder={this.Reorder.bind(this)} itemdetail={i} key={key++} click={this.Cancel.bind(this)}/>)
+                       
                     })
                     :
                     <p>invalid</p>
@@ -98,14 +140,16 @@ const OrderTemplate = (data) =>{
                     <table className="table table-hover  table-bordered table-responsive" style={{marginTop:'30px'}}>
                     <thead>
                         <tr className="active" style={{color:'#000'}}>
-                            <th>Product Id</th>
                             <th>Product Name</th>
                             <th>Quantity</th>
                             <th>Unit Price</th>
                             <th>Total Price</th>
+                            <th></th>
                         </tr>
+                    </thead>
+                    <thead>
                         {
-                             <Orderrows orderids={data.itemdetail.orderid}/>
+                             <Orderrows orderids={data.itemdetail.orderid} remve={data.cancelProduct.bind(this)} rmvorder={data.rmvorder.bind(this)}/>
                         }
                     </thead>
                     </table>
@@ -122,7 +166,7 @@ const OrderTemplate = (data) =>{
                          data.itemdetail.status === 'Cancelled' ? <span><button className="btn" style={{float:'right',backgroundColor: '#12cc1a',color: 'white',fontWeight: '600'}} onClick={data.reorder.bind(this,data.itemdetail.orderid)}>Re order</button></span> :''
                     }
                     {
-                        data.itemdetail.status === 'not delivered' ? <span><button className="btn" style={{float:'right',backgroundColor: '#ffc107',color: 'white',fontWeight: '600'}} onClick={data.click.bind(this,data.itemdetail.orderid)}>Cancel Order</button></span> :''
+                        data.itemdetail.status === 'Pending Delivery' ? <span><button className="btn" style={{float:'right',backgroundColor: '#ffc107',color: 'white',fontWeight: '600'}} onClick={data.click.bind(this,data.itemdetail.orderid)}>Cancel Order</button></span> :''
                     }
                     </p>
                     

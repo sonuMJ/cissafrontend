@@ -77,6 +77,8 @@ class Topnav extends React.Component{
                             <li><a href="#">Contact Us</a></li>
                             <li><a href="#">Support Us</a></li>
                             <li><Link to={'/yourorders'}>Orders</Link></li>
+                            <li><a href="#">News</a></li>
+                            <li><a href="#">Farms</a></li>
                         </ul>
                         <ul className="nav navbar-nav navbar-right c_nav_items">
                             {

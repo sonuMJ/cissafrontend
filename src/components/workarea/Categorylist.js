@@ -34,7 +34,7 @@ class Categorylist extends React.Component{
 
             <React.Fragment>
                 {
-                    this.state.categorylist == "" ? <p>something went wrong</p> : <div className="list-group"><p className="list-group-item category-list" onClick={this.ChooseCategory.bind(this,0)} style={{textTransform:'capitalize'}}>all</p><Showcategory sel={this.ChooseCategory.bind(this)} cate={this.state.categorylist}/></div>
+                    this.state.categorylist == "" ? <p>something went wrong</p> : <div className="list-group" style={{boxShadow: '0px 1px 24px -9px'}}><p className="list-group-item category-list" onClick={this.ChooseCategory.bind(this,0)} style={{textTransform:'capitalize'}}>all</p><Showcategory sel={this.ChooseCategory.bind(this)} cate={this.state.categorylist}/></div>
                 }
             </React.Fragment>
         )

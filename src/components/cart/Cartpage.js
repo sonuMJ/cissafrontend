@@ -23,6 +23,7 @@ class Cartpage extends React.Component{
             })
             .then(res => res.json())
             .then(result => {
+                
                 this.setState({
                     cart:result.result
                 })
@@ -71,13 +72,20 @@ class Cartpage extends React.Component{
             })
     }
     componentDidMount(){
-        var Key = Cookies.get("_cid");
-        this.fetchCartItems(Key);
-        setTimeout(() => {
-            this.setState({
-                confirmplace:true
-            })
-        }, 100);
+
+        var loc = Cookies.get("_loc");
+        if(loc !== undefined){
+            var Key = Cookies.get("_cid");
+            this.fetchCartItems(Key);
+            setTimeout(() => {
+                this.setState({
+                    confirmplace:true
+                })
+            }, 100);
+        }else{
+            alert("You must choose store location to continue!!");
+            this.props.history.push('/');
+        }
     }
     Total(){
         var product_total=0;
@@ -145,12 +153,12 @@ class Cartpage extends React.Component{
         
         return(
             <React.Fragment>
-                {
+                {/* {
                     this.state.confirmplace ?
                     <Confirmlocation confirm={this.confirmlocaion.bind(this)} cancel={this.cancelPurchase.bind(this)}/>
                     :
                     null
-                }
+                } */}
                 <Contactinfo />
                 <Searchbar />
                 <Topnav />
@@ -168,6 +176,7 @@ class Cartpage extends React.Component{
                             </tbody>
                         </table>
                         <div className="cart-table-totalrow">
+                            
                             <div className="col-lg-8 text-right" style={{marginTop:'16px'}}>Total Price</div>
                             <div className="col-lg-4 text-center">&#8377;<span className="cart-table-totalprice">{this.state.total}</span></div>
                         </div>

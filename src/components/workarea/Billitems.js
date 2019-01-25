@@ -27,8 +27,9 @@ class Billitems extends React.Component{
         var item = this.props.itemDetail;
         return(
             <React.Fragment>
+                
                 <div className="row" key={item.productId} style={{marginBottom:'10px'}}>
-                    <div className="col-lg-4 c_bill_itemimage">
+                    <div className="col-lg-4 c_bill_itemimage ">
                         <img src={item.productData[0].img_url} className="img-responsive"/>
                     </div>
                     <div className="col-lg-8 c_bill_itemdetails">
@@ -45,6 +46,7 @@ class Billitems extends React.Component{
                         </p>
                     </div>
                 </div>
+               
                 <hr className="c_bill_linebreak"/>
             </React.Fragment>
         )

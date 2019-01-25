@@ -23,7 +23,7 @@ class Registration extends React.Component{
                 if(res.status === 200){
                     return res.json();
                 }else{
-                    throw "User already exists!!"
+                    throw "Already registered with this Email ID!!"
                 }
             })
             .then(result => {
@@ -56,14 +56,33 @@ class Registration extends React.Component{
                 {
                     this.state.popupMessage ? <Message okbtn={this.handleMessage.bind(this)}/> : null
                 }
-                <div className="container-fluid" style={{paddingLeft: '0px',paddingRight: '0px'}}>
-                    <div className="bg1">
-                        <div className="container-fluid" style={{paddingRight: '180px'}}>
-                            <div className="col-lg-9">
-                        
-                            </div>
-                        <div className="col-lg-3 reg-form">
-                            <form onSubmit={this.handleSubmit.bind(this)}>
+                <div className="container" style={{paddingLeft: '0px',paddingRight: '0px'}}>
+                    <div className="c_login">
+                        <div style={{textAlign:'center'}}>
+                            <Link to={'/'}><img src="./img/cissa_logo.png" alt="cissa_logo" style={{height:'80px'}}/></Link>
+                        </div>
+                        <h1 className="text-center">Welcome!</h1>
+                        <h3 className="text-center">Account Registration</h3>
+                        <form onSubmit={this.handleSubmit.bind(this)}>
+                        <label htmlFor="email" className="c_label"><b>Username</b></label>
+                        <input type="text" className="form-control c_input" placeholder="Enter Username" minLength="3" maxLength="20" name="username" required/>
+
+                        <label htmlFor="email" className="c_label"><b>Email</b></label>
+                        <input type="email" className="form-control c_input" placeholder="Enter Email address" maxLength="25" name="email" required/>
+
+                        <label htmlFor="psw" className="c_label"><b>Password</b></label>
+                        <input type="password"  name="pwd" placeholder="Password" className="form-control c_input"  required/>
+
+                        <label htmlFor="psw-repeat" className="c_label"><b>Repeat Password</b></label>
+                        <input type="password" className="form-control c_input" placeholder="Repeat Password" name="repeatpwd" required/>
+                        <p>{this.state.msg}</p>
+                       
+                        <input type="submit" value="Register" className="btn btn-lg c_login_btn" />
+                        </form>
+                        <p className="text-center" style={{marginTop:'20px'}}>Already registered? <Link to={'/login'}>Login</Link></p>
+                        <h6 className="text-center">&copy; 2019 Cissaorganic.com. All Rights Reserved</h6>
+                    </div>
+                            {/* <form onSubmit={this.handleSubmit.bind(this)}>
                                 <h1 className="text-center">Register</h1>
                                 <label htmlFor="email"><b>Username</b></label>
                                 <input type="text" className="c_reg_input" placeholder="Enter Username" minLength="3" maxLength="20" name="username" required/>
@@ -85,10 +104,7 @@ class Registration extends React.Component{
                                 <div className="signin">
                                     <p>Already have an account? <Link to={'/login'}>Sign in</Link>.</p>
                                 </div>
-                            </form>
-                        </div>
-                        </div>
-                    </div>
+                            </form> */}
                 </div>
             </React.Fragment>
         )

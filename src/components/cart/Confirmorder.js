@@ -16,7 +16,6 @@ class Confirmorder extends React.Component{
         }else{
             this.getAllProductByCartId();
             setTimeout(() => {
-                console.log(this.state.emptyData);
                 
                 if(!this.state.emptyData){
                     this.submitOrders();
@@ -58,7 +57,6 @@ class Confirmorder extends React.Component{
                         this.setState({
                             emptyData:false
                         })
-                        console.log("show cart completed!!");
                         
                     }  
                 }, 100);
@@ -69,9 +67,6 @@ class Confirmorder extends React.Component{
             })
     }
     submitOrders(){
-        console.log('====================================');
-        console.log("order submitting");
-        console.log('====================================');
         var cartId = Cookies.get('_cid');
         var token = Cookies.get('_token');
         var session = Cookies.get('sessionID');
@@ -87,9 +82,6 @@ class Confirmorder extends React.Component{
             }
             })
             .then(res => {
-                console.log('====================================');
-                console.log(res.status);
-                console.log('====================================');
                 if(res.status === 200){
                     return res.json();
                 }else{
@@ -116,6 +108,18 @@ class Confirmorder extends React.Component{
         
     }
 
+    schedulePickupDate(){
+        const SCHEDULED_DAY = 1; //1 => monday
+        var d = new Date();
+        var sDate = new Date();
+        var scheduledDate = sDate.setDate(d.getDate() + + (SCHEDULED_DAY - 1 - d.getDay() + 7) % 7 + 1);
+        var months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+        var s_date = new Date(scheduledDate); 
+        var s_month = months[s_date.getMonth()];
+        var full_s_date = s_date.getDate() + " " + s_month + " " +s_date.getFullYear();
+        return full_s_date;
+    }
+
     cancelFailedPurchase(){
         this.setState({
             popup: !this.state.popup
@@ -123,13 +127,15 @@ class Confirmorder extends React.Component{
         this.props.history.push('/');
     }
     render(){
+        var sch_date  = this.schedulePickupDate();
+        
         return(
             <React.Fragment>
                 {
                     this.state.popup ? <FailedPopup cancel={this.cancelFailedPurchase.bind(this)} /> : null
                 }
                 {
-                    !this.state.success ? <Processing /> : <ProcessSuccess />
+                    !this.state.success ? <Processing /> : <ProcessSuccess s_date={sch_date}/>
                 }
             </React.Fragment>
         )
@@ -144,7 +150,7 @@ const Processing = () => {
         </div>
     )
 }
-const ProcessSuccess = () => {
+const ProcessSuccess = (p) => {
     return(
         <div className="container cart-loading-success">
             <h1 className="text-center">Successfully Purchased</h1>
@@ -156,6 +162,9 @@ const ProcessSuccess = () => {
                 <Link to={'/'} style={{color: '#7ac142',fontSize: '26px',fontWeight: '200'}}>Continue Shopping</Link>
                 <div style={{paddingTop:'20px'}}>
                     <Link to={'/yourorders'} style={{color: '#7ac142',fontSize: '20px',fontWeight: '200'}}>Your orders</Link>
+                </div>
+                <div className="alert alert-danger" style={{width: '50%',margin: 'auto',marginTop: '22px',fontSize: '20px'}}>
+                    <strong>Scheduled pickup date : </strong><p className="alert-link">{p.s_date}</p>
                 </div>
             </div>
         </div>

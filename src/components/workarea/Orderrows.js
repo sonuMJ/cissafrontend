@@ -8,6 +8,7 @@ class Orderrows extends React.Component{
     }
 
     componentDidMount(){
+        
         this.fetchOrderDetails(this.props.orderids);
     }
 
@@ -25,24 +26,40 @@ class Orderrows extends React.Component{
         })
         .then(res => res.json())
         .then(result => {
-            this.setState({
-                productdata:result,
-                loaded:true
-            })
+            if(result == ""){
+                this.props.rmvorder(order_id);
+            }else{
+                this.setState({
+                    productdata:result,
+                    loaded:true
+                })
+            }
         })
     }
 
+    removeProduct(pro_id){
+        var c = window.confirm("Are you sure");
+        if(c){
+            if(this.props.orderids != null){
+                this.props.remve(this.props.orderids, pro_id)
+                }
+        }
+        
+    }
+
     render(){
+        var key = 0;
         return(
             <React.Fragment>
                 {
                     this.state.loaded ?
                     this.state.productdata.map(i => {
-                        return(<LoadProduct order={i.orderdetails} product={i.productdetails} key={i}/>)
+
+                        return(<LoadProduct order={i.orderdetails} product={i.productdetails} key={key++} removeclick={this.removeProduct.bind(this)}/>)
                         
                     })
                     
-                     : <td>no data</td>
+                     : <tr><td colSpan="5" style={{color:"#bbb"}}>Loading...</td></tr>
                 }
             </React.Fragment>
         )
@@ -54,11 +71,11 @@ const LoadProduct = (data) =>{
     
     return(
             <tr>
-                <td>{data.product.product_id}</td>
-                <td>{data.product.name}</td>
+                <td>{data.product.name}<span className="order_item_productid">{data.product.product_id}</span></td>
                 <td>{data.order.quantity}</td>
                 <td>{data.product.price}</td>
                 <td>{parseInt(data.order.quantity)*parseInt(data.product.price)}</td>
+                <td><span className="c_item_remove_btn" onClick={data.removeclick.bind(this,data.product.product_id)}>&nbsp;</span></td>
             </tr>
     )
 }

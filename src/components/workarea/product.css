@@ -60,7 +60,7 @@
 .c_bill_btn{
     width: 50%;
     height: 50px;
-    font-size: 18px;
+    font-size: 14px;
 }
 .c_item_remove_btn{
     float: right;
@@ -105,6 +105,13 @@
     text-decoration: none;
     color: white;
 }
+.order_item_productid{
+    display: block;
+    color: #6f6f6f;
+    font-style: italic;
+    font-size: 12px;
+}
+
 .show-products{
     padding-top: 30px;
 }

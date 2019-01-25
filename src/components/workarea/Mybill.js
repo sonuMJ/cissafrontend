@@ -12,6 +12,7 @@ class Mybill extends React.Component{
     }
 
     componentDidMount(){
+        
         var cacheId = Cookies.get('_cid');
         if(cacheId == null){
             this.setCookie();
@@ -111,7 +112,7 @@ class Mybill extends React.Component{
                 })
             }, 100);
             setTimeout(() => {
-                console.log(this.state.cartItem);
+               // console.log(this.state.cartItem);
             }, 200);
         }
         
@@ -155,11 +156,19 @@ class Mybill extends React.Component{
                 console.log(e);
             })
     }
+    goCart(){
+        this.props.redirecttocart();
+        
+    }
+    handleLocation(e){
+        //this.props.selectLocation()
+        this.props.selectLocation(e.target.value)
+    }
     
     render(){
         return(
-            <div className="panel panel-info" style={{borderColor: '#ffdd00'}}>
-                <div className="panel-heading" style={{color: '#000',backgroundColor: '#ffdd00',borderColor: '#ffdd00'}}><span style={{fontSize: '22px',fontWeight: '700'}}>Shopping Bag</span></div>
+            <div className="panel panel-info" style={{borderColor: '#ddd',boxShadow: '0px 1px 24px -9px'}}>
+                <div className="panel-heading" style={{color: '#000',backgroundColor: '#ffdd00',borderColor: '#ffdd00'}}><span style={{fontSize: '22px',fontWeight: '700'}}>Shopping Cart</span></div>
                 <div className="">
                     <div className="c_cart_items">
                     {
@@ -169,9 +178,17 @@ class Mybill extends React.Component{
                     {
                         this.state.cartItem != null ? <TotalTemp totalprice={this.state.total}/> : ''
                     }
+                    <p className="text-center" style={{marginTop:'5px'}}>
+                        <b>Store Locator</b>&nbsp;
+                        <select onChange={this.handleLocation.bind(this)} name="location">
+                            <option value="">&nbsp;</option>
+                            <option value="Vazhuthacaud">Vazhuthacaud</option>
+                            <option value="Kazhakoottam">Kazhakoottam</option>
+                        </select>
+                    </p>
                     <span style={{marginTop:"20px"}}>
                         <button className="btn c_bill_btn" onClick={this.clearCart.bind(this)}>Clear Cart</button>
-                        <button className="btn c_bill_btn" style={{backgroundColor:"#ffdd00"}}><Link to={"/cart"} style={{textDecoration:'none'}}>CHECK OUT</Link></button>
+                        <button className="btn c_bill_btn" style={{backgroundColor:"#ffdd00"}} onClick={this.goCart.bind(this)}>CHECK OUT</button>
                     </span>
                 </div>
             </div>
