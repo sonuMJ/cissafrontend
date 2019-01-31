@@ -44,10 +44,10 @@ class Item extends React.Component{
 
     render(){
         return(
-            <div className="col-lg-2 c_product_col">
+            <div className="col-lg-3 c_product_col">
 
             <div className="c_product text-center">
-                <img src={this.state.item.img_url} className="img-responsive" style={{height:"100px",margin:"auto"}}/>
+                <img src={this.state.item.img_url} className="img-responsive" style={{height:"200px",margin:"auto"}}/>
                 <h3 className="c_product_name">{this.state.item.name}</h3>
                 <h5>({this.state.item.translated})</h5>
                 <h4 style={{fontSize:'16px',marginBottom:'0px'}}>{this.state.item.quantity}</h4>

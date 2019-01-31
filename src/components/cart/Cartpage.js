@@ -5,12 +5,15 @@ import Cookies from 'js-cookie';
 import Contactinfo from '../headers/Contactinfo';
 import Searchbar from '../headers/Searchbar';
 import Topnav from '../headers/Topnav';
+import {Link} from 'react-router-dom';
 
 class Cartpage extends React.Component{
     state = {
         cart:[],
         total:0,
-        confirmplace:true
+        confirmplace:true,
+        ShowWait:false,
+        WaitMsg:''
     }
     fetchCartItems(key){
         fetch('/api/cart/showCart',{
@@ -25,7 +28,8 @@ class Cartpage extends React.Component{
             .then(result => {
                 
                 this.setState({
-                    cart:result.result
+                    cart:result.result,
+                    ShowWait:false
                 })
                 setTimeout(() => {
                     this.Total();
@@ -36,6 +40,10 @@ class Cartpage extends React.Component{
             })
     }
     deleteCartItems(key,productId){
+        this.setState({
+            ShowWait:true,
+            WaitMsg:"Deleting Item"
+        })
         fetch('/api/cart/cartItemRemove',{
             method : 'DELETE',
             body : JSON.stringify({product_id:productId}),
@@ -54,6 +62,10 @@ class Cartpage extends React.Component{
             })
     }
     changeQuantity(key,productId,operation){
+        this.setState({
+            ShowWait:true,
+            WaitMsg:"Updating quantity"
+        })
         fetch('/api/cart/cartQty',{
             method : 'PUT',
             body : JSON.stringify({product_id:productId,operation:operation}),
@@ -162,11 +174,15 @@ class Cartpage extends React.Component{
                 <Contactinfo />
                 <Searchbar />
                 <Topnav />
+                {
+                    this.state.ShowWait ? <Popup msg={this.state.WaitMsg}/> : null
+                }
                 <div className="container">
                     <div className="col-lg-1">
 
                     </div>
                     <div className="col-lg-10">
+                        <h4><span style={{fontSize:'22px'}}><Link to={'/'} style={{color:'#7ac142'}}><img src={'./img/back_arrow.png'}/>Back</Link></span></h4>
                         <h2 style={{fontSize:'34px'}}>Your Shopping Cart <button style={{float:'right'}} className="cart-confirm-btn" onClick={this.orderItem.bind(this)}>Confirm Order</button></h2>
                         <table className="table table-responsive table-hover cart-table">
                             <tbody>
@@ -243,4 +259,15 @@ const CartEmpty = () =>{
         </tr>
     )
 }
+
+const Popup = (msg) => {
+    return(
+        <div className="popup">
+                <div className="popup-inner-cart">
+                    <p className="text-center" style={{marginTop: '20px',fontSize: '22px'}}>{msg.msg}</p>
+                </div>
+            </div>
+    )
+}
+
 export default Cartpage;

@@ -41,16 +41,18 @@ class Resetpassword extends React.Component{
                 }
             })
             .then(res => {
-                if(res.status == 200){
+                if(res.status === 200){
                     return res.json();
                 }else{
-                    alert("Something went wrong!!")
+                    throw "We were unable to find an account linked to this email";
+                    
                 }
             })
             .then(result => {
                 alert(result.message);
                 this.props.history.push('/login');
             })
+            .catch(e => {alert(e);})
         }
     }
 

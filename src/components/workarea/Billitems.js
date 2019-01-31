@@ -39,9 +39,9 @@ class Billitems extends React.Component{
                         <p className="c_bill_text">&#8377; {item.total} &nbsp;&nbsp;&nbsp;&nbsp;</p>
                         <p>
                             <span className="text-center">
-                                <button className="c_round_btn" onClick={this.decrementQty.bind(this,item.productId,item.quantity)}>-</button>
+                                <button className="c_round_btn_remove" onClick={this.decrementQty.bind(this,item.productId,item.quantity)}>-</button>
                                 <input type="number" value={item.quantity} readOnly style={{width:"40px",textAlign: "right"}} name="qty"/>
-                                <button className="c_round_btn" onClick={this.incrementQty.bind(this,item.productId,item.quantity)}>+</button>
+                                <button className="c_round_btn_add" onClick={this.incrementQty.bind(this,item.productId,item.quantity)}>+</button>
                             </span>
                         </p>
                     </div>

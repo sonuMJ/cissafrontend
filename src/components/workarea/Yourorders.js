@@ -28,6 +28,8 @@ class Yourorders extends React.Component{
                 loggedIn:true
             })
             this.ShowOrderDetails();
+        }else{
+            this.props.history.push('/login');
         }
     }
     ShowOrderDetails(){

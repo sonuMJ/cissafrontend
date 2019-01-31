@@ -6,21 +6,25 @@ class Confirmorder extends React.Component{
     state = {
         success:false,
         emptyData:true,
-        popup:false
+        popup:false,
+        timeOutInterval:null
     }
     componentDidMount(){
+        this.timeOutError = setInterval(()=>{this.setState({popup:true})},15000)
         var logged = this.CheckAuth();
         if(!logged){
             alert("You need to login to visit this page!!");
+            clearInterval(this.state.timeOutInterval)
             this.props.history.push('/login/co');
         }else{
-            this.getAllProductByCartId();
-            setTimeout(() => {
-                
-                if(!this.state.emptyData){
-                    this.submitOrders();
-                }
-            }, 500);
+                this.getAllProductByCartId();
+                setTimeout(() => {
+                    
+                    if(!this.state.emptyData){
+                        this.submitOrders();
+                    }
+                }, 500); 
+            
         }
         //cart id
         //user id 
@@ -37,6 +41,7 @@ class Confirmorder extends React.Component{
             return false;
         }
     }
+    
     getAllProductByCartId(){
         var key = Cookies.get('_cid');
         fetch('/api/cart/showCart',{
@@ -93,8 +98,10 @@ class Confirmorder extends React.Component{
             })
             .then(result => {
                 if(result.statuscode === 200){
+                    clearInterval(this.timeOutError)
                     this.setState({
-                        success:true
+                        success:true,
+
                     })
                     Cookies.remove('_cid', { path: '' });
                 }else{
@@ -121,6 +128,7 @@ class Confirmorder extends React.Component{
     }
 
     cancelFailedPurchase(){
+        clearInterval(this.timeOutError);
         this.setState({
             popup: !this.state.popup
         })

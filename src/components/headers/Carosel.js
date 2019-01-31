@@ -11,8 +11,8 @@ class Carosel extends React.Component{
                         <li data-target="#myCarousel" data-slide-to="2"></li>
                     </ol>
 
-                    <div className="container-fluid mypage-slide" style={{height:'400px'}}>
-                        <div className="carousel-inner" style={{height:'400px'}}>
+                    <div className="container-fluid mypage-slide" style={{height:'280px'}}>
+                        <div className="carousel-inner" style={{height:'280px'}}>
                                 <div className="item active">
                                     <img src="./img/slider1.jpg" alt="Los Angeles" style={{width:'100%'}}/>
                                 </div>

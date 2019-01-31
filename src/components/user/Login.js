@@ -120,26 +120,29 @@ class Login extends React.Component{
     render(){
         return(
             <React.Fragment>
-                <div className="container">
-                    <div className="c_login">
-                        <div style={{textAlign:'center'}}>
-                            <Link to={'/'}><img src="./img/cissa_logo.png" alt="cissa_logo" style={{height:'80px'}}/></Link>
+                <div>
+                    <p className="cart_back_btn"><Link to={'/'}><img src={'./img/back_btn.png'}/></Link></p>
+                    <div className="container">
+                        <div className="c_login">
+                            <div style={{textAlign:'center'}}>
+                                <Link to={'/'}><img src="./img/cissa_logo.png" alt="cissa_logo" style={{height:'80px'}}/></Link>
+                            </div>
+                            <h1 className="text-center">Welcome back!</h1>
+                            <h3 className="text-center">Log in to access your profile, orders and Purchase</h3>
+                            <label htmlFor="email" className="c_label">Email</label><span className="c_error_msg">{this.state.emailError}</span>
+                            <input type="text" name="email" placeholder="Email" className="form-control c_input" value={this.state.email} onChange={this.handleChange.bind(this)}/>
+                            <label htmlFor="password" className="c_label">Password</label><span className="c_error_msg">{this.state.pwdError}</span>
+                            <input type="password" name="password" placeholder="Password" className="form-control c_input" value={this.state.password} onChange={this.handleChange.bind(this)}/>
+                            {
+                                this.state.errorMessage ? <span style={{color:'red'}}>{"Your username or password is incorrect"}</span> : null
+                            }
+                            <input type="button" value="Log in to your account" className="btn btn-lg c_login_btn" onClick={this.handleSubmit.bind(this)}/>
+                            <div style={{textAlign:'right'}}>
+                                <Link to={'/forgotpassword'}>Forgot Password?</Link>
+                            </div>
+                            <p className="text-center" style={{marginTop:'20px'}}>Need an account? <Link to={'/register'}>Create your account</Link></p>
+                            <h6 className="text-center">&copy; 2019 Cissaorganic.com. All Rights Reserved</h6>
                         </div>
-                        <h1 className="text-center">Welcome back!</h1>
-                        <h3 className="text-center">Log in to access your profile, orders and Purchase</h3>
-                        <label htmlFor="email" className="c_label">Email</label><span className="c_error_msg">{this.state.emailError}</span>
-                        <input type="text" name="email" placeholder="Email" className="form-control c_input" value={this.state.email} onChange={this.handleChange.bind(this)}/>
-                        <label htmlFor="password" className="c_label">Password</label><span className="c_error_msg">{this.state.pwdError}</span>
-                        <input type="password" name="password" placeholder="Password" className="form-control c_input" value={this.state.password} onChange={this.handleChange.bind(this)}/>
-                        {
-                            this.state.errorMessage ? <span style={{color:'red'}}>{"Your username or password is incorrect"}</span> : null
-                        }
-                        <input type="button" value="Log in to your account" className="btn btn-lg c_login_btn" onClick={this.handleSubmit.bind(this)}/>
-                        <div style={{textAlign:'right'}}>
-                            <Link to={'/forgotpassword'}>Forgot Password?</Link>
-                        </div>
-                        <p className="text-center" style={{marginTop:'20px'}}>Need an account? <Link to={'/register'}>Create your account</Link></p>
-                        <h6 className="text-center">&copy; 2019 Cissaorganic.com. All Rights Reserved</h6>
                     </div>
                 </div>
             </React.Fragment>

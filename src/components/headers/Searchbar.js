@@ -13,7 +13,7 @@ class Searchbar extends React.Component{
 
     render(){
         return(
-            <div className="container-fluid c_home_searchbar" style={{paddingLeft:'200px',paddingRight:'200px'}}>
+            <div className="container c_home_searchbar">
                 <div className="row">
                     <div className="col-lg-2">  
                         <img src="./img/cissa_logo.png" width="100" alt="company_logo" className="img-responsive"/>

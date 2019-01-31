@@ -8,7 +8,10 @@ class Mybill extends React.Component{
 
     state ={
         cartItem:[],
-        total:0
+        total:0,
+        ShowWait:false,
+        WaitMsg:'',
+        storeloc:''
     }
 
     componentDidMount(){
@@ -21,6 +24,10 @@ class Mybill extends React.Component{
             var KEY = Cookies.get("_cid");
             this.fetchCartItems(KEY);
         }, 500);
+        var loc = Cookies.get('_loc');
+        this.setState({
+            storeloc:loc
+        })
     }
     setCookie(){
         var ran = (Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)+Math.random().toString(36).substring(2, 15)).toUpperCase();
@@ -40,7 +47,8 @@ class Mybill extends React.Component{
             .then(result => {
                 
                 this.setState({
-                    cartItem:result.result
+                    cartItem:result.result,
+                    ShowWait:false
                 })
                 setTimeout(() => {
                     this.Total();
@@ -51,6 +59,10 @@ class Mybill extends React.Component{
             })
     }
     deleteCartItems(key,productId){
+        this.setState({
+            ShowWait:true,
+            WaitMsg:"Deleting Item"
+        })
         fetch('/api/cart/cartItemRemove',{
             method : 'DELETE',
             body : JSON.stringify({product_id:productId}),
@@ -69,6 +81,10 @@ class Mybill extends React.Component{
             })
     }
     changeQuantity(key,productId,operation){
+        this.setState({
+            ShowWait:true,
+            WaitMsg:"Updating quantity"
+        })
         fetch('/api/cart/cartQty',{
             method : 'PUT',
             body : JSON.stringify({product_id:productId,operation:operation}),
@@ -158,7 +174,6 @@ class Mybill extends React.Component{
     }
     goCart(){
         this.props.redirecttocart();
-        
     }
     handleLocation(e){
         //this.props.selectLocation()
@@ -167,29 +182,36 @@ class Mybill extends React.Component{
     
     render(){
         return(
-            <div className="panel panel-info" style={{borderColor: '#ddd',boxShadow: '0px 1px 24px -9px'}}>
-                <div className="panel-heading" style={{color: '#000',backgroundColor: '#ffdd00',borderColor: '#ffdd00'}}><span style={{fontSize: '22px',fontWeight: '700'}}>Shopping Cart</span></div>
-                <div className="">
-                    <div className="c_cart_items">
-                    {
-                        this.state.cartItem != null ? <Billitem cartdata={this.state.cartItem} removeaction={this.REMOVE_item.bind(this)} inc={this.INC_qty.bind(this)} dec={this.DEC_qty.bind(this)}/> : <p className="empty-cart">Your Cart is Empty</p>
-                    }
+            <div>
+                
+                <div className="panel panel-info" style={{borderColor: '#ddd',boxShadow: '0px 1px 24px -9px'}}>
+                    <div className="panel-heading" style={{color: '#000',backgroundColor: '#ffdd00',borderColor: '#ffdd00'}}><span style={{fontSize: '22px',fontWeight: '700'}}>Shopping Cart</span></div>
+                    <div className="">
+                        <div className="c_cart_items">
+                        {
+                            this.state.ShowWait ? <Popup msg={this.state.WaitMsg}/> : null
+                        }
+                        {/* <Popup /> */}
+                        {
+                            this.state.cartItem != null ? <Billitem cartdata={this.state.cartItem} removeaction={this.REMOVE_item.bind(this)} inc={this.INC_qty.bind(this)} dec={this.DEC_qty.bind(this)}/> : <p className="empty-cart">Your Cart is Empty</p>
+                        }
+                        </div>
+                        {
+                            this.state.cartItem != null ? <TotalTemp totalprice={this.state.total}/> : ''
+                        }
+                        <p className="text-center" style={{marginTop:'5px'}}>
+                            <b>Store Locator:{this.state.storeloc}</b>&nbsp;
+                            <select onChange={this.handleLocation.bind(this)} name="location">
+                                <option value="">&nbsp;</option>
+                                <option value="Vazhuthacaud">Vazhuthacaud</option>
+                                <option value="Kazhakoottam">Kazhakoottam</option>
+                            </select>
+                        </p>
+                        <span style={{marginTop:"20px"}}>
+                            <button className="btn c_bill_btn" onClick={this.clearCart.bind(this)}>Clear Cart</button>
+                            <button className="btn c_bill_btn" style={{backgroundColor:"#ffdd00"}} onClick={this.goCart.bind(this)}>CHECK OUT</button>
+                        </span>
                     </div>
-                    {
-                        this.state.cartItem != null ? <TotalTemp totalprice={this.state.total}/> : ''
-                    }
-                    <p className="text-center" style={{marginTop:'5px'}}>
-                        <b>Store Locator</b>&nbsp;
-                        <select onChange={this.handleLocation.bind(this)} name="location">
-                            <option value="">&nbsp;</option>
-                            <option value="Vazhuthacaud">Vazhuthacaud</option>
-                            <option value="Kazhakoottam">Kazhakoottam</option>
-                        </select>
-                    </p>
-                    <span style={{marginTop:"20px"}}>
-                        <button className="btn c_bill_btn" onClick={this.clearCart.bind(this)}>Clear Cart</button>
-                        <button className="btn c_bill_btn" style={{backgroundColor:"#ffdd00"}} onClick={this.goCart.bind(this)}>CHECK OUT</button>
-                    </span>
                 </div>
             </div>
         )
@@ -208,8 +230,18 @@ const Billitem = (data) => {
 const TotalTemp = (t) => {
     return(
         <div className="c_cart_totalbill">
-            <p className="text-center"><span>Total</span>&nbsp;&nbsp;&#8377;<span style={{fontSize:'20px',fontWeight:'500'}}>{t.totalprice}</span></p>
+            <p className="text-center"><span style={{fontSize:'24px'}}>Total</span>&nbsp;&nbsp;&#8377;<span style={{fontSize:'36px',fontWeight:'500'}}>{t.totalprice}</span></p>
         </div>
+    )
+}
+
+const Popup = (msg) => {
+    return(
+        <div className="popup">
+                <div className="popup-inner-cart">
+                    <p className="text-center" style={{marginTop: '20px',fontSize: '22px'}}>{msg.msg}</p>
+                </div>
+            </div>
     )
 }
 export default Mybill;

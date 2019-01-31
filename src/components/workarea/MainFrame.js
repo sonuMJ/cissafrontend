@@ -11,6 +11,8 @@ import Topnav from '../headers/Topnav';
 import Footercontent from '../footers/Footercontent';
 import Footer from '../footers/Footer';
 import Popup from './Popup';
+import {Link} from 'react-router-dom';
+import Listview from './Listview';
 
 class Mainframe extends React.Component{
     state = {
@@ -20,10 +22,12 @@ class Mainframe extends React.Component{
         searching:false,
         category: 0,
         currentPage: 1,
-        todosPerPage: 30,
+        todosPerPage: 16,
         popup:false,
         productnotfound : false,
-        storeLocator:''
+        storeLocator:'',
+        categoryName:'Fruit&Vegetables',
+        itemsView:'block'
     }
     componentDidMount(){
         
@@ -31,6 +35,7 @@ class Mainframe extends React.Component{
         this.handleClick = this.handleClick.bind(this);
     }
     handleClick(event) {
+        window.scrollTo(0, 0);
         this.setState({
           currentPage: Number(event.target.id)
         });
@@ -112,7 +117,11 @@ class Mainframe extends React.Component{
             })
     }
 
-    Choosecategory(cate){
+    Choosecategory(cate,cate_name){
+        console.log(cate_name);
+        this.setState({
+            categoryName:cate_name
+        })
         this.fetchData(cate);
     }
 
@@ -153,7 +162,8 @@ class Mainframe extends React.Component{
         
     }
     goCart(){
-        if(this.state.storeLocator !== ""){
+        var location = Cookies.get("_cid");
+        if(location != undefined){
             this.props.history.push('/cart');
         }else{
             alert("You must choose store location to continue!!");
@@ -169,6 +179,13 @@ class Mainframe extends React.Component{
             Cookies.set("_loc", this.state.storeLocator, {expires:1});
         }, 100);
         
+    }
+    changeView(view){
+        console.log(view);
+        
+        this.setState({
+            itemsView:view
+        })
     }
 
     render(){
@@ -205,18 +222,33 @@ class Mainframe extends React.Component{
                 }
                 
                 <div className="container-fluid show-products">
-                    <div className="col-lg-2 col-md-2">
+                    <Categorylist selectcat={this.Choosecategory.bind(this)}/>
+                    {/* <div className="col-lg-2 col-md-2">
                         <Categorylist selectcat={this.Choosecategory.bind(this)}/>
-                    </div>
-                    <div className="col-lg-8 col-md-8">
+                    </div> */}
+                    <div className="col-lg-10 col-md-8">
                     {
                         this.state.productnotfound ? <h3 className="text-center">PRODUCT NOT FOUND</h3> : null
                     }
                     {
-                        this.state.isFetching ? <Listitems productlist={currentTodos} addtocart={this.addToCart.bind(this)}/> : <div style={{textAlign:'center',marginTop:'200px'}}>{ this.state.productnotfound ? null : <img src="../img/product_loader.gif" alt="loading_icon"/>}</div>
+                        this.state.isFetching ? 
+                        <div>
+                            <h2 style={{ borderBottom: '2px solid #d6d6d6',paddingBottom: '12px'}}>{this.state.categoryName}</h2>
+                            <div className="container-fluid">
+                                <ul className="cart_items_view">
+                                    <li><img src={'./img/block.png'} onClick={this.changeView.bind(this,'block')}/></li>
+                                    <li><img src={'./img/list.png'} onClick={this.changeView.bind(this,'list')}/></li>
+                                </ul>
+                            </div>
+                            {
+                                this.state.itemsView === 'block' ? <Listitems productlist={currentTodos} addtocart={this.addToCart.bind(this)}/> : <Listview productlist={currentTodos} addtocart={this.addToCart.bind(this)}/>
+                            }
+                            
+                        </div>
+                         : <div style={{textAlign:'center',marginTop:'200px'}}>{ this.state.productnotfound ? null : <img src="../img/product_loader.gif" alt="loading_icon"/>}</div>
                     }
                     </div>
-                    <div className="col-lg-2 col-md-2">
+                    <div className="col-lg-2 col-md-2 c_main_cart" >
                         <Mybill selectLocation={this.setLocation.bind(this)} redirecttocart={this.goCart.bind(this)} cartitems={this.state.cart} removeCartItem={this.removeCartItem.bind(this)}/>
                     </div>
                 </div>

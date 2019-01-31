@@ -27,6 +27,15 @@ class Order extends React.Component{
             })
         }, 100);
     }
+    CheckAuth(){
+        var token = Cookies.get("_token");
+        var session = Cookies.get("sessionID");
+        if(token !== undefined&&session !== undefined){
+            return true;
+        }else{
+            return false;
+        }
+    }
     Cancel(a){
         this.props.cancelclick(a);
     }
@@ -108,8 +117,18 @@ class Order extends React.Component{
                 
                 {
                     this.state.loaded ?
+                    
                     this.state.orderdetail.map(i => {
-                        return(<OrderTemplate rmvorder={this.rmvUnwantOrders.bind(this)} cancelProduct={this.removeProduct.bind(this)} reorder={this.Reorder.bind(this)} itemdetail={i} key={key++} click={this.Cancel.bind(this)}/>)
+                        var cancelBtn = false;
+                        var _today = new Date();
+                        var EndDate = new Date();
+                        var _d = new Date(parseInt(i.date));
+                        EndDate.setDate(_d.getDate() + + (5 - 1 - _d.getDay() + 7) % 7 + 1);  // friday
+                        if(new Date(_today) < new Date(EndDate)){
+                            //
+                            cancelBtn = true
+                        }
+                        return(<OrderTemplate rmvorder={this.rmvUnwantOrders.bind(this)} cancelBtn={cancelBtn}  cancelProduct={this.removeProduct.bind(this)} reorder={this.Reorder.bind(this)} itemdetail={i} key={key++} click={this.Cancel.bind(this)}/>)
                        
                     })
                     :
@@ -123,13 +142,25 @@ class Order extends React.Component{
 
 
 const OrderTemplate = (data) =>{
-    //console.log(data.itemdetail);
+   // console.log(data.cancelBtn);
     
     var d = new Date();
     var scheduledDate = new Date();
     var months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
     d.setTime(data.itemdetail.date);
-    scheduledDate.setTime(data.itemdetail.scheduled_date)
+    // //get end date
+    // var EndDate = new Date();
+    // EndDate.setDate(d.getDate() + + (5 - 1 - d.getDay() + 7) % 7 + 1);  // friday
+    // //get today 
+    // var today = new Date();
+     scheduledDate.setTime(data.itemdetail.scheduled_date);
+    // //compare date
+    //     if(new Date(today) > EndDate){
+    //         console.log(EndDate);
+    //     }
+        
+        
+    // //
     var month = months[d.getMonth()];
     var sMonth = months[scheduledDate.getMonth()];
     return(
@@ -166,7 +197,7 @@ const OrderTemplate = (data) =>{
                          data.itemdetail.status === 'Cancelled' ? <span><button className="btn" style={{float:'right',backgroundColor: '#12cc1a',color: 'white',fontWeight: '600'}} onClick={data.reorder.bind(this,data.itemdetail.orderid)}>Re order</button></span> :''
                     }
                     {
-                        data.itemdetail.status === 'Pending Delivery' ? <span><button className="btn" style={{float:'right',backgroundColor: '#ffc107',color: 'white',fontWeight: '600'}} onClick={data.click.bind(this,data.itemdetail.orderid)}>Cancel Order</button></span> :''
+                        data.itemdetail.status === 'Pending Delivery'&&data.cancelBtn ? <span><button className="btn" style={{float:'right',backgroundColor: '#ffc107',color: 'white',fontWeight: '600'}} onClick={data.click.bind(this,data.itemdetail.orderid)}>Cancel Order</button></span> :''
                     }
                     </p>
                     
