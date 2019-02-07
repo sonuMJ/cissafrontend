@@ -68,16 +68,16 @@ class Registration extends React.Component{
                             <h3 className="text-center">Account Registration</h3>
                             <form onSubmit={this.handleSubmit.bind(this)}>
                             <label htmlFor="email" className="c_label"><b>Username</b></label>
-                            <input type="text" className="form-control c_input" placeholder="Enter Username" minLength="3" maxLength="20" name="username" required/>
+                            <input type="text" className="form-control c_input" placeholder="Enter Username" minLength="3" maxLength="40" name="username" required/>
 
                             <label htmlFor="email" className="c_label"><b>Email</b></label>
-                            <input type="email" className="form-control c_input" placeholder="Enter Email address" maxLength="25" name="email" required/>
+                            <input type="email" className="form-control c_input" placeholder="Enter Email address" maxLength="50" name="email" required/>
 
                             <label htmlFor="psw" className="c_label"><b>Password</b></label>
-                            <input type="password"  name="pwd" placeholder="Password" className="form-control c_input"  required/>
+                            <input type="password"  name="pwd" placeholder="Password"  minLength="8" maxLength="25" className="form-control c_input"  required/>
 
                             <label htmlFor="psw-repeat" className="c_label"><b>Repeat Password</b></label>
-                            <input type="password" className="form-control c_input" placeholder="Repeat Password" name="repeatpwd" required/>
+                            <input type="password" className="form-control c_input" minLength="8" maxLength="25" placeholder="Repeat Password" name="repeatpwd" required/>
                             <p>{this.state.msg}</p>
                             <label htmlFor="referral" className="c_label"><b>Referral Code</b></label>
                             <input type="password" className="form-control c_input" placeholder="Referral code" name="referral"/>

@@ -42,3 +42,65 @@
     padding-left: 0px !important;
     padding-right: 0px !important;
 }
+/* topnavsm */
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 4;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+  }
+  
+  .sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 20px;
+    color: #fff;
+    display: block;
+    transition: 0.3s;
+  }
+  
+  .sidenav a:hover {
+    color: #f1f1f1;
+    cursor: pointer;
+  }
+  
+  .sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+  }
+.c_topnav-small-logo{
+    width: 58px;
+    height: 44px;
+    margin-top: -4px;
+    margin-left: 10px;
+}
+.c_topnav-small-cart_ic{
+    float: right;
+}
+.c_location_change_bill{
+    color: #005999;
+}
+.c_location_change_bill:hover{
+    cursor: pointer;
+    text-decoration: underline;
+}
+.c_location_change{
+    color: #005999;
+    display: none;
+}
+.c_location_change:hover{
+    cursor: pointer;
+    text-decoration: underline;
+}
+.popup-inner-location{
+    text-align: center;
+}

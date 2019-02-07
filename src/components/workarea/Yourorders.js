@@ -5,6 +5,7 @@ import "./product.css";
 import Cookies from 'js-cookie';
 import Order from './Order';
 import Logo from '../headers/Logo';
+import Topnavsm from '../headers/Topnavsm';
 
 class Yourorders extends React.Component{
     state = {
@@ -97,13 +98,21 @@ class Yourorders extends React.Component{
         }
         
     }
+    goMobCart(){
+        this.props.history.push('/cart');
+    }
 
     render(){
         return(
             <React.Fragment>
                 <Contactinfo />
-                <Logo />
-                <Topnav />
+                <div className="c_respo_nav-large">
+                    <Logo/>
+                    <Topnav />
+                </div>
+                <div className="c_respo_nav-small">
+                    <Topnavsm addCart={this.goMobCart.bind(this)}/>
+                </div>
                 <div className="container">
                 <h1>My Orders</h1>
                 {
@@ -113,7 +122,7 @@ class Yourorders extends React.Component{
                     {
                     this.state.loading ? <div>
                     {
-                        this.state.orderdata !== "" ? <Order  refresh={this.RefreshOrder.bind(this)} orderdata={this.state.orderdata} cancelclick={this.CancelOrder.bind(this)}/> : null
+                        this.state.orderdata !== "" ? <Order parentProps={this}  refresh={this.RefreshOrder.bind(this)} orderdata={this.state.orderdata} cancelclick={this.CancelOrder.bind(this)}/> : null
                     }
                     </div>
                     :

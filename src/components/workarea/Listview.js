@@ -43,10 +43,12 @@ class Listview extends React.Component{
                         <div className="col-lg-8">
                             <table className="table table-striped">
                             <thead className="c_show_list_thead">
-                                <th>Product Name</th>
-                                <th>Quantity</th>
-                                <th>Price</th>
-                                <th style={{width:'10%'}}>Action</th>
+                                <tr>
+                                    <th>Product Name</th>
+                                    <th>Quantity</th>
+                                    <th>Price</th>
+                                    <th style={{width:'10%'}}>Action</th>
+                                </tr>
                             </thead>
                                 <tbody className="c_show_list_tbody">
                                     {

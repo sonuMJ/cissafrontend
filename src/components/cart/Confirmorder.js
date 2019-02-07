@@ -7,9 +7,13 @@ class Confirmorder extends React.Component{
         success:false,
         emptyData:true,
         popup:false,
-        timeOutInterval:null
+        timeOutInterval:null,
+        readyToProcess:false
     }
     componentDidMount(){
+        var token = Cookies.get("_token");
+        var session = Cookies.get("sessionID");
+        var cart_key = Cookies.get("_cid");
         this.timeOutError = setInterval(()=>{this.setState({popup:true})},15000)
         var logged = this.CheckAuth();
         if(!logged){
@@ -17,14 +21,19 @@ class Confirmorder extends React.Component{
             clearInterval(this.state.timeOutInterval)
             this.props.history.push('/login/co');
         }else{
+            if(token !== undefined&&session !== undefined&&cart_key!==undefined){
+                //check for black list
                 this.getAllProductByCartId();
                 setTimeout(() => {
                     
                     if(!this.state.emptyData){
                         this.submitOrders();
                     }
-                }, 500); 
-            
+                }, 500);
+            }else{
+                this.props.history.push('/');
+            }
+
         }
         //cart id
         //user id 
@@ -60,7 +69,8 @@ class Confirmorder extends React.Component{
                         this.props.history.push('/');
                     }else{
                         this.setState({
-                            emptyData:false
+                            emptyData:false,
+                            readyToProcess:true
                         })
                         
                     }  
@@ -139,12 +149,23 @@ class Confirmorder extends React.Component{
         
         return(
             <React.Fragment>
+
                 {
+                    this.state.readyToProcess ? 
+                    <React.Fragment>
+                    {
                     this.state.popup ? <FailedPopup cancel={this.cancelFailedPurchase.bind(this)} /> : null
+                    }
+                    {
+                        !this.state.success ? <Processing /> : <ProcessSuccess s_date={sch_date}/>
+                    }
+                    </React.Fragment>
+                    : <div className="c_confirmorder_loader">
+                        <img src="./img/orderwait_loader.gif"/>
+                        <h3>No orders found...</h3>
+                    </div>
                 }
-                {
-                    !this.state.success ? <Processing /> : <ProcessSuccess s_date={sch_date}/>
-                }
+                
             </React.Fragment>
         )
     }
@@ -169,7 +190,7 @@ const ProcessSuccess = (p) => {
             <div className="text-center">
                 <Link to={'/'} style={{color: '#7ac142',fontSize: '26px',fontWeight: '200'}}>Continue Shopping</Link>
                 <div style={{paddingTop:'20px'}}>
-                    <Link to={'/yourorders'} style={{color: '#7ac142',fontSize: '20px',fontWeight: '200'}}>Your orders</Link>
+                    <Link to={'/yourorders'} style={{color: '#7ac142',fontSize: '20px',fontWeight: '200',textDecoration:'underline'}}>Your orders</Link>
                 </div>
                 <div className="alert alert-danger" style={{width: '50%',margin: 'auto',marginTop: '22px',fontSize: '20px'}}>
                     <strong>Scheduled pickup date : </strong><p className="alert-link">{p.s_date}</p>

@@ -13,6 +13,9 @@ import Footer from '../footers/Footer';
 import Popup from './Popup';
 import {Link} from 'react-router-dom';
 import Listview from './Listview';
+import Topnavsm from '../headers/Topnavsm';
+import Topnavsmsearch from '../headers/Topnavsmsearch';
+import Snackbar from '../snackbar/Snackbar';
 
 class Mainframe extends React.Component{
     state = {
@@ -22,12 +25,17 @@ class Mainframe extends React.Component{
         searching:false,
         category: 0,
         currentPage: 1,
-        todosPerPage: 16,
-        popup:false,
+        todosPerPage: 24,
+        locationPopup:false,
         productnotfound : false,
         storeLocator:'',
-        categoryName:'Fruit&Vegetables',
-        itemsView:'block'
+        categoryName:'All Products',
+        itemsView:'block',
+        updateBill:false,
+        locationChange:false,
+        status: '',
+        description: '',
+        msg_state: false
     }
     componentDidMount(){
         
@@ -47,7 +55,7 @@ class Mainframe extends React.Component{
 
     fetchData(cate){
         this.setState({
-            isFetching: true,
+            isFetching: false,
             currentPage:1
         })
         fetch('/api/product/getall/'+ cate)
@@ -70,8 +78,10 @@ class Mainframe extends React.Component{
             
         })
     }
+    
 
     addToCart(product_ID, product_item, qty){
+        
         var Key = Cookies.get("_cid");
         fetch('/api/cart/addCart',{
             method:'POST',
@@ -85,6 +95,7 @@ class Mainframe extends React.Component{
         .then(res => res.json())
         .then(result => {
             //alert(result.message);
+            //this.onResultChange("Success","Product added to cart");
             setTimeout(() => {
                 this.fetchCartItems(Key)
             }, 100);
@@ -93,6 +104,18 @@ class Mainframe extends React.Component{
             console.log(e);
         })
         
+    }
+    onResultChange(status, message){
+        this.setState({
+            status: status,
+            description: message,
+            msg_state: true
+        });
+        setTimeout(()=>{    
+            this.setState({
+               msg_state:false
+           });
+        }, 3000);
     }
     removeCartItem(prod_id){
 
@@ -119,9 +142,10 @@ class Mainframe extends React.Component{
 
     Choosecategory(cate,cate_name){
         console.log(cate_name);
-        this.setState({
-            categoryName:cate_name
-        })
+        // this.setState({
+        //     categoryName:cate_name
+        // })
+        this.state.categoryName = cate_name;
         this.fetchData(cate);
     }
 
@@ -162,7 +186,7 @@ class Mainframe extends React.Component{
         
     }
     goCart(){
-        var location = Cookies.get("_cid");
+        var location = Cookies.get("_loc");
         if(location != undefined){
             this.props.history.push('/cart');
         }else{
@@ -170,21 +194,39 @@ class Mainframe extends React.Component{
         }
         
     }
+    goMobCart(){
+        var location = Cookies.get("_loc");
+        if(location != undefined){
+            //go to cart
+            console.log("go to cart");
+            this.props.history.push('/cart');
+        }else{
+            this.setState({
+                locationPopup : true
+            })
+        }
+    }
+    set_loc(e){
+        this.setState({
+            locationPopup:false
+        })
+        this.setLocation(e.target.value);
+    }
 
     setLocation(loc){
         this.setState({
-            storeLocator:loc
+            storeLocator:loc,
+            locationChange:true
         })
         setTimeout(() => {
             Cookies.set("_loc", this.state.storeLocator, {expires:1});
         }, 100);
         
     }
-    changeView(view){
-        console.log(view);
+    changeView(e){
         
         this.setState({
-            itemsView:view
+            itemsView:e.target.value
         })
     }
 
@@ -212,11 +254,17 @@ class Mainframe extends React.Component{
         return(
             <React.Fragment>
                 {
-                    this.state.popup ? <Popup /> : ''
+                    this.state.locationPopup ? <LocationPopup clk={this.set_loc.bind(this)}/> : null
                 }
-                <Contactinfo />
-                <Searchbar search={this.handleSearchMain.bind(this)}/>
-                <Topnav />
+                <Contactinfo locationChange={this.state.locationChange}/>
+                <div className="c_respo_nav-large">
+                    <Searchbar search={this.handleSearchMain.bind(this)}/>
+                    <Topnav />
+                </div>
+                <div className="c_respo_nav-small">
+                    <Topnavsm addCart={this.goMobCart.bind(this)}/>
+                    <Topnavsmsearch search={this.handleSearchMain.bind(this)}/>
+                </div>
                 {
                     this.state.searching ? null : <Carosel />
                 }
@@ -226,20 +274,26 @@ class Mainframe extends React.Component{
                     {/* <div className="col-lg-2 col-md-2">
                         <Categorylist selectcat={this.Choosecategory.bind(this)}/>
                     </div> */}
-                    <div className="col-lg-10 col-md-8">
+                    <div className="col-lg-10 col-md-10">
                     {
-                        this.state.productnotfound ? <h3 className="text-center">PRODUCT NOT FOUND</h3> : null
+                        this.state.productnotfound ? <h3 className="text-center">PRODUCT CURRENTLY UNAVAILABLE </h3> : null
                     }
                     {
                         this.state.isFetching ? 
                         <div>
-                            <h2 style={{ borderBottom: '2px solid #d6d6d6',paddingBottom: '12px'}}>{this.state.categoryName}</h2>
-                            <div className="container-fluid">
+                            <p style={{ borderBottom: '2px solid #d6d6d6'}}>
+                                <span style={{ paddingBottom: '12px',fontSize:'28px',fontWeight:'500'}}>{this.state.categoryName}</span>
+                                <select style={{float:'right',marginTop:'12px',width:'140px',height:'26px'}} onChange={this.changeView.bind(this)}>
+                                    <option value="block">&#9744;Block view</option>
+                                    <option value="list">&#9776; List view</option>
+                                </select>
+                            </p>
+                            {/* <div className="container-fluid">
                                 <ul className="cart_items_view">
                                     <li><img src={'./img/block.png'} onClick={this.changeView.bind(this,'block')}/></li>
                                     <li><img src={'./img/list.png'} onClick={this.changeView.bind(this,'list')}/></li>
                                 </ul>
-                            </div>
+                            </div> */}
                             {
                                 this.state.itemsView === 'block' ? <Listitems productlist={currentTodos} addtocart={this.addToCart.bind(this)}/> : <Listview productlist={currentTodos} addtocart={this.addToCart.bind(this)}/>
                             }
@@ -260,7 +314,7 @@ class Mainframe extends React.Component{
                     </div>
                 }
                 
-                
+                <Snackbar status={this.state.status} msg_state={this.state.msg_state} message={this.state.description}/>
                 <Footercontent />
                 <Footer />
                 
@@ -268,6 +322,24 @@ class Mainframe extends React.Component{
             
         )
     }
+}
+
+const LocationPopup = (p) => {
+    return(
+        <div className="popup">
+            <div className="popup-inner" style={{width:'230px',height:'100px'}}>
+                <p className="text-center">Select location</p>
+                <div className="popup-inner-location">
+                    <select className="text-center" onChange={p.clk.bind(this)} name="_location">
+                        <option></option>
+                        <option>vazhuthacaud</option>
+                        <option>kazhakottam</option>
+                    </select>
+                </div>
+                
+            </div>
+        </div>
+    )
 }
 
 export default Mainframe;

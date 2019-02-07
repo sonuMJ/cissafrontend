@@ -8,11 +8,11 @@ class Orderrows extends React.Component{
     }
 
     componentDidMount(){
-        
         this.fetchOrderDetails(this.props.orderids);
     }
 
     componentWillReceiveProps(){
+        
         this.fetchOrderDetails(this.props.orderids);
     }
 
@@ -55,7 +55,7 @@ class Orderrows extends React.Component{
                     this.state.loaded ?
                     this.state.productdata.map(i => {
 
-                        return(<LoadProduct order={i.orderdetails} product={i.productdetails} key={key++} removeclick={this.removeProduct.bind(this)}/>)
+                        return(<LoadProduct orderstatus={this.props.orderStatus} order={i.orderdetails} product={i.productdetails} key={key++} removeclick={this.removeProduct.bind(this)}/>)
                         
                     })
                     
@@ -67,7 +67,6 @@ class Orderrows extends React.Component{
 }
 
 const LoadProduct = (data) =>{
-    //console.log(data);
     
     return(
             <tr>
@@ -75,7 +74,14 @@ const LoadProduct = (data) =>{
                 <td>{data.order.quantity}</td>
                 <td>{data.product.price}</td>
                 <td>{parseInt(data.order.quantity)*parseInt(data.product.price)}</td>
-                <td><span className="c_item_remove_btn" onClick={data.removeclick.bind(this,data.product.product_id)}>&nbsp;</span></td>
+                <td>
+                    {
+                        data.orderstatus === "Pending Delivery" ? 
+                        <span className="c_item_remove_btn" onClick={data.removeclick.bind(this,data.product.product_id)}>&nbsp;</span>
+                        :
+                        null
+                    }
+                    </td>
             </tr>
     )
 }

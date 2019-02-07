@@ -6,7 +6,6 @@ class Billitems extends React.Component{
     }
 
     componentDidMount(){
-        //console.log(this.props.itemDetail);
         
     }
     componentWillReceiveProps(){
@@ -21,6 +20,10 @@ class Billitems extends React.Component{
     }
     removeItem(prod_id){
         this.props.remove(this,prod_id);
+    }
+
+    onChangeQuantity(product_id,e){
+        this.props.dropdown(this,product_id,e.target.value);
     }
 
     render(){
@@ -40,7 +43,12 @@ class Billitems extends React.Component{
                         <p>
                             <span className="text-center">
                                 <button className="c_round_btn_remove" onClick={this.decrementQty.bind(this,item.productId,item.quantity)}>-</button>
-                                <input type="number" value={item.quantity} readOnly style={{width:"40px",textAlign: "right"}} name="qty"/>
+                                <select onChange={this.onChangeQuantity.bind(this,item.productId)}>
+                                    {
+                                        <Itemnumber defaultSelected={item.quantity}/>
+                                    }
+                                </select>
+                                {/* <input type="number" value={item.quantity} readOnly style={{width:"40px",textAlign: "right"}} name="qty"/> */}
                                 <button className="c_round_btn_add" onClick={this.incrementQty.bind(this,item.productId,item.quantity)}>+</button>
                             </span>
                         </p>
@@ -51,6 +59,14 @@ class Billitems extends React.Component{
             </React.Fragment>
         )
     }
+}
+
+const Itemnumber = (q) => {
+    var rows = [];
+    for (var i = 1; i <= 10; i++) {
+        rows.push(<option value={i} selected={i === parseInt(q.defaultSelected)} key={i}>{i}</option>);
+    }
+    return rows;
 }
 
 export default Billitems;

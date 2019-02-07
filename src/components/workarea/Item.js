@@ -44,7 +44,7 @@ class Item extends React.Component{
 
     render(){
         return(
-            <div className="col-lg-3 c_product_col">
+            <div className="col-lg-3 col-md-6 col-sm-6 c_product_col">
 
             <div className="c_product text-center">
                 <img src={this.state.item.img_url} className="img-responsive" style={{height:"200px",margin:"auto"}}/>

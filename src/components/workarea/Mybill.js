@@ -11,7 +11,8 @@ class Mybill extends React.Component{
         total:0,
         ShowWait:false,
         WaitMsg:'',
-        storeloc:''
+        storeloc:'',
+        locationPopup:false
     }
 
     componentDidMount(){
@@ -25,9 +26,16 @@ class Mybill extends React.Component{
             this.fetchCartItems(KEY);
         }, 500);
         var loc = Cookies.get('_loc');
-        this.setState({
-            storeloc:loc
-        })
+        if(loc == undefined || loc == null){
+            this.setState({
+                storeloc:'no location'
+            })
+        }else{
+            this.setState({
+                storeloc:loc
+            })
+        }
+        
     }
     setCookie(){
         var ran = (Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)+Math.random().toString(36).substring(2, 15)).toUpperCase();
@@ -80,14 +88,14 @@ class Mybill extends React.Component{
                 console.log(e);
             })
     }
-    changeQuantity(key,productId,operation){
+    changeQuantity(key,productId,operation,qty){
         this.setState({
             ShowWait:true,
             WaitMsg:"Updating quantity"
         })
         fetch('/api/cart/cartQty',{
             method : 'PUT',
-            body : JSON.stringify({product_id:productId,operation:operation}),
+            body : JSON.stringify({product_id:productId,operation:operation,quantity:qty}),
                 headers: {
                     "Content-Type": "application/json",
                     // "Content-Type": "application/x-www-form-urlencoded",
@@ -137,15 +145,19 @@ class Mybill extends React.Component{
     INC_qty(context,product_id,qty){
         if(qty <= 9){
             var KEY = Cookies.get("_cid");
-            this.changeQuantity(KEY,product_id,"INC");
+            this.changeQuantity(KEY,product_id,"INC",null);
         }
         
     }
     DEC_qty(context,product_id,qty){
         if(qty > 1){
             var KEY = Cookies.get("_cid");
-            this.changeQuantity(KEY,product_id,"DEC");
+            this.changeQuantity(KEY,product_id,"DEC",null);
         }
+    }
+    MANUAL_qty(context,product_id,qty){
+        var KEY = Cookies.get("_cid");
+        this.changeQuantity(KEY,product_id,"MANUAL",qty);
     }
     REMOVE_item(context,product_id){
         var KEY = Cookies.get("_cid");
@@ -175,15 +187,28 @@ class Mybill extends React.Component{
     goCart(){
         this.props.redirecttocart();
     }
+
+    changeLocation(){
+        this.setState({
+            locationPopup:true
+        })
+    }
     handleLocation(e){
         //this.props.selectLocation()
+        this.setState({
+            locationPopup:false,
+            storeloc:e.target.value
+        })
         this.props.selectLocation(e.target.value)
     }
     
+    
     render(){
         return(
-            <div>
-                
+            <div className="c_cart">
+            {
+                this.state.locationPopup ? <LocationPopup clk={this.handleLocation.bind(this)}/> : null
+            }
                 <div className="panel panel-info" style={{borderColor: '#ddd',boxShadow: '0px 1px 24px -9px'}}>
                     <div className="panel-heading" style={{color: '#000',backgroundColor: '#ffdd00',borderColor: '#ffdd00'}}><span style={{fontSize: '22px',fontWeight: '700'}}>Shopping Cart</span></div>
                     <div className="">
@@ -193,19 +218,21 @@ class Mybill extends React.Component{
                         }
                         {/* <Popup /> */}
                         {
-                            this.state.cartItem != null ? <Billitem cartdata={this.state.cartItem} removeaction={this.REMOVE_item.bind(this)} inc={this.INC_qty.bind(this)} dec={this.DEC_qty.bind(this)}/> : <p className="empty-cart">Your Cart is Empty</p>
+                            this.state.cartItem != null ? <Billitem cartdata={this.state.cartItem} removeaction={this.REMOVE_item.bind(this)} inc={this.INC_qty.bind(this)} dec={this.DEC_qty.bind(this)} dropdown={this.MANUAL_qty.bind(this)}/> : <p className="empty-cart">Your Cart is Empty</p>
                         }
                         </div>
                         {
                             this.state.cartItem != null ? <TotalTemp totalprice={this.state.total}/> : ''
                         }
                         <p className="text-center" style={{marginTop:'5px'}}>
-                            <b>Store Locator:{this.state.storeloc}</b>&nbsp;
-                            <select onChange={this.handleLocation.bind(this)} name="location">
+                            <b>Store Locator:{this.state.storeloc}</b>&nbsp;<br/>
+                            <span className="c_location_change_bill" onClick={this.changeLocation.bind(this)}>Change</span>
+
+                            {/* <select onChange={this.handleLocation.bind(this)} name="location">
                                 <option value="">&nbsp;</option>
                                 <option value="Vazhuthacaud">Vazhuthacaud</option>
                                 <option value="Kazhakoottam">Kazhakoottam</option>
-                            </select>
+                            </select> */}
                         </p>
                         <span style={{marginTop:"20px"}}>
                             <button className="btn c_bill_btn" onClick={this.clearCart.bind(this)}>Clear Cart</button>
@@ -222,7 +249,7 @@ const Billitem = (data) => {
     return(
         data.cartdata.map(item => {
             return(
-               <Billitems itemDetail={item} remove={data.removeaction.bind(this)} increment={data.inc.bind(this)} decrement={data.dec.bind(this)} key={item.productId}/>
+               <Billitems itemDetail={item} remove={data.removeaction.bind(this)} increment={data.inc.bind(this)} decrement={data.dec.bind(this)} key={item.productId} dropdown={data.dropdown.bind(this)}/>
             )
         })
     )
@@ -242,6 +269,23 @@ const Popup = (msg) => {
                     <p className="text-center" style={{marginTop: '20px',fontSize: '22px'}}>{msg.msg}</p>
                 </div>
             </div>
+    )
+}
+
+const LocationPopup = (p) => {
+    return(
+        <div className="popup">
+            <div className="popup-inner" style={{width:'230px',height:'100px'}}>
+                <p className="text-center" style={{fontSize:'18px',marginTop: '12px'}}>Select location</p>
+                <div className="popup-inner-location">
+                    <select className="text-center" onChange={p.clk.bind(this)} name="_location">
+                        <option></option>
+                        <option>vazhuthacaud</option>
+                        <option>kazhakottam</option>
+                    </select>
+                </div>
+            </div>
+        </div>
     )
 }
 export default Mybill;

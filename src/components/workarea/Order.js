@@ -10,6 +10,8 @@ class Order extends React.Component{
     }
 
     componentDidMount(){
+        console.log(this.props.parentProps);
+        
         this.setState({
             orderdetail:this.props.orderdata,
             loaded:true
@@ -40,7 +42,7 @@ class Order extends React.Component{
         this.props.cancelclick(a);
     }
 
-    Reorder(order_id){
+    ReorderByOrderId(order_id){
         if(order_id !== ""){
             var token = Cookies.get("_token");
             var session = Cookies.get("sessionID");
@@ -66,6 +68,32 @@ class Order extends React.Component{
                 this.props.refresh();
             }) 
         }
+    }
+
+    Reorder(order_id){
+        var token = Cookies.get("_token");
+        var session = Cookies.get("sessionID");
+        fetch("/api/user/getallblacklistbyuserid",{
+            headers:{
+                "Content-Type": "application/json",
+                // "Content-Type": "application/x-www-form-urlencoded",
+                "token": token,
+                "sessionid":session
+            },
+            method:'POST'
+        })
+        .then(res => {
+            if(res.status == 423){
+                this.props.parentProps.props.history.push('/locked');
+            }else if(res.status == 200){
+                this.ReorderByOrderId(order_id);
+            }else if(res.status == 401){
+                alert("Unauthorized User!!");
+                Cookies.remove('_token', { path: '' });
+                Cookies.remove('sessionID', { path: '' });
+                this.props.parentProps.props.history.push('/');
+            }
+        })
         
     }
 
@@ -180,7 +208,7 @@ const OrderTemplate = (data) =>{
                     </thead>
                     <thead>
                         {
-                             <Orderrows orderids={data.itemdetail.orderid} remve={data.cancelProduct.bind(this)} rmvorder={data.rmvorder.bind(this)}/>
+                             <Orderrows orderids={data.itemdetail.orderid} orderStatus={data.itemdetail.status} remve={data.cancelProduct.bind(this)} rmvorder={data.rmvorder.bind(this)}/>
                         }
                     </thead>
                     </table>

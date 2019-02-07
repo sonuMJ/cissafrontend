@@ -13,6 +13,7 @@ import Settings from './components/user/Settings';
 import Forgotpwd from './components/user/Forgotpwd';
 import Resetpassword from './components/user/Resetpassword';
 import Filenotfound from './components/workarea/Filenotfound';
+import Books from './components/Books/Books';
 
 
 
@@ -38,6 +39,7 @@ class App extends Component {
           <Route path="/" exact component={Mainframe}/>
           <Route path="/login/:path" exact component={Login}/>
           <Route path="/login" exact component={Login}/>
+          <Route path="/books" exact component={Books}/>
           <Route path="/forgotpassword" exact component={Forgotpwd}/>
           <Route path="/resetpassword/:verif_code?/:email" exact component={Resetpassword}/>
           <Route path="/register" exact component={Registration}/>

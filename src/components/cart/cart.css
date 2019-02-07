@@ -121,3 +121,25 @@
       box-shadow: inset 0px 0px 0px 10px #7ac142;
     }
   }
+  .popup-inner-cart-text{
+    margin-top: 20px;
+    font-size: 22px;
+  }
+  .c_round_btn{
+    border-radius: 50%;
+    height: 30px;
+    width: 30px;
+    border: none;
+    background-color: #d6d6d6;
+    
+  }
+  .c_cart_count{
+    width: 38px;
+    text-align: right;
+  }
+  .c_confirmorder_loader{
+    width: 300px;
+    margin: auto;
+    text-align: center;
+    margin-top: 200px;
+  }

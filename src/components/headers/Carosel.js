@@ -5,11 +5,11 @@ class Carosel extends React.Component{
         return(
             <div className="container-fluid home_slide">
                 <div id="myCarousel" className="carousel slide" data-ride="carousel">
-                    <ol className="carousel-indicators">
+                    {/* <ol className="carousel-indicators">
                         <li data-target="#myCarousel" data-slide-to="0" className="active"></li>
                         <li data-target="#myCarousel" data-slide-to="1"></li>
                         <li data-target="#myCarousel" data-slide-to="2"></li>
-                    </ol>
+                    </ol> */}
 
                     <div className="container-fluid mypage-slide" style={{height:'280px'}}>
                         <div className="carousel-inner" style={{height:'280px'}}>

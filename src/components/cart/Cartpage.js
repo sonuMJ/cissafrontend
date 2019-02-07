@@ -6,6 +6,8 @@ import Contactinfo from '../headers/Contactinfo';
 import Searchbar from '../headers/Searchbar';
 import Topnav from '../headers/Topnav';
 import {Link} from 'react-router-dom';
+import Logo from '../headers/Logo';
+import Topnavsm from '../headers/Topnavsm';
 
 class Cartpage extends React.Component{
     state = {
@@ -13,7 +15,7 @@ class Cartpage extends React.Component{
         total:0,
         confirmplace:true,
         ShowWait:false,
-        WaitMsg:''
+        WaitMsg:'sdasdsd'
     }
     fetchCartItems(key){
         fetch('/api/cart/showCart',{
@@ -61,14 +63,14 @@ class Cartpage extends React.Component{
                 console.log(e);
             })
     }
-    changeQuantity(key,productId,operation){
+    changeQuantity(key,productId,operation,qty){
         this.setState({
             ShowWait:true,
             WaitMsg:"Updating quantity"
         })
         fetch('/api/cart/cartQty',{
             method : 'PUT',
-            body : JSON.stringify({product_id:productId,operation:operation}),
+            body : JSON.stringify({product_id:productId,operation:operation,quantity:qty}),
                 headers: {
                     "Content-Type": "application/json",
                     // "Content-Type": "application/x-www-form-urlencoded",
@@ -118,23 +120,56 @@ class Cartpage extends React.Component{
     INC_QTY(context,product_id, qty){
         if(qty <= 9){
             var Key = Cookies.get("_cid");
-            this.changeQuantity(Key,product_id,"INC");
+            this.changeQuantity(Key,product_id,"INC",null);
         }
     }
     DEC_QTY(context, product_id, qty){
         if(qty > 1){
             var Key = Cookies.get("_cid");
-            this.changeQuantity(Key,product_id,"DEC");
+            this.changeQuantity(Key,product_id,"DEC",null);
         }
+    }
+    MANUAL_qty(context,product_id,qty){
+        var KEY = Cookies.get("_cid");
+        this.changeQuantity(KEY,product_id,"MANUAL",qty);
     }
     orderItem(){
         //if AUTH is empty => login else => confirmorder
+
         var loggedin = this.CheckAuth();
         if(loggedin) {
-            this.props.history.push('/confirmOrder');
+            //check for blacklisted and process
+            this.checkBlacklist();
+           
         }else{
             this.props.history.push('/login/co');
         }
+    }
+    checkBlacklist(){
+        var token = Cookies.get("_token");
+        var session = Cookies.get("sessionID");
+        fetch("/api/user/getallblacklistbyuserid",{
+            headers:{
+                "Content-Type": "application/json",
+                // "Content-Type": "application/x-www-form-urlencoded",
+                "token": token,
+                "sessionid":session
+            },
+            method:'POST'
+        })
+        .then(res => {
+            if(res.status == 423){
+                this.props.history.push('/locked');
+            }else if(res.status == 200){
+                this.props.history.push('/confirmOrder');
+            }else if(res.status == 401){
+                alert("Unauthorized User!!");
+                Cookies.remove('_token', { path: '' });
+                Cookies.remove('sessionID', { path: '' });
+                this.props.history.push('/');
+            }
+        })
+            
     }
     CheckAuth(){
         var token = Cookies.get("_token");
@@ -159,6 +194,9 @@ class Cartpage extends React.Component{
     cancelPurchase(){
         this.props.history.push('/');
     }
+    goMobCart(){
+        this.props.history.push('/cart');
+    }
 
     render(){
         var C = this.state.cart;
@@ -172,29 +210,34 @@ class Cartpage extends React.Component{
                     null
                 } */}
                 <Contactinfo />
-                <Searchbar />
-                <Topnav />
+                <div className="c_respo_nav-large">
+                    <Logo/>
+                    <Topnav />
+                </div>
+                <div className="c_respo_nav-small">
+                    <Topnavsm addCart={this.goMobCart.bind(this)}/>
+                </div>
                 {
                     this.state.ShowWait ? <Popup msg={this.state.WaitMsg}/> : null
                 }
-                <div className="container">
+                <div className="container c_cart_show_table_view">
                     <div className="col-lg-1">
 
                     </div>
-                    <div className="col-lg-10">
+                    <div className="col-lg-10 col-md-12 col-sm-12 col-xs-12">
                         <h4><span style={{fontSize:'22px'}}><Link to={'/'} style={{color:'#7ac142'}}><img src={'./img/back_arrow.png'}/>Back</Link></span></h4>
-                        <h2 style={{fontSize:'34px'}}>Your Shopping Cart <button style={{float:'right'}} className="cart-confirm-btn" onClick={this.orderItem.bind(this)}>Confirm Order</button></h2>
+                        <h2 style={{fontSize:'34px'}} className="c_cart_main_title">Your Shopping Cart <button style={{float:'right'}} className="cart-confirm-btn" onClick={this.orderItem.bind(this)}>Confirm Order</button></h2>
                         <table className="table table-responsive table-hover cart-table">
                             <tbody>
                                 {
-                                    C == null ? <CartEmpty /> : <ShowCart cart={C} inc={this.INC_QTY.bind(this)} dec={this.DEC_QTY.bind(this)} remove={this.removeCartItem.bind(this)}/>
+                                    C == null ? <CartEmpty /> : <ShowCart cart={C} inc={this.INC_QTY.bind(this)} dec={this.DEC_QTY.bind(this)} dropdown={this.MANUAL_qty.bind(this)} remove={this.removeCartItem.bind(this)}/>
                                 }
                             </tbody>
                         </table>
                         <div className="cart-table-totalrow">
                             
-                            <div className="col-lg-8 text-right" style={{marginTop:'16px'}}>Total Price</div>
-                            <div className="col-lg-4 text-center">&#8377;<span className="cart-table-totalprice">{this.state.total}</span></div>
+                            <div className="col-lg-8 col-md-8 col-sm-6 col-xs-6 text-right" style={{marginTop:'16px'}}>Total Price</div>
+                            <div className="col-lg-4 col-md-4 col-sm-6 col-xs-6 text-center">&#8377;<span className="cart-table-totalprice">{this.state.total}</span></div>
                         </div>
                         {/* <div class="alert alert-danger" style={{color:'#000',marginTop:'30px'}}>
                             <strong>Warning!</strong> You should read this message
@@ -222,7 +265,7 @@ const ShowCart = (cart) =>{
             {
                 Object.keys(C).map((item,k) =>{
                     return(
-                    <Cartitem cartdata={C[item]} inc={cart.inc.bind(this)} dec={cart.dec.bind(this)} remove={cart.remove.bind(this)} key={k}/>
+                    <Cartitem cartdata={C[item]} inc={cart.inc.bind(this)} dec={cart.dec.bind(this)} dropdown={cart.dropdown.bind(this)} remove={cart.remove.bind(this)} key={k}/>
                     )
                 })
             }
@@ -264,7 +307,7 @@ const Popup = (msg) => {
     return(
         <div className="popup">
                 <div className="popup-inner-cart">
-                    <p className="text-center" style={{marginTop: '20px',fontSize: '22px'}}>{msg.msg}</p>
+                    <p className="text-center popup-inner-cart-text" >{msg.msg}</p>
                 </div>
             </div>
     )

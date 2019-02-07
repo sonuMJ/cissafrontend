@@ -2,7 +2,7 @@ import React from 'react';
 import Cookies from 'js-cookie';
 import { Link } from 'react-router-dom';
 
-class Topnav extends React.Component{
+class Topnavsm extends React.Component{
     state = {
         authenticated:false,
         username:'User'
@@ -55,41 +55,42 @@ class Topnav extends React.Component{
 
     }
     Logout(){
+        document.getElementById("mySidenav").style.width = "0";
         Cookies.remove('_token', { path: '' });
         Cookies.remove('sessionID', { path: '' });
+    }
+    openNav() {
+        document.getElementById("mySidenav").style.width = "250px";
+      }
+      
+    closeNav() {
+        document.getElementById("mySidenav").style.width = "0";
     }
 
     render(){
         return(
-            <div>
-                <nav className="navbar c_navbar">
-                    <div className="container-fluid">
-                        <div className="navbar-header">
-                        <button type="button" className="navbar-toggle c_navbar_toggle" data-toggle="collapse" data-target="#myNavbar">
-                            <span className="icon-bar"></span>
-                            <span className="icon-bar"></span>
-                            <span className="icon-bar"></span>                        
-                        </button>
-                        </div>
-                        <div className="collapse navbar-collapse" id="myNavbar">
-                        <ul className="nav navbar-nav c_nav_items">
-                            <li className="active"><Link to={'/'}>Home</Link></li>
-                            <li><a href="#">Contact Us</a></li>
-                            <li><a href="#">Support Us</a></li>
-                            <li><Link to={'/yourorders'}>Orders</Link></li>
-                            <li><a href="#">News</a></li>
-                            <li><a href="#">Farms</a></li>
-                            <li><Link to={'/books'}>Cissa Books</Link></li>
-                        </ul>
-                        <ul className="nav navbar-nav navbar-right c_nav_items">
+            <React.Fragment>
+                <div id="mySidenav" className="sidenav">
+                    <a href="javascript:void(0)" className="closebtn" onClick={this.closeNav.bind(this)}>&times;</a>
+                    <Link to={'/'} onClick={this.closeNav.bind(this)}>Home</Link >
+                    <Link to={'/'} onClick={this.closeNav.bind(this)}>Contact Us</Link >
+                    <Link to={'/'} onClick={this.closeNav.bind(this)}>Support Us</Link >
+                    <Link to={'/yourorders'} onClick={this.closeNav.bind(this)}>Orders</Link >
+                    <Link to={'/'} onClick={this.closeNav.bind(this)}>News</Link >
+                    <Link to={'/'} onClick={this.closeNav.bind(this)}>Farms</Link >
+                    <Link to={'/books'} onClick={this.closeNav.bind(this)}>Cissa Books</Link >
+                    <ul className="nav navbar-nav navbar-right c_nav_items">
                             {
                                 this.state.authenticated ? <Logged username={this.state.username} cli={this.Logout.bind(this)}/> : <NotLogged />
                             }
                         </ul>
-                        </div>
-                    </div>
-                    </nav>
-            </div>
+                </div>
+                <span style={{fontSize:'30px',cursor:'pointer',color:'#fff',marginLeft:'10px'}}>
+                <span onClick={this.openNav.bind(this)}>&#9776;</span> 
+                <img src="./img/cissa_logo.png" alt="company_logo" className="c_topnav-small-logo"/>
+                <img src="./img/cart_ic.png" alt="company_logo" className="c_topnav-small-cart_ic" onClick={this.props.addCart.bind(this)}/>
+                </span>
+            </React.Fragment>
         )
     }
 }
@@ -116,4 +117,4 @@ const NotLogged = () =>{
     )
 }
 
-export default Topnav;
+export default Topnavsm;

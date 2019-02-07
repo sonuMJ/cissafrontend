@@ -1,0 +1,108 @@
+/* media query */
+@media only screen and (max-width: 600px) {
+    .home_slide{
+        display: none;
+    }
+    .c_searchbar{
+        display: inline-flex;
+    }
+    .c_home_search_all{
+        width: 100% !important;
+    }
+    .c_navbar_toggle{
+        border: 1px solid white;
+    }
+    .c_navbar_toggle span{
+        background-color: #fff;
+    }
+    .c_product{
+        padding: 0px 40px 0px !important;
+        border-right: 0px !important;
+        margin-bottom: 0px !important;
+    }
+    .c_respo_nav-large{
+        display: none;
+    }
+    .c_respo_nav-small{
+        display: block !important;
+    }
+    .show-products{
+        padding-top: 68px !important;
+    }
+    .c_cart{
+        display: none;
+    }
+    .cart-table-img{
+        display: none;
+    }
+    .cart-confirm-btn{
+        float: none !important;
+        margin: 10px 0px;
+    }
+    .c_cart_counter{
+        display: flex;
+    }
+    .cart-table-tr > td{
+        padding: 0px !important;
+    }
+    .cart-table-total{
+        padding-top: 28px !important;
+    }
+    .c_cart-translated{
+        display: none;
+    }
+    .popup-inner-cart{
+        width: 184px !important;
+        height: 51px !important;
+    }
+    .popup-inner-cart-text{
+        margin-top: 10px !important;
+    }
+    .c_cart_count{
+        text-align: center !important;
+    }
+    .c_cart_counter{
+        margin-top: 22px;
+    }
+    .c_cart_price{
+        margin-top: 20px;
+    }
+    .cart-table-remove{
+        margin-top: 26px;
+    }
+    .c_cart_main_title{
+        text-align: center;
+    }
+    .cart-table-prod_id{
+        display: none;
+    }
+    .cart-table-item span{
+        font-size: 16px !important;
+    }
+    .cart-table-item-main{
+        padding-top: 8px !important;
+    }
+    .c_round_btn{
+        width: 25px !important;
+        height: 25px !important;
+    }
+    .c_cart_price_ind_total{
+        font-size: 20px !important;
+    }
+    .c_location_change{
+        display: inline !important;
+    }
+    .c_cart_show_table_view{
+        padding-left: 0px !important;
+        padding-right: 0px !important;
+    }
+} 
+@media (min-width: 768px) and (max-width: 1366px) {
+    .c_product{
+        padding: 20px 16px 40px !important;
+    }
+    .c_main_cart{
+        padding-left: 0px !important;
+        padding-right: 0px !important;
+    }
+}
