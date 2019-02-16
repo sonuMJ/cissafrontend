@@ -4,6 +4,7 @@ import {Link, Route, Switch, Redirect} from 'react-router-dom';
 import Contactinfo from '../headers/Contactinfo';
 import Logo from '../headers/Logo';
 import Topnav from '../headers/Topnav';
+import Topnavsm from '../headers/Topnavsm'
 
 class Settings extends React.Component{
     state ={
@@ -27,6 +28,19 @@ class Settings extends React.Component{
             return true;
         }else{
             return false;
+        }
+    }
+
+    goMobCart(){
+        var location = Cookies.get("_loc");
+        if(location != undefined){
+            //go to cart
+            console.log("go to cart");
+            this.props.history.push('/cart');
+        }else{
+            this.setState({
+                locationPopup : true
+            })
         }
     }
 
@@ -84,8 +98,13 @@ class Settings extends React.Component{
         return(
             <React.Fragment>
                 <Contactinfo />
-                <Logo />
-                <Topnav />
+                <div className="c_respo_nav-large">
+                    <Logo/>
+                    <Topnav addCart={this.goMobCart.bind(this)}/>
+                </div>
+                <div className="c_respo_nav-small">
+                    <Topnavsm addCart={this.goMobCart.bind(this)}/>
+                </div>
                 <div className="container">
                     {
                         this.state.logged ? 
@@ -96,7 +115,7 @@ class Settings extends React.Component{
                                     <div className="list-group">
                                         <Link to={'/settings/reset'} className="list-group-item">Change Password</Link>
                                         <Link to={'/settings/info'} className="list-group-item">User Info</Link>
-                                        <Link to={'/settings/edit'} className="list-group-item">Third item</Link>
+                                        {/* <Link to={'/settings/edit'} className="list-group-item">Third item</Link> */}
                                     </div>
                                 </div>
                                 <div className="col-lg-8 col-md-10 col-xs-12">
@@ -133,9 +152,9 @@ const Resetpassword = (c) =>{
             <h3>Change password</h3>
             <form name="resetpwd" onSubmit={c.change.bind(this)}>
                 <label>Old password</label>
-                <input type="password" placeholder="old password" className="form-control" name="oldpwd"/>
+                <input type="password" placeholder="old password" minLength="8" maxLength="40" className="form-control" name="oldpwd"/>
                 <label>New password</label>
-                <input type="password" placeholder="new password" className="form-control"  name="newpwd"/>
+                <input type="password" placeholder="new password" minLength="8" maxLength="40" className="form-control"  name="newpwd"/>
                 <label>Confirm password</label>
                 <input type="password" placeholder="confirm password" className="form-control" name="confirmpwd"/>
                 <i>{c.error}</i>

@@ -34,9 +34,9 @@ class Yourorders extends React.Component{
         }
     }
     ShowOrderDetails(){
-        this.setState({
-            loading:false
-        })
+        // this.setState({
+        //     loading:false
+        // })
         var token = Cookies.get("_token");
         var session = Cookies.get("sessionID");
         fetch("/api/order/orderbyid",{
@@ -62,6 +62,7 @@ class Yourorders extends React.Component{
             })
         })
     }
+    
     RefreshOrder(){
         this.ShowOrderDetails();
     }
@@ -75,31 +76,20 @@ class Yourorders extends React.Component{
             return false;
         }
     }
-    CancelOrder(order_id){
-        if(order_id !== ""){
-            var token = Cookies.get("_token");
-            var session = Cookies.get("sessionID");
-            
-            fetch("/api/order/cancelorder",{
-                method:"POST",
-                body:JSON.stringify({orderid:order_id}),
-                headers:{
-                    "Content-Type": "application/json",
-                    "token":token,
-                    "sessionid":session
-                }
-            })
-            .then(res => res.json())
-            .then(result => {
-                this.ShowOrderDetails();
-                alert(result.message);
-                
-            })
-        }
-        
-    }
     goMobCart(){
         this.props.history.push('/cart');
+    }
+    goMobCart(){
+        var location = Cookies.get("_loc");
+        if(location != undefined){
+            //go to cart
+            console.log("go to cart");
+            this.props.history.push('/cart');
+        }else{
+            this.setState({
+                locationPopup : true
+            })
+        }
     }
 
     render(){
@@ -108,12 +98,12 @@ class Yourorders extends React.Component{
                 <Contactinfo />
                 <div className="c_respo_nav-large">
                     <Logo/>
-                    <Topnav />
+                    <Topnav addCart={this.goMobCart.bind(this)}/>
                 </div>
                 <div className="c_respo_nav-small">
                     <Topnavsm addCart={this.goMobCart.bind(this)}/>
                 </div>
-                <div className="container">
+                <div className="container c_orders">
                 <h1>My Orders</h1>
                 {
                     this.state.loggedIn ?
@@ -122,7 +112,7 @@ class Yourorders extends React.Component{
                     {
                     this.state.loading ? <div>
                     {
-                        this.state.orderdata !== "" ? <Order parentProps={this}  refresh={this.RefreshOrder.bind(this)} orderdata={this.state.orderdata} cancelclick={this.CancelOrder.bind(this)}/> : null
+                        this.state.orderdata !== "" ? <Order parentProps={this}  refresh={this.RefreshOrder.bind(this)} orderdata={this.state.orderdata}/> : null
                     }
                     </div>
                     :

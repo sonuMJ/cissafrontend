@@ -16,14 +16,13 @@ class Listitems extends React.Component{
         })
     }
     componentWillReceiveProps(){
-        this.setState({
-            update:false
-        })
+        
         setTimeout(() => {
             this.setState({
                 products:this.props.productlist,
                 update:true
             })
+            this.forceUpdate();
         }, 100);
     }
 

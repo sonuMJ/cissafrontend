@@ -40,7 +40,6 @@ class Books extends React.Component{
         this.props.history.push('/cart');
     }
     render(){
-        console.log(this.state.books);
         
         return(
             <React.Fragment>
@@ -63,7 +62,6 @@ class Books extends React.Component{
 }
 
 const Bookdetails = (data) => {
-    console.log(data);
     
     return(
         <React.Fragment>

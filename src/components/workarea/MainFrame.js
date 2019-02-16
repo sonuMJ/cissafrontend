@@ -35,9 +35,11 @@ class Mainframe extends React.Component{
         locationChange:false,
         status: '',
         description: '',
-        msg_state: false
+        msg_state: false,
+        adding:false
     }
     componentDidMount(){
+        console.log("did mount");
         
         this.fetchData(this.state.category);
         this.handleClick = this.handleClick.bind(this);
@@ -50,7 +52,10 @@ class Mainframe extends React.Component{
       }
 
     componentWillReceiveProps(){
-        
+        console.log("did will recive");
+        this.setState({
+            currentPage:1
+        })
     }
 
     fetchData(cate){
@@ -78,10 +83,11 @@ class Mainframe extends React.Component{
             
         })
     }
-    
 
     addToCart(product_ID, product_item, qty){
-        
+        this.setState({
+            adding:true
+        })
         var Key = Cookies.get("_cid");
         fetch('/api/cart/addCart',{
             method:'POST',
@@ -96,6 +102,9 @@ class Mainframe extends React.Component{
         .then(result => {
             //alert(result.message);
             //this.onResultChange("Success","Product added to cart");
+            this.setState({
+                adding:false
+            })
             setTimeout(() => {
                 this.fetchCartItems(Key)
             }, 100);
@@ -154,7 +163,8 @@ class Mainframe extends React.Component{
         if(txt !== ""){
             this.setState({
                 isFetching :false,
-                searching:true
+                searching:true,
+                currentPage: 1
             })
             fetch('/api/product/search_p/'+txt)
             .then(res => {
@@ -198,7 +208,6 @@ class Mainframe extends React.Component{
         var location = Cookies.get("_loc");
         if(location != undefined){
             //go to cart
-            console.log("go to cart");
             this.props.history.push('/cart');
         }else{
             this.setState({
@@ -231,6 +240,8 @@ class Mainframe extends React.Component{
     }
 
     render(){
+        console.log("render");
+        
         const { products, currentPage, todosPerPage } = this.state;
 
         // Logic for displaying todos
@@ -254,15 +265,18 @@ class Mainframe extends React.Component{
         return(
             <React.Fragment>
                 {
+                    this.state.adding ? <Popupmessage /> : null
+                }
+                {
                     this.state.locationPopup ? <LocationPopup clk={this.set_loc.bind(this)}/> : null
                 }
                 <Contactinfo locationChange={this.state.locationChange}/>
                 <div className="c_respo_nav-large">
                     <Searchbar search={this.handleSearchMain.bind(this)}/>
-                    <Topnav />
+                    <Topnav addCart={this.goMobCart.bind(this)}/>
                 </div>
                 <div className="c_respo_nav-small">
-                    <Topnavsm addCart={this.goMobCart.bind(this)}/>
+                    <Topnavsm addCart={this.goMobCart.bind(this)} cartItems={this.state.cart.length}/>
                     <Topnavsmsearch search={this.handleSearchMain.bind(this)}/>
                 </div>
                 {
@@ -270,11 +284,12 @@ class Mainframe extends React.Component{
                 }
                 
                 <div className="container-fluid show-products">
+                    <div className="row">
                     <Categorylist selectcat={this.Choosecategory.bind(this)}/>
                     {/* <div className="col-lg-2 col-md-2">
                         <Categorylist selectcat={this.Choosecategory.bind(this)}/>
                     </div> */}
-                    <div className="col-lg-10 col-md-10">
+                    <div className="col-lg-10 col-md-9 col-sm-9 col-xs-12 c_show_products_list">
                     {
                         this.state.productnotfound ? <h3 className="text-center">PRODUCT CURRENTLY UNAVAILABLE </h3> : null
                     }
@@ -282,8 +297,8 @@ class Mainframe extends React.Component{
                         this.state.isFetching ? 
                         <div>
                             <p style={{ borderBottom: '2px solid #d6d6d6'}}>
-                                <span style={{ paddingBottom: '12px',fontSize:'28px',fontWeight:'500'}}>{this.state.categoryName}</span>
-                                <select style={{float:'right',marginTop:'12px',width:'140px',height:'26px'}} onChange={this.changeView.bind(this)}>
+                                <span style={{ paddingBottom: '12px',fontSize:'24px',fontWeight:'500'}}>{this.state.categoryName}</span>
+                                <select style={{float:'right',marginTop:'4px',width:'140px',height:'26px'}} aria-label="selectview" className="list_view_select" onChange={this.changeView.bind(this)}>
                                     <option value="block">&#9744;Block view</option>
                                     <option value="list">&#9776; List view</option>
                                 </select>
@@ -302,8 +317,9 @@ class Mainframe extends React.Component{
                          : <div style={{textAlign:'center',marginTop:'200px'}}>{ this.state.productnotfound ? null : <img src="../img/product_loader.gif" alt="loading_icon"/>}</div>
                     }
                     </div>
-                    <div className="col-lg-2 col-md-2 c_main_cart" >
+                    <div className="col-lg-2 col-md-3 col-sm-3 c_main_cart" >
                         <Mybill selectLocation={this.setLocation.bind(this)} redirecttocart={this.goCart.bind(this)} cartitems={this.state.cart} removeCartItem={this.removeCartItem.bind(this)}/>
+                    </div>
                     </div>
                 </div>
                 {
@@ -314,7 +330,7 @@ class Mainframe extends React.Component{
                     </div>
                 }
                 
-                <Snackbar status={this.state.status} msg_state={this.state.msg_state} message={this.state.description}/>
+                {/* <Snackbar status={this.state.status} msg_state={this.state.msg_state} message={this.state.description}/> */}
                 <Footercontent />
                 <Footer />
                 
@@ -337,6 +353,15 @@ const LocationPopup = (p) => {
                     </select>
                 </div>
                 
+            </div>
+        </div>
+    )
+}
+const Popupmessage = () => {
+    return(
+        <div className="popup">
+            <div className="popup-inner" style={{width:'230px',height:'100px',backgroundColor:'transparent',textAlign:'center',color:'#fff'}}>
+                <h3>Adding to cart..</h3>
             </div>
         </div>
     )

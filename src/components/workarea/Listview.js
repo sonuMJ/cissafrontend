@@ -16,9 +16,9 @@ class Listview extends React.Component{
         })
     }
     componentWillReceiveProps(){
-        this.setState({
-            update:false
-        })
+        // this.setState({
+        //     update:false
+        // })
         setTimeout(() => {
             this.setState({
                 products:this.props.productlist,
@@ -38,10 +38,10 @@ class Listview extends React.Component{
                 {
                     this.state.update ?
                     <div className="row">
-                        <div className="col-lg-2">
+                        <div className="col-lg-2 col-md-2 col-sm-12 col-xs-12">
                         </div>
-                        <div className="col-lg-8">
-                            <table className="table table-striped">
+                        <div className="col-lg-8 col-md-8 col-sm-12 col-xs-12 c_listview_table">
+                            <table className="table table-striped table-responsive">
                             <thead className="c_show_list_thead">
                                 <tr>
                                     <th>Product Name</th>
@@ -60,7 +60,7 @@ class Listview extends React.Component{
                                     </tbody>
                                     </table>
                                 </div>
-                                <div className="col-lg-2">
+                                <div className="col-lg-2 col-md-2 col-sm-12 col-xs-12">
                                 </div>
                             </div>
                     :

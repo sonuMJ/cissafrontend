@@ -67,9 +67,9 @@ class Resetpassword extends React.Component{
                         <h1 className="text-center">Reset password!</h1>
                         <h3 className="text-center">Enter your new password</h3>
                         <label htmlFor="password" className="c_label">Enter Password</label><span className="c_error_msg">{this.state.pwdError}</span>
-                        <input type="password" name="password" placeholder="Password" className="form-control c_input" value={this.state.password} onChange={this.handleChange.bind(this)}/>
+                        <input type="password" name="password" placeholder="Password" minLength="8" maxLength="40" className="form-control c_input" value={this.state.password} onChange={this.handleChange.bind(this)}/>
                         <label htmlFor="password" className="c_label">Confirm Password</label><span className="c_error_msg">{this.state.pwdError}</span>
-                        <input type="password" name="confirmpassword" placeholder="Confirm Password" className="form-control c_input" value={this.state.confirmpassword} onChange={this.handleChange.bind(this)}/>
+                        <input type="password" name="confirmpassword" placeholder="Confirm Password" minLength="8" maxLength="40" className="form-control c_input" value={this.state.confirmpassword} onChange={this.handleChange.bind(this)}/>
                         {
                             this.state.errorMessage ? <span style={{color:'red'}}>{"Please make sure your passwords match!"}</span> : null
                         }

@@ -14,6 +14,7 @@ import Forgotpwd from './components/user/Forgotpwd';
 import Resetpassword from './components/user/Resetpassword';
 import Filenotfound from './components/workarea/Filenotfound';
 import Books from './components/Books/Books';
+import Locked from './components/user/Locked';
 
 
 
@@ -47,6 +48,7 @@ class App extends Component {
           <PrivateRoute path='/confirmorder' component={Confirmorder} />
           <PrivateRoute path='/settings' component={Settings} />
           <PrivateRoute path='/yourorders' component={Yourorders} />
+          <PrivateRoute path='/locked' component={Locked} />
           <Route component={Filenotfound}/>
         </Switch>
       </div>

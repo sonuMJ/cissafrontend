@@ -32,10 +32,10 @@ class Billitems extends React.Component{
             <React.Fragment>
                 
                 <div className="row" key={item.productId} style={{marginBottom:'10px'}}>
-                    <div className="col-lg-4 c_bill_itemimage ">
+                    <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4 c_bill_itemimage ">
                         <img src={item.productData[0].img_url} className="img-responsive"/>
                     </div>
-                    <div className="col-lg-8 c_bill_itemdetails">
+                    <div className="col-lg-8 col-md-8 col-sm-8 col-xs-8 c_bill_itemdetails">
                         <p className="c_bill_text"><b>{item.productData[0].name}({item.productData[0].translated})</b></p>
                         <p className="c_bill_text"><b style={{color:'#909090'}}>MRP : {item.productData[0].price}</b></p>
                         <p className="c_bill_text">{item.productData[0].quantity} x {item.quantity}<span className="c_item_remove_btn" onClick={this.removeItem.bind(this,item.productId)}>&nbsp;</span></p>
@@ -43,9 +43,9 @@ class Billitems extends React.Component{
                         <p>
                             <span className="text-center">
                                 <button className="c_round_btn_remove" onClick={this.decrementQty.bind(this,item.productId,item.quantity)}>-</button>
-                                <select onChange={this.onChangeQuantity.bind(this,item.productId)}>
+                                <select onChange={this.onChangeQuantity.bind(this,item.productId)} value={item.quantity}>
                                     {
-                                        <Itemnumber defaultSelected={item.quantity}/>
+                                        <Itemnumber/>
                                     }
                                 </select>
                                 {/* <input type="number" value={item.quantity} readOnly style={{width:"40px",textAlign: "right"}} name="qty"/> */}
@@ -61,10 +61,10 @@ class Billitems extends React.Component{
     }
 }
 
-const Itemnumber = (q) => {
+const Itemnumber = () => {
     var rows = [];
     for (var i = 1; i <= 10; i++) {
-        rows.push(<option value={i} selected={i === parseInt(q.defaultSelected)} key={i}>{i}</option>);
+        rows.push(<option value={i} key={i}>{i}</option>);
     }
     return rows;
 }

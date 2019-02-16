@@ -27,7 +27,9 @@ class Orderrows extends React.Component{
         .then(res => res.json())
         .then(result => {
             if(result == ""){
-                this.props.rmvorder(order_id);
+                console.log(result);
+                
+                //this.props.rmvorder(order_id);
             }else{
                 this.setState({
                     productdata:result,

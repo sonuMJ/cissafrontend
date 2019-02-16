@@ -55,9 +55,11 @@
     position: sticky;
     top: 30px;
     margin-top: 30px;
+    padding-left: 5px !important;
+    padding-right: 5px !important;
 }
 .c_cart_items{
-    max-height: 500px;
+    max-height: 450px;
     overflow-x: hidden;
     overflow-y: auto;
     padding-bottom: 26px;
@@ -111,8 +113,10 @@
     
 }
 .c_show_list_thead th{
-    font-size: 18px;
+    font-size: 16px;
+    padding: 2px 3px !important;
 }
+
 .c_cart_remove > a{
     cursor: pointer;
     text-decoration: none;
@@ -234,9 +238,18 @@
 }
 .c_respo_nav-small{
     display: none;
-    height: 48px;
+    /* height: 48px; */
     background-color: #46b300;
     position: sticky;
     z-index: 10;
     top: 0px;
+    padding-top: 5px;
+}
+.c_order_row{
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+}
+.c_orders{
+    padding-left: 5px !important;
+    padding-right: 5px !important;
 }

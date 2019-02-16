@@ -53,7 +53,7 @@
     background-color: #111;
     overflow-x: hidden;
     transition: 0.5s;
-    padding-top: 60px;
+    padding-top: 40px;
   }
   
   .sidenav a {
@@ -63,6 +63,7 @@
     color: #fff;
     display: block;
     transition: 0.3s;
+    width: 250px;
   }
   
   .sidenav a:hover {
@@ -104,3 +105,15 @@
 .popup-inner-location{
     text-align: center;
 }
+/*  */
+  
+  .button-badge:hover {
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .badge {
+    position: absolute;
+    top: 4px;
+    right: 1px;
+    font-size: 16px;
+  }

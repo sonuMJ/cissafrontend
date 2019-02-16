@@ -130,7 +130,7 @@ class Login extends React.Component{
                             <h1 className="text-center">Welcome back!</h1>
                             <h3 className="text-center">Log in to access your profile, orders and Purchase</h3>
                             <label htmlFor="email" className="c_label">Email</label><span className="c_error_msg">{this.state.emailError}</span>
-                            <input type="text" name="email" placeholder="Email" minLength="5" maxLength="50" className="form-control c_input" value={this.state.email} onChange={this.handleChange.bind(this)}/>
+                            <input type="text" name="email" placeholder="Email" minLength="2" maxLength="50" className="form-control c_input" value={this.state.email} onChange={this.handleChange.bind(this)}/>
                             <label htmlFor="password" className="c_label">Password</label><span className="c_error_msg">{this.state.pwdError}</span>
                             <input type="password" name="password" placeholder="Password" maxLength="40" className="form-control c_input" value={this.state.password} onChange={this.handleChange.bind(this)}/>
                             {

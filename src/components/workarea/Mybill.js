@@ -25,6 +25,7 @@ class Mybill extends React.Component{
             var KEY = Cookies.get("_cid");
             this.fetchCartItems(KEY);
         }, 500);
+
         var loc = Cookies.get('_loc');
         if(loc == undefined || loc == null){
             this.setState({
@@ -275,8 +276,8 @@ const Popup = (msg) => {
 const LocationPopup = (p) => {
     return(
         <div className="popup">
-            <div className="popup-inner" style={{width:'230px',height:'100px'}}>
-                <p className="text-center" style={{fontSize:'18px',marginTop: '12px'}}>Select location</p>
+            <div className="popup-inner" style={{width:'350px',height:'150px'}}>
+                <p className="text-center" style={{fontSize:'18px',marginTop: '36px'}}>Select location</p>
                 <div className="popup-inner-location">
                     <select className="text-center" onChange={p.clk.bind(this)} name="_location">
                         <option></option>

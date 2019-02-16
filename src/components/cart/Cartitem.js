@@ -29,7 +29,7 @@ class Cartitem extends React.Component{
                 </td>
                 <td className="cart-table-item">
                     <div className="cart-table-item-main">
-                        <span style={{fontSize:'22px',fontWeight:'600'}}>{item.productData[0].name}</span><span style={{fontSize:'16px'}} className="c_cart-translated">({item.productData[0].translated})</span>,<span>{item.productData[0].quantity}</span>
+                        <span style={{fontSize:'22px',fontWeight:'600',textTransform: 'capitalize'}}>{item.productData[0].name}</span><span style={{fontSize:'16px'}} className="c_cart-translated">({item.productData[0].translated})</span>,<span>{item.productData[0].quantity}</span>
                     
                         <p className="cart-table-prod_id"><i>#{item.productId}</i></p><br/>
                         <span className="cart-table-mrp">MRP</span><span className="cart-table-price">&#8377;{item.productData[0].price}</span>
@@ -38,9 +38,9 @@ class Cartitem extends React.Component{
                 <td className="cart-table-qty">
                     <span className="text-center c_cart_counter">
                         <button className="c_round_btn" onClick={this.decrement.bind(this,item.productId, item.quantity)}>-</button>
-                        <select onChange={this.onChangeQuantity.bind(this,item.productId)}>
+                        <select onChange={this.onChangeQuantity.bind(this,item.productId)} value={item.quantity}>
                             {
-                                <Itemnumber defaultSelected={item.quantity} />
+                                <Itemnumber/>
                             }
                         </select>
                         {/* <input type="number" value={item.quantity} readOnly  name="qty" className="c_cart_count"/> */}
@@ -55,10 +55,10 @@ class Cartitem extends React.Component{
         )
     }
 }
-const Itemnumber = (q) => {
+const Itemnumber = () => {
     var rows = [];
     for (var i = 1; i <= 10; i++) {
-        rows.push(<option value={i} selected={i === parseInt(q.defaultSelected)} key={i}>{i}</option>);
+        rows.push(<option value={i} key={i}>{i}</option>);
     }
     return rows;
 }

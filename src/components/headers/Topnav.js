@@ -59,6 +59,11 @@ class Topnav extends React.Component{
         Cookies.remove('sessionID', { path: '' });
     }
 
+    gotoCart(e){
+        e.preventDefault();
+        this.props.addCart();
+    }
+
     render(){
         return(
             <div>
@@ -74,14 +79,17 @@ class Topnav extends React.Component{
                         <div className="collapse navbar-collapse" id="myNavbar">
                         <ul className="nav navbar-nav c_nav_items">
                             <li className="active"><Link to={'/'}>Home</Link></li>
-                            <li><a href="#">Contact Us</a></li>
-                            <li><a href="#">Support Us</a></li>
+                            {/* <li><a href="#">Contact Us</a></li>
+                            <li><a href="#">Support Us</a></li> */}
                             <li><Link to={'/yourorders'}>Orders</Link></li>
                             <li><a href="#">News</a></li>
                             <li><a href="#">Farms</a></li>
                             <li><Link to={'/books'}>Cissa Books</Link></li>
                         </ul>
                         <ul className="nav navbar-nav navbar-right c_nav_items">
+                            <li className="active">
+                                <Link to={'/'} onClick={this.gotoCart.bind(this)} className="_cart_sm" style={{display:'none'}}><span className="glyphicon glyphicon-shopping-cart"></span>Cart</Link>
+                            </li>
                             {
                                 this.state.authenticated ? <Logged username={this.state.username} cli={this.Logout.bind(this)}/> : <NotLogged />
                             }
@@ -97,7 +105,7 @@ class Topnav extends React.Component{
 const Logged = (l) =>{
     return (
         <li className="dropdown">
-            <a className="dropdown-toggle" data-toggle="dropdown" href="#"><img src={'../img/user_head.png'}/><span>{l.username}</span> <span className="caret"></span></a>
+            <a className="dropdown-toggle" data-toggle="dropdown" href="#"><img src={'../img/user_head.png'} style={{height: '26px'}}/>&nbsp;<span style={{textTransform:'capitalize'}}>{l.username}</span> <span className="caret"></span></a>
             <ul className="dropdown-menu">
                 <li><Link to={'/settings'}>Settings</Link></li>
                 <li><a href="#" onClick={l.cli.bind(this)}>Logout</a></li>

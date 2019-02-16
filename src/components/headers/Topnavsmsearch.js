@@ -17,7 +17,7 @@ class Topnavsmsearch extends React.Component{
             <div >
                         
                 <div className="input-group" style={{width:'100%',padding:'10px 5px',backgroundColor: '#46b300'}}>
-                    <input style={{borderRadius:'5px'}} type="text" onChange={this.handleSearch.bind(this)} className="form-control" placeholder="Search our products" name="search"/>
+                    <input style={{borderRadius:'5px'}} type="text" aria-label="search" onChange={this.handleSearch.bind(this)} className="form-control" placeholder="Search our products" name="search"/>
                     
                 </div>
             </div>

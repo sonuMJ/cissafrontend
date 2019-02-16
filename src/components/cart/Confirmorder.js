@@ -162,7 +162,7 @@ class Confirmorder extends React.Component{
                     </React.Fragment>
                     : <div className="c_confirmorder_loader">
                         <img src="./img/orderwait_loader.gif"/>
-                        <h3>No orders found...</h3>
+                        <h3>Please wait...</h3>
                     </div>
                 }
                 
@@ -183,16 +183,17 @@ const ProcessSuccess = (p) => {
     return(
         <div className="container cart-loading-success">
             <h1 className="text-center">Successfully Purchased</h1>
+            <h3 className="text-center" style={{color: '#7ac142',fontWeight: '200'}}>Thank you for purchase with us</h3>
             <svg className="checkmark" viewBox="0 0 52 52">
                 <circle className="checkmark-circle" fill="none" cx="26" cy="26" r="25" />
                 <path className="checkmark-check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
             </svg>
             <div className="text-center">
-                <Link to={'/'} style={{color: '#7ac142',fontSize: '26px',fontWeight: '200'}}>Continue Shopping</Link>
+                <Link to={'/'} style={{color: '#7ac142',fontSize: '26px',fontWeight: '200',textDecoration:'underline'}}>Continue Shopping</Link>
                 <div style={{paddingTop:'20px'}}>
                     <Link to={'/yourorders'} style={{color: '#7ac142',fontSize: '20px',fontWeight: '200',textDecoration:'underline'}}>Your orders</Link>
                 </div>
-                <div className="alert alert-danger" style={{width: '50%',margin: 'auto',marginTop: '22px',fontSize: '20px'}}>
+                <div className="alert alert-danger cart-loading-scheduled" style={{width: '50%',margin: 'auto',marginTop: '22px',fontSize: '20px'}}>
                     <strong>Scheduled pickup date : </strong><p className="alert-link">{p.s_date}</p>
                 </div>
             </div>
@@ -208,7 +209,7 @@ const FailedPopup = (p) => {
                 <h2 style={{color:'#4e9cff'}}>Something went wrong!!</h2>
             </div>
             <div style={{padding:' 14px 22px',fontSize: '18px',textAlign:'center'}}>
-                <p>Please try agin later</p>
+                <p>Please try again later!</p>
             </div>
             
             <div style={{textAlign:'center',paddingTop: '30px'}}>

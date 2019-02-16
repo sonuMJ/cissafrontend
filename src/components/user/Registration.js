@@ -58,7 +58,7 @@ class Registration extends React.Component{
                 }
                 <div>
                     <p className="cart_back_btn"><Link to={'/'}><img src={'./img/back_btn.png'}/></Link></p>
-                    <div className="container" style={{paddingLeft: '0px',paddingRight: '0px'}}>
+                    <div className="container" style={{paddingLeft: '4px',paddingRight: '4px'}}>
                         
                         <div className="c_login">
                             <div style={{textAlign:'center'}}>
