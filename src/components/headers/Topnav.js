@@ -1,6 +1,6 @@
 import React from 'react';
 import Cookies from 'js-cookie';
-import { Link } from 'react-router-dom';
+import { Link,NavLink } from 'react-router-dom';
 
 class Topnav extends React.Component{
     state = {
@@ -78,13 +78,13 @@ class Topnav extends React.Component{
                         </div>
                         <div className="collapse navbar-collapse" id="myNavbar">
                         <ul className="nav navbar-nav c_nav_items">
-                            <li className="active"><Link to={'/'}>Home</Link></li>
+                            <li><NavLink to={'/'} exact={true} activeClassName="active">Home</NavLink></li>
                             {/* <li><a href="#">Contact Us</a></li>
                             <li><a href="#">Support Us</a></li> */}
-                            <li><Link to={'/yourorders'}>Orders</Link></li>
+                            <li><NavLink to={'/yourorders'}>Orders</NavLink></li>
                             <li><a href="#">News</a></li>
                             <li><a href="#">Farms</a></li>
-                            <li><Link to={'/books'}>Cissa Books</Link></li>
+                            <li><NavLink to={'/books'} >Cissa Books</NavLink></li>
                         </ul>
                         <ul className="nav navbar-nav navbar-right c_nav_items">
                             <li className="active">

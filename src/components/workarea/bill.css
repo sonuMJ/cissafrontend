@@ -30,3 +30,18 @@
   .tooltip:hover .tooltiptext {
     visibility: visible;
   }
+  .c_bill_expand{
+    width: 304px;
+    height: 304px;
+    border: 2px solid #d6d6d6;
+    background-color: white;
+    left: -300px;
+    position: absolute;
+    z-index: 50;
+    display: none;
+    box-shadow: 6px 10px 24px -2px;
+    top: 100px;
+  }
+  .c_bill_itemimage:hover ~ .c_bill_expand{
+    display: block;
+  }

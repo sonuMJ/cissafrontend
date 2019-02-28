@@ -53,8 +53,11 @@ class Billitems extends React.Component{
                             </span>
                         </p>
                     </div>
+                    <div className="c_bill_expand" >
+                        <img src={item.productData[0].img_url} height="300" width="300"/>
+                    </div>
                 </div>
-               
+                
                 <hr className="c_bill_linebreak"/>
             </React.Fragment>
         )

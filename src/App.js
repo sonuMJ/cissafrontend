@@ -5,7 +5,6 @@ import Mainframe from './components/workarea/MainFrame';
 import Cartpage from './components/cart/Cartpage';
 import Cookies from 'js-cookie';
 import Confirmorder from './components/cart/Confirmorder';
-import Yourorders from './components/workarea/Yourorders';
 import Login from './components/user/Login';
 import Registration from './components/user/Registration';
 import Verifyaccount from './components/user/Verifyaccount';
@@ -15,6 +14,8 @@ import Resetpassword from './components/user/Resetpassword';
 import Filenotfound from './components/workarea/Filenotfound';
 import Books from './components/Books/Books';
 import Locked from './components/user/Locked';
+import Cissatest from './components/Test/Cissatest';
+import Yourorders from './components/workarea/Yourorders';
 
 
 
@@ -36,6 +37,7 @@ class App extends Component {
         <Switch>
           {/* <Route path="/cart" exact  component={Cartpage}/> */}
           {/* <Route path="/" exact addtocart component={Mainframe} /> */}
+          <Route path="/test" exact component={Cissatest}/>
           <Route path="/cart" exact component={Cartpage}/>
           <Route path="/" exact component={Mainframe}/>
           <Route path="/login/:path" exact component={Login}/>

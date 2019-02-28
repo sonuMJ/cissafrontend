@@ -253,3 +253,7 @@
     padding-left: 5px !important;
     padding-right: 5px !important;
 }
+.c_order-total{
+    font-size: 24px;
+    font-weight: bold;
+}

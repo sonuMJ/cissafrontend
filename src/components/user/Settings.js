@@ -35,7 +35,6 @@ class Settings extends React.Component{
         var location = Cookies.get("_loc");
         if(location != undefined){
             //go to cart
-            console.log("go to cart");
             this.props.history.push('/cart');
         }else{
             this.setState({
@@ -114,7 +113,7 @@ class Settings extends React.Component{
                                 <div className="col-lg-4 col-md-2 col-xs-12 row_sett">
                                     <div className="list-group">
                                         <Link to={'/settings/reset'} className="list-group-item">Change Password</Link>
-                                        <Link to={'/settings/info'} className="list-group-item">User Info</Link>
+                                        {/* <Link to={'/settings/info'} className="list-group-item">User Info</Link> */}
                                         {/* <Link to={'/settings/edit'} className="list-group-item">Third item</Link> */}
                                     </div>
                                 </div>
@@ -124,7 +123,7 @@ class Settings extends React.Component{
                                             <Redirect from="/" to='/settings/reset'/>
                                             <Switch>
                                                 <Route exact path='/settings/reset' component={() => <Resetpassword change={this.changePassword.bind(this)} error={this.state.errormsg}/>} />
-                                                <Route exact path='/settings/info' component={Userinfo} />
+                                                {/* <Route exact path='/settings/info' component={Userinfo} /> */}
                                             </Switch>
                                         </React.Fragment>
                                         
@@ -145,7 +144,6 @@ class Settings extends React.Component{
 }
 
 const Resetpassword = (c) =>{
-    console.log(c);
     
     return(
         <div>

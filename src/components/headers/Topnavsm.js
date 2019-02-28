@@ -31,6 +31,7 @@ class Topnavsm extends React.Component{
     
     getCartCount(){
         var _cart_id = Cookies.get('_cid');
+        if(_cart_id != undefined){
             fetch('/api/cart/showCart',{
                 method : 'POST',
                     headers: {
@@ -46,8 +47,14 @@ class Topnavsm extends React.Component{
                     })
                 })
                 .catch(e => {
-                    console.log(e);
+                    //console.log(e);
                 })
+        }else{
+            this.setState({
+                cartCount:0
+            })
+        }
+            
     }
 
     getUsername(){

@@ -4,7 +4,7 @@ class Footer extends React.Component{
     render(){
         return(
             <React.Fragment>
-                <div className="container-fluid" style={{backgroundColor:'#f2f2f2',paddingTop:'30px'}}>
+                <div className="container-fluid" style={{backgroundColor:'#f2f2f2',paddingTop:'100px'}}>
                     <div className="container">
                         <div className="col-lg-4">
                             <h4>Download App</h4>
@@ -21,7 +21,7 @@ class Footer extends React.Component{
                         </div>
                     </div>
                     <div className="container">
-                        <h5 className="text-center">&copy; 2019 Cissaorganic.com. All Rights Reserved</h5>
+                        <h5 className="text-center">&copy; 2019 Cissaorganics.com. All Rights Reserved</h5>
                     </div>
                 </div>
             </React.Fragment>

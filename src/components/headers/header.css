@@ -28,11 +28,15 @@
 .c_nav_items > li > a{
     color: #fff;
 }
+a.active{
+    background-color: #399100 !important;
+    font-weight: bold;
+}
 .c_nav_items > li > a:hover{
-    background-color: #60b51d !important;
+    background-color: #399100 !important;
 }
 .c_nav_items > li > a:focus{
-    background-color: #60b51d !important;
+    background-color: #ccc !important;
 }
 .home_slide{
     padding-left: 0px !important;
@@ -95,10 +99,12 @@
     text-decoration: underline;
 }
 .c_location_change{
-    color: #005999;
     display: none;
 }
-.c_location_change:hover{
+.c_location_change_btn{
+    color: #005999;
+}
+.c_location_change_btn:hover{
     cursor: pointer;
     text-decoration: underline;
 }

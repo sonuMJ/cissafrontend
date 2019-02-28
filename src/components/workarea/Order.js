@@ -10,10 +10,13 @@ class Order extends React.Component{
         showModal:false,
         available:[],
         choosedOrderid:'',
-        wait:false
+        wait:false,
+        processing:false
     }
 
     componentDidMount(){
+        //console.log(this.props.orderdata);
+        
         
         this.setState({
             orderdetail:this.props.orderdata,
@@ -24,13 +27,13 @@ class Order extends React.Component{
     }
 
     componentWillReceiveProps(){
-        
+        //console.log(this.props.orderdata);
         setTimeout(() => {
             this.setState({
                 orderdetail:this.props.orderdata,
                 loaded:true
             })
-        }, 100);
+        }, 500);
     }
     CheckAuth(){
         var token = Cookies.get("_token");
@@ -87,11 +90,11 @@ class Order extends React.Component{
         //get all product by order id
         fetch('/api/product/getproductsbyorderid',{
             method:'POST',
-                headers: {
-                    "Content-Type": "application/json",
-                    // "Content-Type": "application/x-www-form-urlencoded",
-                },
-                body:JSON.stringify({orderid:order_id})
+            headers: {
+                "Content-Type": "application/json",
+                // "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body:JSON.stringify({orderid:order_id})
         })
         .then(res => res.json())
         .then(result => {
@@ -102,8 +105,11 @@ class Order extends React.Component{
                     choosedOrderid:order_id,
                     wait:false
                 })
-            }else{
-                //this.ReorderByOrderId(order_id);
+            }else if(result.length <= 0){
+                alert("Product Currently not available!!");
+                this.setState({
+                    wait:false
+                })
             }
         })
 
@@ -133,54 +139,54 @@ class Order extends React.Component{
         
     }
 
-    removeProduct(orderId, productId){
-        fetch('/api/order/removeOrderProduct',{
-            method:'POST',
-            headers:{
-                "Content-Type": "application/json",
-            },
-            body:JSON.stringify({orderid:orderId,productid:productId})
-        }).then(res => {
-            if(res.status === 200){
-                return res.json();
-            }else{
+    // removeProduct(orderId, productId){
+    //     fetch('/api/order/removeOrderProduct',{
+    //         method:'POST',
+    //         headers:{
+    //             "Content-Type": "application/json",
+    //         },
+    //         body:JSON.stringify({orderid:orderId,productid:productId})
+    //     }).then(res => {
+    //         if(res.status === 200){
+    //             return res.json();
+    //         }else{
 
-            }
-        }).then(result => {
-            setTimeout(() => {
-                this.props.refresh();
-            }, 200);
+    //         }
+    //     }).then(result => {
+    //         setTimeout(() => {
+    //             this.props.refresh();
+    //         }, 200);
             
-        })
-    }
+    //     })
+    // }
 
-    rmvUnwantOrders(orderId){
-        console.log("unwanted");
+    // rmvUnwantOrders(orderId){
+    //     console.log("unwanted");
         
-        // var token = Cookies.get("_token");
-        // var session = Cookies.get("sessionID");
-        fetch('/api/order/rmvunwantedorder',{
-            method:'POST',
-            headers:{
-                "Content-Type": "application/json",
-                // "token": token,
-                // "sessionid":session
-            },
-            body:JSON.stringify({orderid:orderId})
-        }).then(res => {
-            if(res.status == 200){
-                return res.json();
-            }else if(res.status == 422){
-                alert("Something went wrong!!")
-            }else{
-                Cookies.remove('_token', { path: '' });
-                Cookies.remove('sessionID', { path: '' });
-                this.props.history.push('/login');
-            }
-        }).then(result => {
-            this.props.refresh();
-        })
-    }
+    //     // var token = Cookies.get("_token");
+    //     // var session = Cookies.get("sessionID");
+    //     fetch('/api/order/rmvunwantedorder',{
+    //         method:'POST',
+    //         headers:{
+    //             "Content-Type": "application/json",
+    //             // "token": token,
+    //             // "sessionid":session
+    //         },
+    //         body:JSON.stringify({orderid:orderId})
+    //     }).then(res => {
+    //         if(res.status == 200){
+    //             return res.json();
+    //         }else if(res.status == 422){
+    //             alert("Something went wrong!!")
+    //         }else{
+    //             Cookies.remove('_token', { path: '' });
+    //             Cookies.remove('sessionID', { path: '' });
+    //             this.props.history.push('/login');
+    //         }
+    //     }).then(result => {
+    //         this.props.refresh();
+    //     })
+    // }
 
     continuePurchase(){
         //wait
@@ -234,41 +240,107 @@ class Order extends React.Component{
     }
     
     CancelOrder(order_id){
-        if(order_id !== ""){
-            var token = Cookies.get("_token");
-            var session = Cookies.get("sessionID");
-            
-            fetch("/api/order/cancelorder",{
-                method:"POST",
-                body:JSON.stringify({orderid:order_id}),
+        var c = window.confirm("Are you sure?");
+        if(c){
+            if(order_id !== ""){
+                var token = Cookies.get("_token");
+                var session = Cookies.get("sessionID");
+                
+                fetch("/api/order/cancelorder",{
+                    method:"POST",
+                    body:JSON.stringify({orderid:order_id}),
+                    headers:{
+                        "Content-Type": "application/json",
+                        "token":token,
+                        "sessionid":session
+                    }
+                })
+                .then(res => res.json())
+                .then(result => {
+                    //this.ShowOrderDetails();
+                    alert(result.message);
+                    if(this.state.orderdetail != ""){
+                        var orderdetail = [...this.state.orderdetail];
+                        var index = orderdetail.findIndex(e => e[0].orderid === order_id );
+                        
+                        if(index != -1){
+                            orderdetail[index].map(item => {
+                                console.log(item.status);
+                                item.status = "Cancelled";
+                            })
+                            this.setState({
+                                orderdetail
+                            })
+                        }
+                    }
+                })
+            }
+        }
+    }
+
+    removeItem(orderid,productid){
+        var token = Cookies.get("_token");
+        var session = Cookies.get("sessionID");
+
+        //
+        var orderdetail = [...this.state.orderdetail];
+        var oIndex;
+        var aIndex;
+        var c,last_c;
+        Object.keys(orderdetail).map(item => {
+            orderdetail[item].map(i => {
+                if(i.orderid === orderid && i.productid === productid){
+                    oIndex = item;
+                    if(orderdetail[item].length <= 1){
+                        last_c = window.confirm("There is only product left in this order.by clicking OK this order will be cancelled!"); //confirm
+                        aIndex = orderdetail[item].indexOf(i);
+                    }else{
+                        c = window.confirm("Are you sure?"); // confirm
+                        aIndex = orderdetail[item].indexOf(i);
+                    }
+                    
+                }
+            })
+        })
+        if(last_c){
+            this.CancelOrder(orderid);
+        }else if(c){
+            this.setState({
+                processing:true
+            })
+            fetch('/api/order/removeOrderProduct',{
+                method:'POST',
                 headers:{
                     "Content-Type": "application/json",
                     "token":token,
                     "sessionid":session
+                },
+                body:JSON.stringify({orderid:orderid,productid:productid})
+            }).then(res => {
+                if(res.status === 200){
+                    return res.json();
+                }else{
+                    
                 }
-            })
-            .then(res => res.json())
-            .then(result => {
-                //this.ShowOrderDetails();
-                alert(result.message);
-                console.log(this.props.orderdata);
-                if(this.state.orderdetail != ""){
-                    var orderdetail = [...this.state.orderdetail];
-                    var index = orderdetail.findIndex(e => e.orderid === order_id );
-                    orderdetail[index].status = "Cancelled";
-                    this.setState({
-                        orderdetail
-                    })
+            }).then(result => {
+                if(oIndex != -1 && aIndex != -1){
+                    orderdetail[oIndex].splice(aIndex,1);
                 }
+                this.setState({
+                    orderdetail,
+                    processing:false
+                })
             })
         }
-        
     }
 
     render(){
         var key =0;
         return(
             <React.Fragment>
+                {
+                    this.state.processing ? <Popup /> : null
+                }
                 {
                     this.state.wait ? <Popup /> : 
                     <div>
@@ -279,16 +351,20 @@ class Order extends React.Component{
                             this.state.loaded ?
                             
                             this.state.orderdetail.map(i => {
+                                console.log(i);
+                                
                                 var cancelBtn = false;
                                 var _today = new Date();
                                 var EndDate = new Date();
-                                var _d = new Date(parseInt(i.date));
-                                EndDate.setDate(_d.getDate() + + (5 - 1 - _d.getDay() + 7) % 7 + 1);  // friday
-                                if(new Date(_today) < new Date(EndDate)){
+                                var _d = new Date(parseInt(i[0].scheduled_date));
+                                //EndDate.setDate(_d.getDate() + + (5 - 1 - _d.getDay() + 7) % 7 + 1);  // friday
+                                
+                                if(new Date(_today) < new Date(_d)){
                                     //
                                     cancelBtn = true
                                 }
-                                return(<OrderTemplate rmvorder={this.rmvUnwantOrders.bind(this)} cancelBtn={cancelBtn}  cancelProduct={this.removeProduct.bind(this)} reorder={this.Reorder.bind(this)} itemdetail={i} key={key++} click={this.CancelOrder.bind(this)}/>)
+                                
+                                return(<OrderTemplate cancelBtn={cancelBtn} removeitem={this.removeItem.bind(this)}  reorder={this.Reorder.bind(this)} itemdetail={i} key={key++} click={this.CancelOrder.bind(this)}/>)
                             
                             })
                             :
@@ -305,62 +381,76 @@ class Order extends React.Component{
 
 
 const OrderTemplate = (data) =>{
-   // console.log(data.cancelBtn);
     
     var d = new Date();
     var scheduledDate = new Date();
     var months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-    d.setTime(data.itemdetail.date);
+    d.setTime(data.itemdetail[0].date);
     // //get end date
     // var EndDate = new Date();
     // EndDate.setDate(d.getDate() + + (5 - 1 - d.getDay() + 7) % 7 + 1);  // friday
     // //get today 
     // var today = new Date();
-     scheduledDate.setTime(data.itemdetail.scheduled_date);
+     scheduledDate.setTime(data.itemdetail[0].scheduled_date);
     // //compare date
     //     if(new Date(today) > EndDate){
     //         console.log(EndDate);
     //     }
+
+    var totalPrice=0;
+    data.itemdetail.map(i => {
+        console.log(i);
         
+        totalPrice += (parseInt(i.price) * parseInt(i.order_quantity));
+    })
+    // console.log(totalPrice);
+    
+    
         
     // //
     var month = months[d.getMonth()];
     var sMonth = months[scheduledDate.getMonth()];
+    
     return(
         <div className="container c_order_row">
             <div className="card">
-                    <h4>OrderNo: {data.itemdetail.orderid} <span style={{float:'right'}}>{d.getDate()+" "+month+" "+d.getFullYear()}</span></h4>
+                    <h4>OrderNo: {data.itemdetail[0].orderid} <span style={{float:'right'}}>{d.getDate()+" "+month+" "+d.getFullYear()}</span></h4>
                     <h5>Scheduled for: <span>{scheduledDate.getDate()+" "+sMonth+" "+scheduledDate.getFullYear()}</span></h5>
                     <table className="table table-hover  table-bordered table-responsive" style={{marginTop:'30px'}}>
                     <thead>
                         <tr className="active" style={{color:'#000'}}>
-                            <th>Product Name</th>
-                            <th>Quantity</th>
+                            <th style={{width:'40%'}}>Product Name</th>
                             <th>Unit Price</th>
+                            <th>Quantity</th>
                             <th>Total Price</th>
                             <th></th>
                         </tr>
                     </thead>
                     <thead>
                         {
-                             <Orderrows orderids={data.itemdetail.orderid} orderStatus={data.itemdetail.status} remve={data.cancelProduct.bind(this)} rmvorder={data.rmvorder.bind(this)}/>
+                             <Orderrows removeitem={data.removeitem.bind(this)} cancelBtn={data.click.bind(this)} items={data.itemdetail} orderids={data.itemdetail[0].orderid} orderStatus={data.itemdetail[0].status} />
                         }
                     </thead>
                     </table>
+                    <p style={{textAlign: 'right'}}>
+                        <span className="c_order-total">Total:&nbsp;{totalPrice}&#8377;</span>
+                    </p>
                     {
-                        data.itemdetail.status === 'Delivered' ? <img src="./img/de.png" alt="delivered" style={{transform: 'rotate(-20deg)',height: '50px',opacity: '0.8'}}/> :''
+                        data.itemdetail[0].status === 'Delivered' ? <img src="./img/de.png" alt="delivered" style={{transform: 'rotate(-20deg)',height: '50px',opacity: '0.8'}}/> :''
                     }
                     {
-                        data.itemdetail.status === 'Cancelled' ? <img src="./img/cancel.png" alt="cancelled" style={{transform: 'rotate(-20deg)',height: '38px',opacity: '0.8'}}/> :''
+                        data.itemdetail[0].status === 'Cancelled' ? <img src="./img/cancel.png" alt="cancelled" style={{transform: 'rotate(-20deg)',height: '38px',opacity: '0.8'}}/> :''
                     }
-                    <p>Status: {data.itemdetail.status}{
-                        data.itemdetail.status === 'Delivered' ? <span><button className="btn" style={{float:'right',backgroundColor: '#12cc1a',color: 'white',fontWeight: '600'}} onClick={data.reorder.bind(this,data.itemdetail.orderid)}>Re order</button></span>: ''
+                    <p>Status: {data.itemdetail[0].status}
+                    
+                        {
+                        data.itemdetail[0].status === 'Delivered' ? <span><button className="btn" style={{float:'right',backgroundColor: '#12cc1a',color: 'white',fontWeight: '600'}} onClick={data.reorder.bind(this,data.itemdetail[0].orderid)}>Re order</button></span>: ''
                     }
                     {
-                         data.itemdetail.status === 'Cancelled' ? <span><button className="btn" style={{float:'right',backgroundColor: '#12cc1a',color: 'white',fontWeight: '600'}} onClick={data.reorder.bind(this,data.itemdetail.orderid)}>Re order</button></span> :''
+                         data.itemdetail[0].status === 'Cancelled' ? <span><button className="btn" style={{float:'right',backgroundColor: '#12cc1a',color: 'white',fontWeight: '600'}} onClick={data.reorder.bind(this,data.itemdetail[0].orderid)}>Re order</button></span> :''
                     }
                     {
-                        data.itemdetail.status === 'Pending Delivery'&&data.cancelBtn ? <span><button className="btn" style={{float:'right',backgroundColor: '#ffc107',color: 'white',fontWeight: '600'}} onClick={data.click.bind(this,data.itemdetail.orderid)}>Cancel Order</button></span> :''
+                        data.itemdetail[0].status === 'Pending Delivery'&&data.cancelBtn ? <span><button className="btn" style={{float:'right',backgroundColor: '#ffc107',color: 'white',fontWeight: '600'}} onClick={data.click.bind(this,data.itemdetail[0].orderid)}>Cancel Order</button></span> :''
                     }
                     </p>
                     

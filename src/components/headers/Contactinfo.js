@@ -14,7 +14,7 @@ class Contactinfo extends React.Component{
         if(_loc == undefined || _loc === null){
             
             this.setState({
-                location:"no location"
+                location:"Store location"
             })
         }else{
             this.setState({
@@ -53,9 +53,11 @@ class Contactinfo extends React.Component{
                     this.state.popup ? <LocationPopup clk={this.setLocation.bind(this)}/> : null
                 }
                 <div className="text-center">
-                    <span><span className="glyphicon glyphicon-map-marker"></span>{this.state.location} &nbsp;
-                    <span className="c_location_change" onClick={this.changeLocation.bind(this)}>Change</span>
-                    &nbsp;&nbsp;&nbsp; <span className="glyphicon glyphicon-earphone"></span>+0 9999 999 999</span>
+                    <span  className="c_location_change">
+                        <span className="glyphicon glyphicon-map-marker"></span>{this.state.location} &nbsp;
+                        <span className="c_location_change_btn" onClick={this.changeLocation.bind(this)}>Change</span>
+                    </span>
+                    <span>&nbsp;&nbsp;&nbsp; <span className="glyphicon glyphicon-earphone"></span>+0 9999 999 999</span>
                 </div>
             </React.Fragment>
         )

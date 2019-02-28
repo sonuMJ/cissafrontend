@@ -47,7 +47,7 @@ class Forgotpwd extends React.Component{
                             this.state.errorMessage ? <span style={{color:'red'}}>{"Your username or password is incorrect"}</span> : null
                         }
                         <input type="button" value="Continue" className="btn btn-lg c_login_btn" onClick={this.handleSubmit.bind(this)}/>
-                        <h6 className="text-center">&copy; 2019 Cissaorganic.com. All Rights Reserved</h6>
+                        <h6 className="text-center">&copy; 2019 Cissaorganics.com. All Rights Reserved</h6>
                     </div>
                 </div>
             </React.Fragment>

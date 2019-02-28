@@ -10,7 +10,8 @@ import Topnavsm from '../headers/Topnavsm';
 class Yourorders extends React.Component{
     state = {
         loggedIn:false,
-        orderdata:[],
+        orders:[],
+        orderids:[],
         loading:false
     }
     componentDidMount(){
@@ -57,10 +58,32 @@ class Yourorders extends React.Component{
         })
         .then(result => {
             this.setState({
-                orderdata:result,
+                orders:result,
                 loading:true
             })
+            this.showChild();
         })
+    }
+    showChild(){
+        setTimeout(() => {
+            if(this.state.orders != ""){
+                var _s = new Set();
+                this.state.orders.map(i => {
+                    
+                    _s.add(i.orderid);
+                })
+                this.setState({
+                    orderids:_s
+                })
+                // setTimeout(() => {
+                //     console.log(this.state.orderids);
+                    
+                // }, 100);
+                
+            }else{
+
+            }
+        }, 200);
     }
     
     RefreshOrder(){
@@ -83,7 +106,6 @@ class Yourorders extends React.Component{
         var location = Cookies.get("_loc");
         if(location != undefined){
             //go to cart
-            console.log("go to cart");
             this.props.history.push('/cart');
         }else{
             this.setState({
@@ -93,6 +115,20 @@ class Yourorders extends React.Component{
     }
 
     render(){
+        var parent = [];
+            var orderss = Array.from(this.state.orderids).map(j => {
+                    var child = [];
+                    this.state.orders.map(i => {
+                        if(j == i.orderid){
+                            //child.push(i);
+                            child.push(i)
+                        }
+                    })
+                    //console.log(child);
+                    parent.push(child);
+                    
+                })
+        
         return(
             <React.Fragment>
                 <Contactinfo />
@@ -112,7 +148,20 @@ class Yourorders extends React.Component{
                     {
                     this.state.loading ? <div>
                     {
-                        this.state.orderdata !== "" ? <Order parentProps={this}  refresh={this.RefreshOrder.bind(this)} orderdata={this.state.orderdata}/> : null
+                        this.state.orderdata !== "" ? 
+                        <React.Fragment>
+                            {
+                                parent != "" ?
+                                <Order parentProps={this}  refresh={this.RefreshOrder.bind(this)} orderdata={parent}/>
+                                :
+                                <div style={{textAlign:'center',marginTop:'200px'}}>
+                                    <img src="../img/product_loader.gif" alt="loading_icon" />
+                                </div>
+                            }
+                        </React.Fragment>
+                        //
+                        :
+                        <h3 className="text-center">No orders Found!!</h3>
                     }
                     </div>
                     :

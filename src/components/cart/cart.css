@@ -222,6 +222,6 @@
     font-size: 16px !important;
     background-color: #FF5722 !important;
   }
-  .c_btn_un:hover, c_btn_un:focus,{
+  .c_btn_un:hover, c_btn_un:focus{
       color: #fff;
   }

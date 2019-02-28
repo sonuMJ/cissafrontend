@@ -29,7 +29,7 @@ class Mybill extends React.Component{
         var loc = Cookies.get('_loc');
         if(loc == undefined || loc == null){
             this.setState({
-                storeloc:'no location'
+                storeloc:'Not selected'
             })
         }else{
             this.setState({

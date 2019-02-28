@@ -39,7 +39,6 @@ class Mainframe extends React.Component{
         adding:false
     }
     componentDidMount(){
-        console.log("did mount");
         
         this.fetchData(this.state.category);
         this.handleClick = this.handleClick.bind(this);
@@ -52,7 +51,6 @@ class Mainframe extends React.Component{
       }
 
     componentWillReceiveProps(){
-        console.log("did will recive");
         this.setState({
             currentPage:1
         })
@@ -150,7 +148,6 @@ class Mainframe extends React.Component{
     }
 
     Choosecategory(cate,cate_name){
-        console.log(cate_name);
         // this.setState({
         //     categoryName:cate_name
         // })
@@ -240,7 +237,6 @@ class Mainframe extends React.Component{
     }
 
     render(){
-        console.log("render");
         
         const { products, currentPage, todosPerPage } = this.state;
 
@@ -291,7 +287,13 @@ class Mainframe extends React.Component{
                     </div> */}
                     <div className="col-lg-10 col-md-9 col-sm-9 col-xs-12 c_show_products_list">
                     {
-                        this.state.productnotfound ? <h3 className="text-center">PRODUCT CURRENTLY UNAVAILABLE </h3> : null
+                        this.state.productnotfound ? 
+                        <div className="text-center" style={{textAlign:'center'}} alt="search">
+                            <img src="./img/diet.png" height="120"/>
+                            <h3 className="text-center">PRODUCT CURRENTLY UNAVAILABLE </h3> 
+                        </div>
+                        :
+                         null
                     }
                     {
                         this.state.isFetching ? 

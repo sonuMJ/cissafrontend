@@ -85,7 +85,7 @@ class Registration extends React.Component{
                             <input type="submit" value="Register" className="btn btn-lg c_login_btn" />
                             </form>
                             <p className="text-center" style={{marginTop:'20px'}}>Already registered? <Link to={'/login'}>Login</Link></p>
-                            <h6 className="text-center">&copy; 2019 Cissaorganic.com. All Rights Reserved</h6>
+                            <h6 className="text-center">&copy; 2019 Cissaorganics.com. All Rights Reserved</h6>
                         </div>
                                 {/* <form onSubmit={this.handleSubmit.bind(this)}>
                                     <h1 className="text-center">Register</h1>
@@ -125,7 +125,7 @@ const Message = (msg) => {
                     <h2 className="text-center" style={{color:'#6495ed',borderBottom: '2px solid #6495ed',paddingBottom:' 12px',fontSize:'26px'}}>
                         <img src={"./img/success_tick.png"}/>&nbsp;{"A verification link has been sent to your email account "}
                     </h2>
-                    <h4 style={{textAlign: 'center',marginTop:'24px',color: '#6495ee'}}>Please click on the that has just been sent to your email account to verify your email and continue the registration process. Please allow 5-10 minutes for this message to arrive</h4>
+                    <h4 style={{textAlign: 'center',marginTop:'24px',color: '#6495ee'}}>Please click on the link that has just been sent to your email account to verify your email and continue the registration process. You will recieve a verification email from us within 10 minutes</h4>
                     <button className="btn" style={{marginTop: '20px',width: '100px',backgroundColor: 'cornflowerblue',color: 'white'}} onClick={msg.okbtn.bind(this)}>OK</button>
                 </div>
             </div>

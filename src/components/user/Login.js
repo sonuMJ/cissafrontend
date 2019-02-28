@@ -141,7 +141,7 @@ class Login extends React.Component{
                                 <Link to={'/forgotpassword'}>Forgot Password?</Link>
                             </div>
                             <p className="text-center" style={{marginTop:'20px'}}>Need an account? <Link to={'/register'}>Create your account</Link></p>
-                            <h6 className="text-center">&copy; 2019 Cissaorganic.com. All Rights Reserved</h6>
+                            <h6 className="text-center">&copy; 2019 Cissaorganics.com. All Rights Reserved</h6>
                         </div>
                     </div>
                 </div>

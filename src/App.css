@@ -133,6 +133,9 @@
     ._c_locked{
         margin-top: 0px !important;
     }
+    .c_order_img{
+        display: none;
+    }
 } 
 @media (min-width: 766px) and (max-width: 1366px) {
     .c_product{

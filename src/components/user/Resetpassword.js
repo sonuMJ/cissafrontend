@@ -74,7 +74,7 @@ class Resetpassword extends React.Component{
                             this.state.errorMessage ? <span style={{color:'red'}}>{"Please make sure your passwords match!"}</span> : null
                         }
                         <input type="button" value="Reset password" className="btn btn-lg c_login_btn" onClick={this.handleSubmit.bind(this)}/>
-                        <h6 className="text-center">&copy; 2019 Cissaorganic.com. All Rights Reserved</h6>
+                        <h6 className="text-center">&copy; 2019 Cissaorganics.com. All Rights Reserved</h6>
                     </div>
                 </div>
             </React.Fragment>
